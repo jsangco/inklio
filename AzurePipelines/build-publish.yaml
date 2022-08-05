@@ -14,7 +14,7 @@ stages:
     - name: configuration
       value: Release
   jobs:
-  - job: build_art
+  - job: build_api
     displayName: Build/Docker
     steps:
     - task: UseDotNet@2
@@ -74,7 +74,7 @@ stages:
       inputs:
         DockerFile: Api/Dockerfile
         containerRegistry: arthappened.azurecr.io
-        repository: 'docker/art'
+        repository: 'docker/api'
         command: buildAndPush
         tags: |
           $(Build.SourceVersion)
