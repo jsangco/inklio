@@ -12,10 +12,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly MyService test;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, MyService test)
     {
         _logger = logger;
+        this.test = test;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -24,7 +26,7 @@ public class WeatherForecastController : ControllerBase
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
+            TemperatureC = 1,
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();

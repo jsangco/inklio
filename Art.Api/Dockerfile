@@ -2,4 +2,4 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.2
 WORKDIR /app
 COPY ["bin/Release/net6.0/", "."]
-ENTRYPOINT ["dotnet", "Api.dll"]
+ENTRYPOINT ["dotnet", "Art.Api.dll"]
