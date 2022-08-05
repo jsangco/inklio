@@ -1,0 +1,81 @@
+parameters:
+- name: buildPool
+  type: string
+- name: acrName
+  type: string
+- name: acrServer
+  type: string
+
+stages:
+- stage: build
+  displayName: Build
+  pool: ${{parameters.buildPool}}
+  variables:
+    - name: configuration
+      value: Release
+  jobs:
+  - job: build_art
+    displayName: Build/Docker
+    steps:
+    - task: UseDotNet@2
+      displayName: Use .Net 6.0.x
+      inputs:
+        version: '6.0.x'
+
+    - script: |
+        echo "Saving git commit short hash into gitshorthash variable:"
+        gitshorthash=$(git rev-parse --short HEAD)
+        echo $gitshorthash
+        echo "##vso[task.setvariable variable=gitshorthash;]$gitshorthash"
+      displayName: Save Git Short Hash
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet restore'
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        feedsToUse: 'config'
+        includeNuGetOrg: true
+        nugetConfigPath: nuget.config
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build'
+      inputs:
+        command: build
+        configuration: $(configuration)
+        arguments: /p:InformationalVersion="1.0.0.$(gitshorthash)"
+        projects: |
+          **/*.csproj
+          !**/*.sqlproj
+          
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        configuration: $(configuration)
+        projects: |
+          **/*Tests.csproj
+          **/*Test.csproj
+          !**/*.sqlproj
+        arguments: '--nologo'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet publish'
+      inputs:
+        command: publish
+        configuration: $(configuration)
+        projects: |
+          **/Api.csproj
+        arguments: '--nologo'
+        publishWebProjects: false
+
+    - task: Docker@2
+      displayName: Build and push worker image to container registry
+      inputs:
+        DockerFile: Api/Dockerfile
+        containerRegistry: arthappened.azurecr.io
+        repository: 'docker/art'
+        command: buildAndPush
+        tags: |
+          $(Build.SourceVersion)
+          latest
