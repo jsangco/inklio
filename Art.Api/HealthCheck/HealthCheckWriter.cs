@@ -51,11 +51,11 @@ internal static class HealthCheckWriter
             Encoding.UTF8.GetString(memoryStream.ToArray()));
     }
     
-    private static string GetAppVersion()
+    public static string GetAppVersion()
     {
         var assembly = Assembly.GetExecutingAssembly();
         FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-        string hash = string.IsNullOrWhiteSpace(fileVersionInfo.ProductVersion) ? "local" : fileVersionInfo.ProductVersion.Substring(0, 5);
+        string hash = string.IsNullOrWhiteSpace(fileVersionInfo.ProductVersion) ? "local" : fileVersionInfo.ProductVersion;
         return hash;
     }
 }

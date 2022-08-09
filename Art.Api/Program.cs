@@ -45,4 +45,5 @@ app.MapHealthChecks("/", new HealthCheckOptions
     Predicate = healthCheck => healthCheck.Name == "Database",
 });
 
+Console.WriteLine("Starting application. Version: " + HealthCheckWriter.GetAppVersion());
 app.Run();
