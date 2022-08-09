@@ -8,23 +8,22 @@ namespace Art.Api.HealthCheck
         private readonly ArtContext artContext;
         private readonly ILogger<DatabaseHealthCheck> logger;
 
-        public DatabaseHealthCheck(ILogger<DatabaseHealthCheck> logger)
+        public DatabaseHealthCheck(ArtContext artContext, ILogger<DatabaseHealthCheck> logger)
         {
-            //this.artContext = artContext ?? throw new ArgumentNullException(nameof(artContext));
+            this.artContext = artContext ?? throw new ArgumentNullException(nameof(artContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context, CancellationToken cancellationToken = default)
         {
-            //// Check if DB connection is successful to ensure that the service is ready.
-            //if (await artContext.Database.CanConnectAsync())
-            //{
-                //return HealthCheckResult.Healthy("Database connection is successful.");
-            //}
-            //logger.LogWarning("Readiness Probe Failed");
-            //return HealthCheckResult.Unhealthy("Database connection failed.");
-            return HealthCheckResult.Healthy("ready");
+            // Check if DB connection is successful to ensure that the service is ready.
+            if (await artContext.Database.CanConnectAsync())
+            {
+                return HealthCheckResult.Healthy("Database connection is successful.");
+            }
+            logger.LogWarning("Readiness Probe Failed");
+            return HealthCheckResult.Unhealthy("Database connection failed.");
         }
     }
 }

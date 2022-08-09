@@ -1,14 +1,20 @@
 using Art.Api.HealthCheck;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MediatR.Extensions.Autofac.DependencyInjection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 appBuilder.Host
     .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureContainer((ContainerBuilder builder) =>
+    .ConfigureAppConfiguration((HostBuilderContext hostContext, IConfigurationBuilder configBuilder) =>
     {
-        builder.RegisterModule<ArtDependencyModule>();
+        configBuilder.AddEnvironmentVariables();
+    })
+    .ConfigureContainer((HostBuilderContext hostContext, ContainerBuilder builder) =>
+    {
+        builder.RegisterMediatR(typeof(Program).Assembly);
+        builder.RegisterModule(new ArtDependencyModule(hostContext.Configuration));
     });
 
 appBuilder.Services.AddControllers();
