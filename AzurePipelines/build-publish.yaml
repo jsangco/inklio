@@ -46,7 +46,7 @@ steps:
     configuration: $(configuration)
     projects: |
       **/Art.Api.csproj
-    arguments: '--nologo'
+    arguments: /p:InformationalVersion="1.0.0.$(gitshorthash)"
     publishWebProjects: false
 
 - task: Docker@2
