@@ -20,7 +20,7 @@ namespace Art.Api.HealthCheck
             // Check if DB connection is successful to ensure that the service is ready.
             if (await artContext.Database.CanConnectAsync())
             {
-                return HealthCheckResult.Healthy("Database connection is successful.");
+                return HealthCheckResult.Healthy("Database connected.");
             }
             logger.LogWarning("Readiness Probe Failed");
             return HealthCheckResult.Unhealthy("Database connection failed.");

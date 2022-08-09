@@ -40,8 +40,9 @@ app.MapControllers();
 
 app.MapHealthChecks("/", new HealthCheckOptions
 {
+    ResponseWriter = HealthCheckWriter.WriteResponse,
     AllowCachingResponses = false,
-    Predicate = healthCheck => healthCheck.Name == "Database"
+    Predicate = healthCheck => healthCheck.Name == "Database",
 });
 
 app.Run();
