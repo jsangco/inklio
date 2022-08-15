@@ -1,5 +1,5 @@
 trigger:
-- master
+- dev
 
 variables:
 - name: configuration
@@ -45,14 +45,14 @@ steps:
     command: publish
     configuration: $(configuration)
     projects: |
-      **/Art.Api.csproj
+      **/Inklio.Api.csproj
     arguments: /p:InformationalVersion="1.0.0.$(gitshorthash)"
     publishWebProjects: false
 
 - task: Docker@2
   displayName: Build and push worker image to container registry
   inputs:
-    DockerFile: Art.Api/Dockerfile
+    DockerFile: Inklio.Api/Dockerfile
     containerRegistry: arthappened.azurecr.io
     repository: 'docker/api'
     command: buildAndPush

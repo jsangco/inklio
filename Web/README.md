@@ -1,5 +1,5 @@
 # Introduction
-Code Repo for the Inklio project
+The Front-end web projects for Inklio
 
 ## Recommended Development Tools
 
