@@ -12,7 +12,7 @@ public abstract class Entity
         {
             return _Id;
         }
-        protected set
+        set
         {
             _Id = value;
         }
