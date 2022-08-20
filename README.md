@@ -30,3 +30,29 @@ Here is an example.
 ```
 
 These values are obviously secret, so please find the values in the azure portal or contact the application owner.
+
+## Docker
+
+Docker can be used to run a local environment of the Inklio services.
+
+### Running Docker on a single image
+
+The following steps can be used to run Docker for a single service
+
+1. `cd myServiceDirectory`
+2. `dotnet publish myservices.csproj -c Release`
+3. `docker build . -t myservice:latest`
+4. `docker run -it --rm -p 8765:80 -p 8001:443 myservice:latest`
+5. `curl http://localhost:8765`
+
+> NOTE: the `-p` tag must become before the container name or things don't work
+
+### Running all services with Docker compose
+
+The following steps can be used to run all services in docker 
+
+1. Build and tag every docker image
+2. From the `docker-compose.yml` file director run: `docker compose up`
+3. `curl http://localhost:8765`
+
+> NOTE: The HTTPS connection does not work because there is no local SSL cert

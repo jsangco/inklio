@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A2422292-AFAD-4A40-870A-35160D3E2011}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inklio.Api", "Services\Inklio.Api\Inklio.Api.csproj", "{5509D4CB-4A17-4D2B-A033-E14336365304}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inklio.Api.Test", "Services\Inklio.Api.Test\Inklio.Api.Test.csproj", "{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5509D4CB-4A17-4D2B-A033-E14336365304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5509D4CB-4A17-4D2B-A033-E14336365304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5509D4CB-4A17-4D2B-A033-E14336365304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5509D4CB-4A17-4D2B-A033-E14336365304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5509D4CB-4A17-4D2B-A033-E14336365304} = {A2422292-AFAD-4A40-870A-35160D3E2011}
+		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0} = {A2422292-AFAD-4A40-870A-35160D3E2011}
+	EndGlobalSection
+EndGlobal

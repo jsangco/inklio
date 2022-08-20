@@ -53,7 +53,7 @@ steps:
   displayName: Build and push worker image to container registry
   inputs:
     DockerFile: Services/Inklio.Api/Dockerfile
-    containerRegistry: arthappened.azurecr.io
+    containerRegistry: inklio.azurecr.io
     repository: 'docker/inklio.api'
     command: buildAndPush
     tags: |
