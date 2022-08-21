@@ -17,7 +17,7 @@ public class AsksController : ControllerBase
         cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Models.Ask>();
     });
 
-    public IEnumerable<Inklio.Api.Models.Ask> Asks { get; set; }
+    // public IEnumerable<Inklio.Api.Models.Ask> Asks { get; set; }
     public IEnumerable<Inklio.Api.Domain.Ask> DomainAsks { get; set; }
 
     public AsksController(ILogger<AsksController> logger, IMediator mediator)
@@ -26,12 +26,12 @@ public class AsksController : ControllerBase
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         this.DomainAsks = new Inklio.Api.Domain.Ask[]
         {
-            new Inklio.Api.Domain.Ask(){Id = 1, Asdf = -1},
-            new Inklio.Api.Domain.Ask(){Id = 2, Asdf = -1},
-            new Inklio.Api.Domain.Ask(){Id = 3, Asdf = -1},
-            new Inklio.Api.Domain.Ask(){Id = 4, Asdf = -2},
-            new Inklio.Api.Domain.Ask(){Id = 5, Asdf = -2},
-            new Inklio.Api.Domain.Ask(){Id = 6, Asdf = -2},
+            new Inklio.Api.Domain.Ask(){Id = 1,},
+            new Inklio.Api.Domain.Ask(){Id = 2,},
+            new Inklio.Api.Domain.Ask(){Id = 3,},
+            new Inklio.Api.Domain.Ask(){Id = 4,},
+            new Inklio.Api.Domain.Ask(){Id = 5,},
+            new Inklio.Api.Domain.Ask(){Id = 6,},
         };
     }
 
