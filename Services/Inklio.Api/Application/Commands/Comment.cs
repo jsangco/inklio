@@ -1,6 +1,6 @@
 using Inklio.Api.SeedWork;
 
-namespace Inklio.Api.Models;
+namespace Inklio.Api.Application.Commands;
 
 public class Comment
 {

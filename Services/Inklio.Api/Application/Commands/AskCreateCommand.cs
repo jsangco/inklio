@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using MediatR;
 
-namespace Inklio.Api.Models;
+namespace Inklio.Api.Application.Commands;
 
 /// <summary>
 /// An request body to create a new ask
 /// </summary>
-public class AskCreate
+public class AskCreateCommand : IRequest<Ask>
 {
     /// <summary>
     /// Gets or sets the Body of the Ask.

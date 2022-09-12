@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Inklio.Api.Models;
+namespace Inklio.Api.Application.Commands;
 
 /// <summary>
 /// An Inklio Ask

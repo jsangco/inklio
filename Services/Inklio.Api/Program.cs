@@ -7,6 +7,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Inklio.Api.Startup;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Inklio.Api.Dependencies;
+using Inklio.Api.Infrastructure.Filters;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 appBuilder.Host
@@ -19,9 +21,14 @@ appBuilder.Host
     {
         builder.RegisterMediatR(typeof(Program).Assembly);
         builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration));
+        builder.RegisterModule(new MediatorDependencyModule());
     });
 
-appBuilder.Services.AddControllers()
+appBuilder.Services.AddControllers( options =>
+    {
+        options.Filters.Add<HttpGlobalExceptionFilter>();
+        options.Filters.Add<ValidateModelStateFilter>();
+    })
     .AddApiOData()
     .AddJsonOptions(jsonOptions =>
     {

@@ -1,7 +1,7 @@
 using Inklio.Api.Domain;
 using Inklio.Api.SeedWork;
 
-namespace Inklio.Api.Infrastructure;
+namespace Inklio.Api.Infrastructure.Repositories;
 
 public class AskRepository : IAskRepository
 {

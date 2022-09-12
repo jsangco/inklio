@@ -1,8 +1,9 @@
 using Inklio.Api.Infrastructure;
-using Autofac;
-using Microsoft.EntityFrameworkCore;
+using Inklio.Api.Infrastructure.Repositories;
 
-public class InklioDependencyModule : Module
+namespace Inklio.Api.Dependencies;
+
+public class InklioDependencyModule : Autofac.Module
 {
     private readonly IConfiguration configuration;
 
@@ -27,7 +28,8 @@ public class InklioDependencyModule : Module
                         maxRetryDelay: TimeSpan.FromSeconds(30),
                         errorNumbersToAdd: null);
                 }).Options;
-        });
-        builder.RegisterType<InklioContext>();
+        }).SingleInstance();
+        builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
+        builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
     }
 }

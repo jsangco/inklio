@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Inklio.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,4 +1,4 @@
-using Inklio.Api.Models;
+using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
