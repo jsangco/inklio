@@ -9,7 +9,7 @@ public sealed class InklioContext : DbContext, IUnitOfWork
 {
     private readonly IMediator mediator;
 
-    public DbSet<Ask>? Asks {get; set;}
+    public DbSet<Ask> Asks  => Set<Ask>();
 
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {

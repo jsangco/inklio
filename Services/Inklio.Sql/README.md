@@ -19,4 +19,4 @@ Details on how to manage the Inklio SQL server
 1. Build the Inklio.sql.sqlproj
     `dotnet build .\Inklio.Sql.sqlproj /p:NetCoreBuild=true`
 2. Publish the dacpac
-   SqlPackage.exe /Action:Publish /SourceFile:"\bin\Debug\Inklio.Sql.dacpac" /TargetConnectionString:"<db Connection string here>"
+   SqlPackage.exe /Action:Publish /SourceFile:".\bin\Debug\Inklio.Sql.dacpac" /TargetConnectionString:"<db Connection string here>"
