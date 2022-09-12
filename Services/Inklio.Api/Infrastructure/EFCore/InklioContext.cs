@@ -3,10 +3,12 @@ using Inklio.Api.SeedWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inklio.Api.Infrastructure;
+namespace Inklio.Api.Infrastructure.Sql;
 
 public sealed class InklioContext : DbContext, IUnitOfWork
 {
+    public const string DefaultDbSchema = "inklio";
+    
     private readonly IMediator mediator;
 
     public DbSet<Ask> Asks  => Set<Ask>();
@@ -31,5 +33,10 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         var result = await base.SaveChangesAsync(cancellationToken);
 
         return true;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
     }
 }

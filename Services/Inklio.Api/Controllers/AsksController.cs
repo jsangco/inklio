@@ -18,6 +18,8 @@ public class AsksController : ControllerBase
 
     private readonly IMapper mapper = new MapperConfiguration(cfg => {
         cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
+        cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
     }).CreateMapper();
 
     public AsksController(ILogger<AsksController> logger, IAskRepository askRepository, IMediator mediator)
@@ -31,7 +33,9 @@ public class AsksController : ControllerBase
     [EnableQuery(PageSize=2)]
     public IQueryable<Inklio.Api.Application.Commands.Ask> Get()
     {
-        return mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
+        var rez = mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
+        var aoeu = rez.ToArray();
+        return rez;
     }
 
     [HttpPost]
