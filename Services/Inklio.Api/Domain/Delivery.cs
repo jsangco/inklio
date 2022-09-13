@@ -38,6 +38,11 @@ public class Delivery : Entity, IAggregateRoot
     public bool CanTag { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of comments for the delivery.
+    /// </summary>
+    public IEnumerable<DeliveryComment> Comments { get; set; } = Array.Empty<DeliveryComment>();
+
+    /// <summary>
     /// Gets or sets the UTC time the delivery was created.
     /// </summary>
     public DateTimeOffset CreatedAtUtc { get; set; }

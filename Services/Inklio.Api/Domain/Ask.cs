@@ -38,6 +38,11 @@ public class Ask : Entity, IAggregateRoot
     public bool CanTag { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of comments for the ask.
+    /// </summary>
+    public IEnumerable<AskComment> Comments { get; set; } = Array.Empty<AskComment>();
+
+    /// <summary>
     /// The UTC time the ask was created.
     /// </summary>
     public DateTimeOffset createdAtUtc;
@@ -56,6 +61,11 @@ public class Ask : Entity, IAggregateRoot
     /// Gets the ID of the user that created the ask.
     /// </summary>
     public int CreatedById => this.createdById;
+    
+    /// <summary>
+    /// Gets or sets the deliveries for the ask.
+    /// </summary>
+    public IEnumerable<Delivery> Deliveries { get; set; } = Array.Empty<Delivery>();
 
     /// <summary>
     /// The UTC time the ask was last edited.
@@ -136,16 +146,6 @@ public class Ask : Entity, IAggregateRoot
     /// Gets or sets the number of times the ask has been viewed.
     /// </summary>
     public int ViewCount { get; set; }
-
-    /// <summary>
-    /// Gets or sets a collection of comments for the ask.
-    /// </summary>
-    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
-
-    /// <summary>
-    /// Gets or sets the deliveries for the ask.
-    /// </summary>
-    public IEnumerable<Delivery> Deliveries { get; set; } = Array.Empty<Delivery>();
 
     public void Delete() { }
 

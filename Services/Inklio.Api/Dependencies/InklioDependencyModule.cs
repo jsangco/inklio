@@ -1,4 +1,4 @@
-using Inklio.Api.Infrastructure;
+using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Repositories;
 
 namespace Inklio.Api.Dependencies;
@@ -6,10 +6,12 @@ namespace Inklio.Api.Dependencies;
 public class InklioDependencyModule : Autofac.Module
 {
     private readonly IConfiguration configuration;
+    private readonly IHostEnvironment hostEnvironment;
 
-    public InklioDependencyModule(IConfiguration configuration)
+    public InklioDependencyModule(IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
         this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        this.hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
     /// <inheritdoc/>
@@ -17,18 +19,28 @@ public class InklioDependencyModule : Autofac.Module
     {
         builder.RegisterType<MyService>().AsSelf();
 
-        string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
-        builder.Register<DbContextOptions<InklioContext>>((context) =>
+        if (this.hostEnvironment.IsDevelopment() )
         {
-            return new DbContextOptionsBuilder<InklioContext>()
-                .UseSqlServer(connectionString, sqlServerOptions =>
-                {
-                    sqlServerOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null);
-                }).Options;
-        }).SingleInstance();
+            builder.Register<DbContextOptions<InklioContext>>((context) =>
+            {
+                return new DbContextOptionsBuilder<InklioContext>().UseInMemoryDatabase("InklioTestDatabase").Options;
+            }).SingleInstance();
+        }
+        else
+        {
+            string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+            builder.Register<DbContextOptions<InklioContext>>((context) =>
+            {
+                return new DbContextOptionsBuilder<InklioContext>()
+                    .UseSqlServer(connectionString, sqlServerOptions =>
+                    {
+                        sqlServerOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null);
+                    }).Options;
+            }).SingleInstance();
+        }
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
         builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
     }

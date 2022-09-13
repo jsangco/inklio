@@ -19,7 +19,7 @@ public class DeliveryComment : Comment
     /// Gets or sets the ID of the parent Delivery
     /// </summary>
     public int DeliveryId { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the parent Delivery
     /// </summary>

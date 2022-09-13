@@ -1,4 +1,5 @@
 using Inklio.Api.Domain;
+using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.SeedWork;
 
 namespace Inklio.Api.Infrastructure.Repositories;

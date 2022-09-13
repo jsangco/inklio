@@ -20,7 +20,7 @@ appBuilder.Host
     .ConfigureContainer((HostBuilderContext hostContext, ContainerBuilder builder) =>
     {
         builder.RegisterMediatR(typeof(Program).Assembly);
-        builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration));
+        builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration, hostContext.HostingEnvironment));
         builder.RegisterModule(new MediatorDependencyModule());
     });
 

@@ -8,7 +8,7 @@ public class AskComment : Comment
     /// <summary>
     /// Gets or sets the ID of the parent Ask
     /// </summary>
-    public int AskId { get; set; }
+    private readonly int askId;
 
     /// <summary>
     /// Gets or sets the parent Ask

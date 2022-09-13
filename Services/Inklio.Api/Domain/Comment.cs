@@ -5,7 +5,7 @@ namespace Inklio.Api.Domain;
 /// <summary>
 /// Reperesents a Comment
 /// </summary>
-public class Comment : Entity, IAggregateRoot
+public abstract class Comment : Entity, IAggregateRoot
 {
     /// <summary>
     /// Gets or sets the Body of the comment.
@@ -23,24 +23,34 @@ public class Comment : Entity, IAggregateRoot
     public bool CanFlag { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC time the comment was created.
+    /// The UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTimeOffset createdAtUtc;
 
     /// <summary>
-    /// Gets or sets the ID of the user that created the comment.
+    /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public int CreatedById { get; set; }
+    public DateTimeOffset CreatedAtUtc => this.createdAtUtc;
 
     /// <summary>
-    /// Gets or sets the UTC time the comment was last edited.
-    /// </summary>
-    public DateTimeOffset EditedAtUtc { get; set; }
+    /// The ID of the user that created the ask.
+    /// </summary>/
+    private int createdById;
 
     /// <summary>
-    /// Gets or sets the id of the user that edited the comment.
-    /// </summary>    
-    public int EditedById { get; set; }
+    /// Gets the ID of the user that created the ask.
+    /// </summary>
+    public int CreatedById => this.createdById;
+
+    /// <summary>
+    /// The UTC time the ask was last edited.
+    /// </summary>
+    public DateTimeOffset? editedAtUtc;
+
+    /// <summary>
+    /// Gets or sets the UTC time the ask was last edited.
+    /// </summary>
+    public DateTimeOffset? EditedAtUtc => editedAtUtc;
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.

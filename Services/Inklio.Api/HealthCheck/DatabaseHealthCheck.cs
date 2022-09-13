@@ -1,4 +1,4 @@
-using Inklio.Api.Infrastructure;
+using Inklio.Api.Infrastructure.EFCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Inklio.Api.HealthCheck
