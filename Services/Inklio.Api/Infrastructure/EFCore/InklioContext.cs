@@ -3,7 +3,7 @@ using Inklio.Api.SeedWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inklio.Api.Infrastructure.Sql;
+namespace Inklio.Api.Infrastructure.EFCore;
 
 public sealed class InklioContext : DbContext, IUnitOfWork
 {

@@ -38,24 +38,44 @@ public class Ask : Entity, IAggregateRoot
     public bool CanTag { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC time the ask was created.
+    /// The UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTimeOffset createdAtUtc;
 
     /// <summary>
-    /// Gets or sets the ID of the user that created the ask.
+    /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public int CreatedById { get; set; }
+    public DateTimeOffset CreatedAtUtc => this.createdAtUtc;
+
+    /// <summary>
+    /// The ID of the user that created the ask.
+    /// </summary>/
+    private int createdById;
+
+    /// <summary>
+    /// Gets the ID of the user that created the ask.
+    /// </summary>
+    public int CreatedById => this.createdById;
+
+    /// <summary>
+    /// The UTC time the ask was last edited.
+    /// </summary>
+    public DateTimeOffset? editedAtUtc;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset EditedAtUtc { get; set; }
+    public DateTimeOffset? EditedAtUtc => editedAtUtc;
 
     /// <summary>
-    /// Gets or sets the id of the user that edited the ask.
+    /// The id of the user that edited the ask.
     /// </summary>    
-    public int EditedById { get; set; }
+    private int? editedById;
+
+    /// <summary>
+    /// Gets the id of the user that edited the ask.
+    /// </summary>
+    public int? EditedById => this.editedById;
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.

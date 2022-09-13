@@ -1,9 +1,9 @@
 using Inklio.Api.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Inklio.Api.Infrastructure.Sql;
+namespace Inklio.Api.Infrastructure.EFCore;
 
-class AskEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
 
 {
     public void Configure(EntityTypeBuilder<Ask> askConfiguration)
@@ -29,40 +29,38 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             });
 
         askConfiguration
-            .Property<int?>("_buyerId")
+            .Property<int>("createdById")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("BuyerId")
-            .IsRequired(false);
-
-        askConfiguration
-            .Property<DateTime>("_orderDate")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("OrderDate")
+            .HasColumnName("createdById")
             .IsRequired();
 
         askConfiguration
-            .Property<int>("_orderStatusId")
-            // .HasField("_orderStatusId")
+            .Property<int?>("editedById")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("OrderStatusId")
+            .HasColumnName("editedById")
+            .IsRequired(false);
+
+        askConfiguration
+            .Property<DateTimeOffset>("createdAtUtc")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("createdAtUtc")
             .IsRequired();
 
         askConfiguration
-            .Property<int?>("_paymentMethodId")
+            .Property<DateTimeOffset?>("editedAtUtc")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("PaymentMethodId")
+            .HasColumnName("editedAtUtc")
             .IsRequired(false);
 
-        askConfiguration.Property<string>("Description").IsRequired(false);
-
-        var navigation = askConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));
+        var navigation = askConfiguration.Metadata.FindNavigation(nameof(Ask.Comments));
 
         // DDD Patterns comment:
         //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
-        navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+        navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-        askConfiguration.HasOne<PaymentMethod>()
-            .WithMany()
+        askConfiguration
+            .OwnsMany(c => c.Comments)
+            .HasOne(c => c.parent)
             // .HasForeignKey("PaymentMethodId")
             .HasForeignKey("_paymentMethodId")
             .IsRequired(false)

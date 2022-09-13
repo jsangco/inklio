@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[Comment]
 (
   [id] INT NOT NULL PRIMARY KEY,
-  [askId] INT FOREIGN KEY REFERENCES Ask(id) DEFAULT NULL,
-  [deliveryId] INT FOREIGN KEY REFERENCES Delivery(id) DEFAULT NULL,
+  [askId] INT FOREIGN KEY REFERENCES Ask(id),
+  [deliveryId] INT FOREIGN KEY REFERENCES Delivery(id),
   [body] NVARCHAR NOT NULL,
   [canComment] BIT DEFAULT 1,
   [canEdit] BIT DEFAULT 1,
