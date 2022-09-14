@@ -25,12 +25,12 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// The UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset createdAtUtc;
+    public DateTime createdAtUtc;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc => this.createdAtUtc;
+    public DateTime CreatedAtUtc => this.createdAtUtc;
 
     /// <summary>
     /// The ID of the user that created the ask.
@@ -45,12 +45,12 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// The UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset? editedAtUtc;
+    public DateTime? editedAtUtc;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset? EditedAtUtc => editedAtUtc;
+    public DateTime? EditedAtUtc => editedAtUtc;
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
@@ -70,7 +70,7 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the UTC time that the comment was locked.
     /// </summary>
-    public DateTimeOffset LockedAtUtc { get; set; }
+    public DateTime LockedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the comment was saved.

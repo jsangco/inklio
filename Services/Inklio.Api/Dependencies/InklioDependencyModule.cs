@@ -20,19 +20,23 @@ public class InklioDependencyModule : Autofac.Module
     {
         builder.RegisterType<MyService>().AsSelf();
 
-        if (this.hostEnvironment.IsDevelopment() )
+        if (this.hostEnvironment.IsDevelopment() && false)
         {
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
-                return new DbContextOptionsBuilder<InklioContext>().UseInMemoryDatabase("InklioTestDatabase").Options;
+                return new DbContextOptionsBuilder<InklioContext>()
+                    .UseSnakeCaseNamingConvention()
+                    .UseInMemoryDatabase("InklioTestDatabase").Options;
             }).SingleInstance();
         }
         else
         {
-            string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+            // string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+            string connectionString = "Server=tcp:inklio.database.windows.net,1433;Initial Catalog=inklio;Persist Security Info=False;User ID=adminaoeu;Password=d4hQqkHbtue7fDbk54dGdhb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
                 return new DbContextOptionsBuilder<InklioContext>()
+                    .UseSnakeCaseNamingConvention()
                     .UseSqlServer(connectionString, sqlServerOptions =>
                     {
                         sqlServerOptions.EnableRetryOnFailure(

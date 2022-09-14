@@ -45,12 +45,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// The UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset createdAtUtc;
+    public DateTime createdAtUtc;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc => this.createdAtUtc;
+    public DateTime CreatedAtUtc => this.createdAtUtc;
 
     /// <summary>
     /// The ID of the user that created the ask.
@@ -70,12 +70,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// The UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset? editedAtUtc;
+    public DateTime? editedAtUtc;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset? EditedAtUtc => editedAtUtc;
+    public DateTime? EditedAtUtc => editedAtUtc;
 
     /// <summary>
     /// The id of the user that edited the ask.
@@ -115,7 +115,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask is NSFW.
     /// </summary>
-    public bool IsNswf { get; set; }
+    public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask NSFL.
@@ -125,7 +125,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the UTC time that the ask was locked.
     /// </summary>
-    public DateTimeOffset LockedAtUtc { get; set; }
+    public DateTime? LockedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the ask was saved.
@@ -146,6 +146,11 @@ public class Ask : Entity, IAggregateRoot
     /// Gets or sets the number of times the ask has been viewed.
     /// </summary>
     public int ViewCount { get; set; }
+
+    public Ask()
+    {
+        this.createdAtUtc = DateTime.UtcNow;
+    }
 
     public void AddComment(AskComment comment)
     {

@@ -46,7 +46,7 @@ public class Ask
     /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the user that created the ask.
@@ -56,7 +56,7 @@ public class Ask
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
     /// </summary>
-    public DateTimeOffset EditedAtUtc { get; set; }
+    public DateTime EditedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the id of the user that edited the ask.
@@ -101,7 +101,7 @@ public class Ask
     /// <summary>
     /// Gets or sets the UTC time that the ask was locked.
     /// </summary>
-    public DateTimeOffset LockedAtUtc { get; set; }
+    public DateTime LockedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the ask was saved.

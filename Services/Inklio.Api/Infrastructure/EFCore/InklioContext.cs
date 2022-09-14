@@ -39,12 +39,19 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         return true;
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.ApplyConfiguration(new AskEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new CommentEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
+        builder.ApplyConfiguration(new AskEntityTypeConfiguration());
+        builder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
+        builder.ApplyConfiguration(new CommentEntityTypeConfiguration());
+        builder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
+        builder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    {
+        builder
+            .Properties<DateTime>()
+            .HaveConversion(typeof(UtcValueConverter));
     }
 }

@@ -17,7 +17,7 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder.Ignore(b => b.DomainEvents);
 
         builder.Property(o => o.Id)
-            .UseHiLo("orderseq", InklioContext.DefaultDbSchema);
+            .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
         builder
             .HasMany(e => e.Comments)
@@ -30,25 +30,25 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder
             .Property<int>("createdById")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("createdById")
+            .HasColumnName("created_by_id")
             .IsRequired();
 
         builder
             .Property<int?>("editedById")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("editedById")
+            .HasColumnName("edited_by_id")
             .IsRequired(false);
 
         builder
-            .Property<DateTimeOffset>("createdAtUtc")
+            .Property<DateTime>("createdAtUtc")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("createdAtUtc")
+            .HasColumnName("created_at_utc")
             .IsRequired();
 
         builder
-            .Property<DateTimeOffset?>("editedAtUtc")
+            .Property<DateTime?>("editedAtUtc")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("editedAtUtc")
+            .HasColumnName("edited_at_utc")
             .IsRequired(false);
     }
 }

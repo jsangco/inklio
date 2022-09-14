@@ -27,7 +27,7 @@ public class Comment
     /// <summary>
     /// Gets or sets the UTC time the comment was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the user that created the comment.
@@ -37,7 +37,7 @@ public class Comment
     /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
-    public DateTimeOffset EditedAtUtc { get; set; }
+    public DateTime EditedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the id of the user that edited the comment.
@@ -62,7 +62,7 @@ public class Comment
     /// <summary>
     /// Gets or sets the UTC time that the comment was locked.
     /// </summary>
-    public DateTimeOffset LockedAtUtc { get; set; }
+    public DateTime LockedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the comment was saved.

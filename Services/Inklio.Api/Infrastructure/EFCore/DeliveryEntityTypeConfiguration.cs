@@ -10,14 +10,14 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
 {
     public void Configure(EntityTypeBuilder<Delivery> builder)
     {
-        builder.ToTable("ask", InklioContext.DefaultDbSchema);
+        builder.ToTable("delivery", InklioContext.DefaultDbSchema);
 
         builder.HasKey(o => o.Id);
 
         builder.Ignore(b => b.DomainEvents);
 
         builder.Property(o => o.Id)
-            .UseHiLo("orderseq", InklioContext.DefaultDbSchema);
+            .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
         builder
             .HasOne(e => e.Ask)
@@ -40,13 +40,13 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
             .IsRequired(false);
 
         builder
-            .Property<DateTimeOffset>("createdAtUtc")
+            .Property<DateTime>("createdAtUtc")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("createdAtUtc")
             .IsRequired();
 
         builder
-            .Property<DateTimeOffset?>("editedAtUtc")
+            .Property<DateTime?>("editedAtUtc")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("editedAtUtc")
             .IsRequired(false);

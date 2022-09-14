@@ -42,7 +42,7 @@ public class Delivery
     /// <summary>
     /// Gets or sets the UTC time the delivery was created.
     /// </summary>
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the user that created the delivery.
@@ -52,7 +52,7 @@ public class Delivery
     /// <summary>
     /// Gets or sets the UTC time the delivery was last edited.
     /// </summary>
-    public DateTimeOffset EditedAtUtc { get; set; }
+    public DateTime EditedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the id of the user that edited the delivery.
@@ -97,7 +97,7 @@ public class Delivery
     /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.
     /// </summary>
-    public DateTimeOffset LockedAtUtc { get; set; }
+    public DateTime LockedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the delivery was saved.

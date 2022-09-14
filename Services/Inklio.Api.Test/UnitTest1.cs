@@ -21,18 +21,21 @@ public class UnitTest1
         {
             var context = scope.Resolve<InklioContext>();
 
-            var ask = new Ask() { Body = "myAsk"};
+            var ask = new Ask() { Body = "myAsk", CanComment = true, UpvoteCount = 123};
+            var ask2 = new Ask() { Body = "myAsk2", CanComment = true, UpvoteCount = 456};
             
-            var delivery = new Delivery() { Body = "myDelivery" };
-            ask.AddDelivery(delivery);
+            // var delivery = new Delivery() { Body = "myDelivery" };
+            // ask.AddDelivery(delivery);
             
-            var askComment = new AskComment() { Body = "myAskComment" };
-            ask.AddComment(askComment);
+            // var askComment = new AskComment() { Body = "myAskComment" };
+            // ask.AddComment(askComment);
 
-            var deliveryComment = new DeliveryComment() { Body = "myDeliveryComment" };
-            delivery.AddComment(deliveryComment);
+            // var deliveryComment = new DeliveryComment() { Body = "myDeliveryComment" };
+            // delivery.AddComment(deliveryComment);
 
             context.Asks.Add(ask);
+            context.Asks.Add(ask);
+            context.Asks.Add(ask2);
 
             context.SaveChanges();
         }
@@ -40,9 +43,9 @@ public class UnitTest1
         {
             var context = scope.Resolve<InklioContext>();
             var asks = context.Asks.ToArray();
-            var comments = context.Comments.ToArray();
-            var askComments = context.AskComments.ToArray();
-            var deliveries = context.Deliveries.ToArray();
+            // var comments = context.Comments.ToArray();
+            // var askComments = context.AskComments.ToArray();
+            // var deliveries = context.Deliveries.ToArray();
             Console.WriteLine(asks.Length);
         }
     }

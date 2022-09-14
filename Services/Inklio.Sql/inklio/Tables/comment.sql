@@ -1,26 +1,26 @@
-CREATE TABLE [inklio].[Comment]
+CREATE TABLE [inklio].[comment]
 (
-  [Id] INT NOT NULL IDENTITY(1,1) CONSTRAINT [PK_Comment] PRIMARY KEY CLUSTERED ([Id] ASC),
-  [AskId] INT DEFAULT NULL
-    CONSTRAINT [FK_Comment_AskId] FOREIGN KEY REFERENCES [Inklio].[Ask] (Id) ON UPDATE NO ACTION,
-  [Body] NVARCHAR NOT NULL,
-  [CanComment] BIT DEFAULT 1,
-  [CanEdit] BIT DEFAULT 1,
-  [CanFlag] BIT DEFAULT 1,
-  [CreatedAtUtc] DATETIME2 NOT NULL,
-  [CreatedById] NVARCHAR(32) NOT NULL,
-  [CommentTypeId] TINYINT,
-  [DeliveryId] INT DEFAULT NULL
-    CONSTRAINT [FK_Comment_DeliveryId] FOREIGN KEY REFERENCES [Inklio].[Delivery] (Id) ON UPDATE NO ACTION,
-  [EditedAtUtc] DATETIME2 NULL,
-  [EditedById] NVARCHAR(32) NULL,
-  [FlagCount] INT DEFAULT 0,
-  [IsDeleted] BIT DEFAULT 0,
-  [IsLocked] BIT DEFAULT 0,
-  [LockedAtUtc] DATETIME2 NULL,
-  [SaveCount] INT DEFAULT 0,
-  [ThreadId] INT
-    CONSTRAINT [FK_Comment_ThreadId] FOREIGN KEY REFERENCES [Inklio].[Ask] (Id) ON UPDATE CASCADE,
-  [UpvoteCount] INT DEFAULT 0,
-  [ViewCount] int DEFAULT 0,
+  [id] INT NOT NULL IDENTITY(1,1) CONSTRAINT [PK_comment] PRIMARY KEY CLUSTERED ([id] ASC),
+  [ask_id] INT DEFAULT NULL
+    CONSTRAINT [FK_comment_ask_id] FOREIGN KEY REFERENCES [inklio].[ask] (id) ON UPDATE NO ACTION,
+  [body] NVARCHAR NOT NULL,
+  [can_comment] BIT NOT NULL DEFAULT 1,
+  [can_edit] BIT NOT NULL DEFAULT 1,
+  [can_flag] BIT NOT NULL DEFAULT 1,
+  [created_at_utc] DATETIME2 NOT NULL,
+  [created_by_id] int NOT NULL,
+  [comment_type_id] TINYINT NOT NULL,
+  [delivery_id] INT DEFAULT NULL
+    CONSTRAINT [FK_comment_delivery_id] FOREIGN KEY REFERENCES [inklio].[delivery] (id) ON UPDATE NO ACTION,
+  [edited_at_utc] DATETIME2 NULL,
+  [edited_by_id] INT NULL,
+  [flag_count] INT NOT NULL DEFAULT 0,
+  [is_deleted] BIT NOT NULL DEFAULT 0,
+  [is_locked] BIT NOT NULL DEFAULT 0,
+  [locked_at_utc] DATETIME2 NULL,
+  [save_count] INT NOT NULL DEFAULT 0,
+  [thread_id] INT NOT NULL
+    CONSTRAINT [FK_comment_thread_id] FOREIGN KEY REFERENCES [inklio].[ask] (id) ON UPDATE CASCADE,
+  [upvote_count] INT NOT NULL DEFAULT 0,
+  [view_count] int NOT NULL DEFAULT 0,
 )
