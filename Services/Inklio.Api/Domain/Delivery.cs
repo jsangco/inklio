@@ -8,6 +8,11 @@ namespace Inklio.Api.Domain;
 public class Delivery : Entity, IAggregateRoot
 {
     /// <summary>
+    /// The parent <see cref="Ask"/> that owns the <see cref="Delivery"/> 
+    /// </summary>
+    public Ask Ask { get; set; } = new Ask();
+
+    /// <summary>
     /// Gets or sets the Body of the delivery.
     /// </summary>
     public string Body { get; set; } = string.Empty;
@@ -40,7 +45,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a collection of comments for the delivery.
     /// </summary>
-    public IEnumerable<DeliveryComment> Comments { get; set; } = Array.Empty<DeliveryComment>();
+    public List<DeliveryComment> Comments { get; set; } = new List<DeliveryComment>();
 
     /// <summary>
     /// Gets or sets the UTC time the delivery was created.
@@ -121,4 +126,11 @@ public class Delivery : Entity, IAggregateRoot
     /// Gets or sets the number of times the delivery has been viewed.
     /// </summary>
     public int ViewCount { get; set; }
+
+    public void AddComment(DeliveryComment comment)
+    {
+        comment.Delivery = this;
+        comment.Thread = this.Ask;
+        this.Comments.Add(comment);
+    }
 }

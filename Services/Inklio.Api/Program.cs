@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Inklio.Api.Startup;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Inklio.Api.Dependencies;
 using Inklio.Api.Infrastructure.Filters;
 
@@ -19,9 +18,7 @@ appBuilder.Host
     })
     .ConfigureContainer((HostBuilderContext hostContext, ContainerBuilder builder) =>
     {
-        builder.RegisterMediatR(typeof(Program).Assembly);
         builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration, hostContext.HostingEnvironment));
-        builder.RegisterModule(new MediatorDependencyModule());
     });
 
 appBuilder.Services.AddControllers( options =>

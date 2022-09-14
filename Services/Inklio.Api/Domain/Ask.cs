@@ -40,7 +40,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a collection of comments for the ask.
     /// </summary>
-    public IEnumerable<AskComment> Comments { get; set; } = Array.Empty<AskComment>();
+    public List<AskComment> Comments { get; set; } = new List<AskComment>();
 
     /// <summary>
     /// The UTC time the ask was created.
@@ -61,11 +61,11 @@ public class Ask : Entity, IAggregateRoot
     /// Gets the ID of the user that created the ask.
     /// </summary>
     public int CreatedById => this.createdById;
-    
+
     /// <summary>
     /// Gets or sets the deliveries for the ask.
     /// </summary>
-    public IEnumerable<Delivery> Deliveries { get; set; } = Array.Empty<Delivery>();
+    public List<Delivery> Deliveries { get; set; } = new List<Delivery>();
 
     /// <summary>
     /// The UTC time the ask was last edited.
@@ -146,6 +146,18 @@ public class Ask : Entity, IAggregateRoot
     /// Gets or sets the number of times the ask has been viewed.
     /// </summary>
     public int ViewCount { get; set; }
+
+    public void AddComment(AskComment comment)
+    {
+        comment.Thread = this;
+        this.Comments.Add(comment);
+    }
+
+    public void AddDelivery(Delivery delivery)
+    {
+        delivery.Ask = this;
+        this.Deliveries.Add(delivery);
+    }
 
     public void Delete() { }
 

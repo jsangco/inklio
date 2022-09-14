@@ -6,9 +6,9 @@ namespace Inklio.Api.Infrastructure.EFCore;
 /// <summary>
 /// Defines the EFCore enity configuration for an ask.
 /// </summary>
-class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
+class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
 {
-    public void Configure(EntityTypeBuilder<Ask> builder)
+    public void Configure(EntityTypeBuilder<Delivery> builder)
     {
         builder.ToTable("ask", InklioContext.DefaultDbSchema);
 
@@ -20,11 +20,11 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
             .UseHiLo("orderseq", InklioContext.DefaultDbSchema);
 
         builder
-            .HasMany(e => e.Comments)
-            .WithOne();
+            .HasOne(e => e.Ask)
+            .WithMany(e => e.Deliveries);
 
         builder
-            .HasMany(e => e.Deliveries)
+            .HasMany(e => e.Comments)
             .WithOne();
 
         builder

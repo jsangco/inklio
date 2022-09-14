@@ -5,7 +5,7 @@ namespace Inklio.Api.Domain;
 /// <summary>
 /// Reperesents a Comment
 /// </summary>
-public abstract class Comment : Entity, IAggregateRoot
+public class Comment : Entity, IAggregateRoot
 {
     /// <summary>
     /// Gets or sets the Body of the comment.
@@ -77,6 +77,16 @@ public abstract class Comment : Entity, IAggregateRoot
     /// </summary>
     public int SaveCount { get; set; }
 
+    /// <summary>
+    /// Gets or sets the ID of the parent Ask
+    /// </summary>
+    // private readonly int threadId;
+
+    /// <summary>
+    /// Gets or sets the parent Ask
+    /// </summary>
+    public Ask Thread { get; set; } = new Ask();
+    
     /// <summary>
     /// Gets or sets the number of times the comment was upvoted.
     /// </summary>

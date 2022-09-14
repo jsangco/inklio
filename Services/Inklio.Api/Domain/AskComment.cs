@@ -5,13 +5,5 @@ namespace Inklio.Api.Domain;
 /// </summary>
 public class AskComment : Comment
 {
-    /// <summary>
-    /// Gets or sets the ID of the parent Ask
-    /// </summary>
-    private readonly int askId;
-
-    /// <summary>
-    /// Gets or sets the parent Ask
-    /// </summary>
     public Ask Ask { get; set; } = new Ask();
 }

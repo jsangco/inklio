@@ -6,12 +6,12 @@ namespace Inklio.Api.Infrastructure.EFCore;
 /// <summary>
 /// Defines the EFCore enity configuration for an <see cref="AskComment"/>.
 /// </summary>
-class AskCommentEntityTypeConfiguration : IEntityTypeConfiguration<AskComment>
+class DeliveryCommentEntityTypeConfiguration : IEntityTypeConfiguration<DeliveryComment>
 {
-    public void Configure(EntityTypeBuilder<AskComment> builder)
+    public void Configure(EntityTypeBuilder<DeliveryComment> builder)
     {
         builder
-            .HasOne(e => e.Ask)
+            .HasOne(e => e.Delivery)
             .WithMany(e => e.Comments);
     }
 }

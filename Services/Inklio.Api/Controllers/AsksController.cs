@@ -43,4 +43,12 @@ public class AsksController : ControllerBase
         Inklio.Api.Application.Commands.Ask ask = await this.mediator.Send(askCreateCommand, cancellationToken);
         return ask;
     }
+
+    [HttpPost]
+    public async Task<Inklio.Api.Application.Commands.Ask> AddComment(AskCreateCommand askCreateCommand, CancellationToken cancellationToken)
+    {
+        this.logger.LogInformation("----- Sending command: {CommandName}", askCreateCommand.GetGenericTypeName());
+        Inklio.Api.Application.Commands.Ask ask = await this.mediator.Send(askCreateCommand, cancellationToken);
+        return ask;
+    }
 }

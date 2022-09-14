@@ -14,6 +14,8 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     public DbSet<Ask> Asks  => Set<Ask>();
     public DbSet<AskComment> AskComments  => Set<AskComment>();
     public DbSet<Comment> Comments  => Set<Comment>();
+    public DbSet<Delivery> Deliveries => Set<Delivery>();
+    public DbSet<DeliveryComment> DeliveryComments  => Set<DeliveryComment>();
 
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {
@@ -39,6 +41,10 @@ public sealed class InklioContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new AskEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new CommentEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
     }
 }

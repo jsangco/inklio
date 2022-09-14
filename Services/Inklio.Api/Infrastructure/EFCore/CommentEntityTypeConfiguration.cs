@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Inklio.Api.Infrastructure.EFCore;
 
 /// <summary>
-/// Defines the EFCore enity configuration for an ask.
+/// Defines the EFCore enity configuration for an <see cref="Comment"/>.
 /// </summary>
-class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
+class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
 {
-    public void Configure(EntityTypeBuilder<Ask> builder)
+    public void Configure(EntityTypeBuilder<Comment> builder)
     {
-        builder.ToTable("ask", InklioContext.DefaultDbSchema);
+        builder.ToTable("Comment", InklioContext.DefaultDbSchema);
 
         builder.HasKey(o => o.Id);
 
@@ -19,13 +19,13 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder.Property(o => o.Id)
             .UseHiLo("orderseq", InklioContext.DefaultDbSchema);
 
-        builder
-            .HasMany(e => e.Comments)
-            .WithOne();
+        builder.HasOne(e => e.Thread);
 
         builder
-            .HasMany(e => e.Deliveries)
-            .WithOne();
+            .HasDiscriminator<byte>("CommentTypeId")
+            .HasValue<Comment>((byte)CommentType.Comment)
+            .HasValue<AskComment>((byte)CommentType.AskComment)
+            .HasValue<DeliveryComment>((byte)CommentType.DeliveryComment);
 
         builder
             .Property<int>("createdById")

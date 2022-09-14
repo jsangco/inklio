@@ -1,5 +1,6 @@
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Repositories;
+using MediatR.Extensions.Autofac.DependencyInjection;
 
 namespace Inklio.Api.Dependencies;
 
@@ -43,5 +44,7 @@ public class InklioDependencyModule : Autofac.Module
         }
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
         builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
+        builder.RegisterMediatR(typeof(Program).Assembly);
+        builder.RegisterModule(new MediatorDependencyModule());
     }
 }
