@@ -33,9 +33,7 @@ public class AsksController : ControllerBase
     [EnableQuery(PageSize=2)]
     public IQueryable<Inklio.Api.Application.Commands.Ask> Get()
     {
-        var rez = mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
-        var aoeu = rez.ToArray();
-        return rez;
+        return mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
     }
 
     [HttpPost]

@@ -12,6 +12,8 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     private readonly IMediator mediator;
 
     public DbSet<Ask> Asks  => Set<Ask>();
+    public DbSet<AskComment> AskComments  => Set<AskComment>();
+    public DbSet<Comment> Comments  => Set<Comment>();
 
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {
