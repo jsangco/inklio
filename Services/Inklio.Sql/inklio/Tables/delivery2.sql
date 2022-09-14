@@ -1,20 +1,20 @@
-CREATE TABLE [dbo].[Ask]
+CREATE TABLE [inklio].[Delivery]
 (
-  [Id] INT NOT NULL PRIMARY KEY,
+  [Id] INT NOT NULL IDENTITY(1,1) CONSTRAINT [PK_Delivery] PRIMARY KEY CLUSTERED ([Id] ASC),
+  [AskId] INT NOT NULL
+    CONSTRAINT [FK_Delivery_AskId] FOREIGN KEY REFERENCES [Inklio].[Ask] ([Id]) ON UPDATE CASCADE,
   [Body] NVARCHAR NOT NULL,
   [CanComment] BIT DEFAULT 1,
-  [CanDeliver] BIT DEFAULT 1,
+  [CanDeliver] BIT DEFAULT 2,
   [CanEdit] BIT DEFAULT 1,
   [CanFlag] BIT DEFAULT 1,
   [CanTag] BIT DEFAULT 1,
   [CreatedAtUtc] DATETIME2 NOT NULL,
-  [CreatedById] NVARCHAR(32) NOT NULL,
+  [CreatedBy] NVARCHAR(32) NOT NULL,
   [EditedAtUtc] DATETIME2 NULL,
-  [EditedById] NVARCHAR(32) NULL,
+  [EditedBy] NVARCHAR(32) NULL,
   [FlagCount] INT DEFAULT 0,
   [IsDeleted] BIT DEFAULT 0,
-  [IsDelivered] BIT DEFAULT 0,
-  [IsDeliveryAccepted] BIT DEFAULT 0,
   [IsLocked] BIT DEFAULT 0,
   [IsNsfw] BIT DEFAULT 0,
   [IsNsfl] BIT DEFAULT 0,
