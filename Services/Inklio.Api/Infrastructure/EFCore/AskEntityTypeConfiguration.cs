@@ -26,29 +26,5 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder
             .HasMany(e => e.Deliveries)
             .WithOne();
-
-        builder
-            .Property<int>("createdById")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("created_by_id")
-            .IsRequired();
-
-        builder
-            .Property<int?>("editedById")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("edited_by_id")
-            .IsRequired(false);
-
-        builder
-            .Property<DateTime>("createdAtUtc")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("created_at_utc")
-            .IsRequired();
-
-        builder
-            .Property<DateTime?>("editedAtUtc")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("edited_at_utc")
-            .IsRequired(false);
     }
 }

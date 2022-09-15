@@ -1,9 +1,9 @@
 CREATE TABLE [inklio].[comment]
 (
-  [id] INT NOT NULL IDENTITY(1,1) CONSTRAINT [PK_comment] PRIMARY KEY CLUSTERED ([id] ASC),
+  [id] INT NOT NULL CONSTRAINT [PK_comment] PRIMARY KEY CLUSTERED ([id] ASC),
   [ask_id] INT DEFAULT NULL
     CONSTRAINT [FK_comment_ask_id] FOREIGN KEY REFERENCES [inklio].[ask] (id) ON UPDATE NO ACTION,
-  [body] NVARCHAR NOT NULL,
+  [body] NVARCHAR(max) NOT NULL,
   [can_comment] BIT NOT NULL DEFAULT 1,
   [can_edit] BIT NOT NULL DEFAULT 1,
   [can_flag] BIT NOT NULL DEFAULT 1,

@@ -23,34 +23,24 @@ public class Comment : Entity, IAggregateRoot
     public bool CanFlag { get; set; }
 
     /// <summary>
-    /// The UTC time the ask was created.
-    /// </summary>
-    public DateTime createdAtUtc;
-
-    /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTime CreatedAtUtc => this.createdAtUtc;
+    public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// The ID of the user that created the ask.
-    /// </summary>/
-    private int createdById;
-
-    /// <summary>
-    /// Gets the ID of the user that created the ask.
+    /// Gets the ID of the user that created the comment.
     /// </summary>
-    public int CreatedById => this.createdById;
+    public int CreatedById { get; set; }
 
     /// <summary>
-    /// The UTC time the ask was last edited.
+    /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
-    public DateTime? editedAtUtc;
+    public DateTime? EditedAtUtc { get; private set;}
 
     /// <summary>
-    /// Gets or sets the UTC time the ask was last edited.
+    /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
-    public DateTime? EditedAtUtc => editedAtUtc;
+    public int? EditedById { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.

@@ -26,29 +26,5 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
             .HasValue<Comment>((byte)CommentType.Comment)
             .HasValue<AskComment>((byte)CommentType.AskComment)
             .HasValue<DeliveryComment>((byte)CommentType.DeliveryComment);
-
-        builder
-            .Property<int>("createdById")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("createdById")
-            .IsRequired();
-
-        builder
-            .Property<int?>("editedById")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("editedById")
-            .IsRequired(false);
-
-        builder
-            .Property<DateTime>("createdAtUtc")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("createdAtUtc")
-            .IsRequired();
-
-        builder
-            .Property<DateTime?>("editedAtUtc")
-            .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("editedAtUtc")
-            .IsRequired(false);
     }
 }

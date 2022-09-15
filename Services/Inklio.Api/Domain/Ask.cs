@@ -40,52 +40,42 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a collection of comments for the ask.
     /// </summary>
-    public List<AskComment> Comments { get; set; } = new List<AskComment>();
-
-    /// <summary>
-    /// The UTC time the ask was created.
-    /// </summary>
-    public DateTime createdAtUtc;
+    public List<AskComment> Comments { get; private set; } = new List<AskComment>();
 
     /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTime CreatedAtUtc => this.createdAtUtc;
-
-    /// <summary>
-    /// The ID of the user that created the ask.
-    /// </summary>/
-    private int createdById;
+    public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>
     /// Gets the ID of the user that created the ask.
     /// </summary>
-    public int CreatedById => this.createdById;
+    public int CreatedById { get; private set; }
 
     /// <summary>
     /// Gets or sets the deliveries for the ask.
     /// </summary>
-    public List<Delivery> Deliveries { get; set; } = new List<Delivery>();
+    public List<Delivery> Deliveries { get; private set; } = new List<Delivery>();
 
     /// <summary>
-    /// The UTC time the ask was last edited.
+    /// Gets or sets the number of deliveries for the Ask. 
     /// </summary>
-    public DateTime? editedAtUtc;
+    public int DeliveryCount { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of accepted deliveries for the Ask.
+    /// </summary>
+    public int DeliveryAcceptedCount { get; set; }
 
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
     /// </summary>
-    public DateTime? EditedAtUtc => editedAtUtc;
-
-    /// <summary>
-    /// The id of the user that edited the ask.
-    /// </summary>    
-    private int? editedById;
+    public DateTime? EditedAtUtc { get; private set; }
 
     /// <summary>
     /// Gets the id of the user that edited the ask.
     /// </summary>
-    public int? EditedById => this.editedById;
+    public int? EditedById { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
@@ -100,12 +90,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask has at least one delivery.
     /// </summary>
-    public bool IsDelivered { get; set; }
+    public bool IsDelivered => DeliveryCount > 0;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask has an accepted delivery.
     /// </summary>
-    public bool IsDeliveryAccepted { get; set; }
+    public bool IsDeliveryAccepted => DeliveryAcceptedCount > 0;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask has been locked.
@@ -120,7 +110,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask NSFL.
     /// </summary>
-    public bool IsNsfl { get; set; }
+    public bool IsNsfl { get; private set; } = false;
 
     /// <summary>
     /// Gets or sets the UTC time that the ask was locked.
@@ -149,12 +139,14 @@ public class Ask : Entity, IAggregateRoot
 
     public Ask()
     {
-        this.createdAtUtc = DateTime.UtcNow;
+        this.CreatedAtUtc = DateTime.UtcNow;
     }
 
     public void AddComment(AskComment comment)
     {
+        this.EditedAtUtc = DateTime.UtcNow + TimeSpan.FromDays(1);
         comment.Thread = this;
+        IsNsfl = true;
         this.Comments.Add(comment);
     }
 

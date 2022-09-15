@@ -48,24 +48,19 @@ public class Delivery : Entity, IAggregateRoot
     public List<DeliveryComment> Comments { get; set; } = new List<DeliveryComment>();
 
     /// <summary>
-    /// Gets or sets the UTC time the delivery was created.
-    /// </summary>
-    public DateTime CreatedAtUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the ID of the user that created the delivery.
+    /// Gets the ID of the user that created the delivery.
     /// </summary>
     public int CreatedById { get; set; }
 
     /// <summary>
     /// Gets or sets the UTC time the delivery was last edited.
     /// </summary>
-    public DateTime EditedAtUtc { get; set; }
+    public DateTime? EditedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the id of the user that edited the delivery.
-    /// </summary>    
-    public int EditedById { get; set; }
+    /// Gets or sets the UTC time the delivery was last edited.
+    /// </summary>
+    public int? EditedById { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
@@ -76,11 +71,6 @@ public class Delivery : Entity, IAggregateRoot
     /// Gets or sets a flag indicating whether or not the delivery is deleted.
     /// </summary>
     public bool IsDeleted { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery has at least one delivery.
-    /// </summary>
-    public bool IsDelivered { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery has an accepted delivery.
@@ -95,7 +85,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is NSFW.
     /// </summary>
-    public bool IsNswf { get; set; }
+    public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery NSFL.
@@ -105,7 +95,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.
     /// </summary>
-    public DateTime LockedAtUtc { get; set; }
+    public DateTime? LockedAtUtc { get; set; } = null;
 
     /// <summary>
     /// Gets or sets the number of times the delivery was saved.

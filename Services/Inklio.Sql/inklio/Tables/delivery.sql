@@ -1,8 +1,8 @@
 CREATE TABLE [inklio].[delivery]
 (
-  [id] INT NOT NULL IDENTITY(1,1) CONSTRAINT [PK_delivery] PRIMARY KEY CLUSTERED ([id] ASC),
+  [id] INT NOT NULL CONSTRAINT [PK_delivery] PRIMARY KEY CLUSTERED ([id] ASC),
   [ask_id] INT NOT NULL
-    CONSTRAINT [FK_Delivery_AskId] FOREIGN KEY REFERENCES [inklio].[ask] ([id]) ON UPDATE CASCADE,
+    CONSTRAINT [FK_delivery_askid] FOREIGN KEY REFERENCES [inklio].[ask] ([id]) ON UPDATE CASCADE,
   [body] NVARCHAR(max) NOT NULL,
   [can_comment] BIT NOT NULL DEFAULT 1,
   [can_deliver] BIT NOT NULL DEFAULT 2,
@@ -15,6 +15,7 @@ CREATE TABLE [inklio].[delivery]
   [edited_by_id] INT NULL,
   [flag_count] INT NOT NULL DEFAULT 0,
   [is_deleted] BIT NOT NULL DEFAULT 0,
+  [is_delivery_accepted] BIT DEFAULT 0,
   [is_locked] BIT NOT NULL DEFAULT 0,
   [is_nsfw] BIT NOT NULL DEFAULT 0,
   [is_nsfl] BIT NOT NULL DEFAULT 0,
