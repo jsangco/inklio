@@ -26,5 +26,8 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         builder
             .HasMany(e => e.Comments)
             .WithOne();
+    
+        var navigation = builder.Metadata.FindNavigation(nameof(Delivery.Comments));
+        navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

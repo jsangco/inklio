@@ -19,6 +19,9 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder.Property(o => o.Id)
             .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
+        // builder.Property(e => e.Comments)
+        //     .HasField("comments");
+
         builder
             .HasMany(e => e.Comments)
             .WithOne();
@@ -26,5 +29,8 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder
             .HasMany(e => e.Deliveries)
             .WithOne();
+
+        // var navigation = builder.Metadata.FindNavigation(nameof(Ask.Comments));
+        // navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

@@ -10,27 +10,27 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the Body of the comment.
     /// </summary>
-    public string Body { get; set; } = string.Empty;
+    public string Body { get; private set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can edit the comment.
     /// </summary>
-    public bool CanEdit { get; set; }
+    public bool CanEdit { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can flag the comment.
     /// </summary>
-    public bool CanFlag { get; set; }
+    public bool CanFlag { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
-    public DateTime CreatedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>
     /// Gets the ID of the user that created the comment.
     /// </summary>
-    public int CreatedById { get; set; }
+    public int CreatedById { get; private set; }
 
     /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
@@ -50,17 +50,17 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not the comment is deleted.
     /// </summary>
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; private set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the comment has been locked.
     /// </summary>
-    public bool IsLocked { get; set; }
+    public bool IsLocked { get; private set; }
 
     /// <summary>
     /// Gets or sets the UTC time that the comment was locked.
     /// </summary>
-    public DateTime LockedAtUtc { get; set; }
+    public DateTime LockedAtUtc { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times the comment was saved.
@@ -68,17 +68,40 @@ public class Comment : Entity, IAggregateRoot
     public int SaveCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the ID of the parent Ask
+    /// Gets the ID of the parent Ask
     /// </summary>
-    // private readonly int threadId;
+    public int ThreadId { get; private set; }
 
     /// <summary>
-    /// Gets or sets the parent Ask
+    /// Gets the parent Ask
     /// </summary>
-    public Ask Thread { get; set; } = new Ask();
+    public Ask Thread { get; private set; }
     
     /// <summary>
     /// Gets or sets the number of times the comment was upvoted.
     /// </summary>
     public int UpvoteCount { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of a <see cref="Comment"/> object.
+    /// </summary>
+#pragma warning disable CS8618
+    public Comment()
+#pragma warning restore CS8618
+    {
+    }
+
+    /// <summary>
+    /// Initilaizes an instance of a <see cref="Comment"/>
+    /// </summary>
+    /// <param name="ask">The parent <see cref="Ask"/> object</param>
+    /// <param name="body">The body of the comment</param>
+    /// <param name="createdById">The id of the comment creator</param>
+    public Comment(Ask ask, string body, int createdById)
+    {
+        this.Body = body;
+        this.CreatedAtUtc = DateTime.UtcNow;
+        this.Thread = ask;
+        this.ThreadId = ask.Id;
+    }
 }

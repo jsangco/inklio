@@ -20,6 +20,7 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
             .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
         builder.HasOne(e => e.Thread);
+        builder.Property<int>(e => e.ThreadId).IsRequired();
 
         builder
             .HasDiscriminator<byte>("CommentTypeId")

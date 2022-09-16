@@ -6,7 +6,33 @@ namespace Inklio.Api.Domain;
 public class DeliveryComment : Comment
 {
     /// <summary>
-    /// Gets or sets the parent Delivery
+    /// Gets the parent <see cref="Delivery"/> object.
     /// </summary>
-    public Delivery Delivery { get; set; } = new Delivery();
+    public int DeliveryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the parent Delivery.
+    /// </summary>
+    public Delivery Delivery { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of a <see cref="DeliveryComment"/> object.
+    /// </summary>
+#pragma warning disable CS8618
+    private DeliveryComment() : base()
+#pragma warning restore CS8618
+    {
+    }
+
+    /// <summary>
+    /// Initilaizes an instance of a <see cref="DeliveryComment"/>
+    /// </summary>
+    /// <param name="body">The body of the comment.</param>
+    /// <param name="createdById">The id of the comment creator.</param>
+    /// <param name="delivery">The parent <see cref="Delivery"/> object.</param>
+    public DeliveryComment(string body, int createdById, Delivery delivery) : base(delivery.Ask, body, createdById)
+    {
+        this.Delivery = delivery;
+        this.DeliveryId = delivery.Id;
+    }
 }

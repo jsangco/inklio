@@ -22,16 +22,10 @@ public class UnitTest1
         {
             var context = scope.Resolve<InklioContext>();
 
-            var ask = new Ask() { Body = "myAsk2", CanComment = true, UpvoteCount = 123};
-            
-            var delivery = new Delivery() { Body = "myDelivery2" };
-            ask.AddDelivery(delivery);
-            
-            var askComment = new AskComment() { Body = "myAskComment2" };
-            ask.AddComment(askComment);
-
-            var deliveryComment = new DeliveryComment() { Body = "myDeliveryComment2" };
-            delivery.AddComment(deliveryComment);
+            var ask = new Ask("myAskBody", 0, true, true, "myAskTitle");
+            ask.AddComment("myAskCommentBody", 0);
+            var delivery = ask.AddDelivery("myDeliveryBody", 0, true, true, "myDeliveryTitle");
+            delivery.AddComment("myDeliveryCommentBody", 0);
 
             context.Asks.Add(ask);
 

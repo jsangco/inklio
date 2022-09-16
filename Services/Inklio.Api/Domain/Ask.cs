@@ -8,42 +8,47 @@ namespace Inklio.Api.Domain;
 public class Ask : Entity, IAggregateRoot
 {
     /// <summary>
-    /// Gets or sets the Body of the Ask.
+    /// Gets the Body of the Ask.
     /// </summary>
-    public string Body { get; set; } = string.Empty;
+    public string Body { get; private set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not a user can comment on the Ask.
+    /// Gets a flag indicating whether or not a user can comment on the Ask.
     /// </summary>
-    public bool CanComment { get; set; }
+    public bool CanComment { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not deliveries can be added.
+    /// Gets a flag indicating whether or not deliveries can be added.
     /// </summary>
-    public bool CanDeliver { get; set; }
+    public bool CanDeliver { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not a user can edit the ask.
+    /// Gets a flag indicating whether or not a user can edit the ask.
     /// </summary>
-    public bool CanEdit { get; set; }
+    public bool CanEdit { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not a user can flag the ask.
+    /// Gets a flag indicating whether or not a user can flag the ask.
     /// </summary>
-    public bool CanFlag { get; set; }
+    public bool CanFlag { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not can tag the ask.
+    /// Gets a flag indicating whether or not can tag the ask.
     /// </summary>
-    public bool CanTag { get; set; }
+    public bool CanTag { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets a collection of comments for the ask.
+    /// The collection of comments for the <see cref="Ask"/>
     /// </summary>
-    public List<AskComment> Comments { get; private set; } = new List<AskComment>();
+    public List<AskComment> comments = new List<AskComment>();
 
     /// <summary>
-    /// Gets or sets the UTC time the ask was created.
+    /// Gets the collection of comments for the <see cref="Ask"/>
+    /// </summary>
+    public IReadOnlyCollection<AskComment> Comments => this.comments;
+
+    /// <summary>
+    /// Gets the UTC time the ask was created.
     /// </summary>
     public DateTime CreatedAtUtc { get; private set; }
 
@@ -53,9 +58,14 @@ public class Ask : Entity, IAggregateRoot
     public int CreatedById { get; private set; }
 
     /// <summary>
-    /// Gets or sets the deliveries for the ask.
+    /// The deliveries for the ask.
     /// </summary>
-    public List<Delivery> Deliveries { get; private set; } = new List<Delivery>();
+    private List<Delivery> deliveries = new List<Delivery>();
+
+    /// <summary>
+    /// Gets a collection of the <see cref="Ask"/> object's deliveries.
+    /// </summary>
+    public IReadOnlyCollection<Delivery> Deliveries => this.deliveries;
 
     /// <summary>
     /// Gets or sets the number of deliveries for the Ask. 
@@ -68,7 +78,7 @@ public class Ask : Entity, IAggregateRoot
     public int DeliveryAcceptedCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC time the ask was last edited.
+    /// Gets the UTC time the ask was last edited.
     /// </summary>
     public DateTime? EditedAtUtc { get; private set; }
 
@@ -83,39 +93,39 @@ public class Ask : Entity, IAggregateRoot
     public int FlagCount { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is deleted.
+    /// Gets a flag indicating whether or not the ask is deleted.
     /// </summary>
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; private set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask has at least one delivery.
+    /// Gets a flag indicating whether or not the ask has at least one delivery.
     /// </summary>
     public bool IsDelivered => DeliveryCount > 0;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask has an accepted delivery.
+    /// Gets a flag indicating whether or not the ask has an accepted delivery.
     /// </summary>
     public bool IsDeliveryAccepted => DeliveryAcceptedCount > 0;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask has been locked.
+    /// Gets a flag indicating whether or not the ask has been locked.
     /// </summary>
-    public bool IsLocked { get; set; }
+    public bool IsLocked { get; private set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is NSFW.
+    /// Gets a flag indicating whether or not the ask is NSFW.
     /// </summary>
-    public bool IsNsfw { get; set; }
+    public bool IsNsfw { get; private set; } = false;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
+    /// Gets a flag indicating whether or not the ask NSFL.
     /// </summary>
     public bool IsNsfl { get; private set; } = false;
 
     /// <summary>
-    /// Gets or sets the UTC time that the ask was locked.
+    /// Gets the UTC time that the ask was locked.
     /// </summary>
-    public DateTime? LockedAtUtc { get; set; }
+    public DateTime? LockedAtUtc { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times the ask was saved.
@@ -123,9 +133,9 @@ public class Ask : Entity, IAggregateRoot
     public int SaveCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the Title of the Ask.
+    /// Gets the Title of the Ask.
     /// </summary>
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of times the ask was upvoted.
@@ -137,23 +147,60 @@ public class Ask : Entity, IAggregateRoot
     /// </summary>
     public int ViewCount { get; set; }
 
-    public Ask()
+    /// <summary>
+    /// Initializes a new instance of a <see cref="Ask"/> object.
+    /// </summary>
+    private Ask()
     {
+        this.Body = string.Empty;
+        this.Title = string.Empty;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of a <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="body">The body of the <see cref="Ask"/> object.</param>
+    /// <param name="createdById">The ID of the creator of the <see cref="Ask"/> object.</param>
+    /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
+    /// <param name="title">The title of the <see cref="Ask"/> object.</param>
+    public Ask(string body, int createdById, bool isNsfl, bool isNsfw, string title)
+    {
+        this.Body = body;
+        this.CreatedById = createdById;
         this.CreatedAtUtc = DateTime.UtcNow;
+        this.IsNsfl = isNsfl;
+        this.IsNsfw = isNsfw;
+        this.Title = title;
     }
 
-    public void AddComment(AskComment comment)
+    /// <summary>
+    /// Adds a comment to the <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="createdById"></param>
+    /// <returns>The newly created comment</returns>
+    public AskComment AddComment(string body, int createdById)
     {
-        this.EditedAtUtc = DateTime.UtcNow + TimeSpan.FromDays(1);
-        comment.Thread = this;
-        IsNsfl = true;
-        this.Comments.Add(comment);
+        var comment = new AskComment(this, body, createdById);
+        this.comments.Add(comment);
+        return comment;
     }
 
-    public void AddDelivery(Delivery delivery)
+    /// <summary>
+    /// Adds a delivery to the <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="body">The body of the <see cref="Delivery"/>.</param>
+    /// <param name="createdById">The ID of the user creating the <see cref="Delivery"/>.</param>
+    /// <param name="isNsfl">A flag indicating whether the <see cref="Delivery"/> is NSFL.</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Delivery"/> is NSFW.</param>
+    /// <param name="title">The title of the Delivery.</param>
+    /// <returns>The newly created <see cref="Delivery"/> object.</returns>
+    public Delivery AddDelivery(string body, int createdById, bool isNsfl, bool isNsfw, string title)
     {
-        delivery.Ask = this;
-        this.Deliveries.Add(delivery);
+        var delivery = new Delivery(this, body, createdById, isNsfl, isNsfw, title);
+        this.deliveries.Add(delivery);
+        return delivery;
     }
 
     public void Delete() { }
