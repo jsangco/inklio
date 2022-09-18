@@ -149,6 +149,16 @@ public class Delivery : Entity, IAggregateRoot
     public int UpvoteCount { get; private set; }
 
     /// <summary>
+    /// The list of users that have upvoted this delivery.
+    /// </summary>
+    private List<User> upvoters = new List<User>();
+
+    /// <summary>
+    /// Gets a list of users that have upvoted the delivery.
+    /// </summary>
+    public IReadOnlyCollection<User> Upvoters => this.upvoters;
+
+    /// <summary>
     /// Gets or sets the number of times the delivery has been viewed.
     /// </summary>
     public int ViewCount { get; private set; }
@@ -239,14 +249,41 @@ public class Delivery : Entity, IAggregateRoot
         }
 
         // Check for existing tag
-        var existingTag = this.tags.Find(t => t.Type == type && t.Value == value);
-        if (existingTag != null)
+        var existingTagIndex = this.tags.FindIndex(t => t.Type == type && t.Value == value);
+        if (existingTagIndex >= 0)
         {
-            return existingTag;
+            return this.tags[existingTagIndex];
         }
 
         var newTag = new DeliveryTag(createdById, type, value);
         this.tags.Add(newTag);
         return newTag;
+    }
+    
+    /// <summary>
+    /// Increases the upvote count adds the user to the list of upvoters.
+    /// </summary>
+    /// <param name="user">The upvoting user.</param>
+    public void Upvote(User user)
+    {
+        if (this.upvoters.FindIndex(u => u.Id == user.Id) < 0)
+        {
+            this.upvoters.Add(user);
+            this.UpvoteCount += 1;
+        }
+    }
+    
+    /// <summary>
+    /// Removes an upvote and removes the user from the list of upvoters.
+    /// </summary>
+    /// <param name="userId"></param>
+    public void UpvoteUndo(User user)
+    {
+        int upvoterIndex = this.upvoters.FindIndex(u => u.Id == user.Id);
+        if ( upvoterIndex >= 0)
+        {
+            this.upvoters.RemoveAt(upvoterIndex);
+            this.UpvoteCount -= 1;
+        }
     }
 }

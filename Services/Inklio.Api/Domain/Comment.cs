@@ -83,6 +83,16 @@ public class Comment : Entity, IAggregateRoot
     public int UpvoteCount { get; set; }
 
     /// <summary>
+    /// The list of users that have upvoted this comment.
+    /// </summary>
+    private List<User> upvoters = new List<User>();
+
+    /// <summary>
+    /// Gets a list of users that have upvoted the comment.
+    /// </summary>
+    public IReadOnlyCollection<User> Upvoters => this.upvoters;
+
+    /// <summary>
     /// Initializes a new instance of a <see cref="Comment"/> object.
     /// </summary>
     private Comment()
@@ -103,5 +113,32 @@ public class Comment : Entity, IAggregateRoot
         this.CreatedAtUtc = DateTime.UtcNow;
         this.Thread = ask;
         this.ThreadId = ask.Id;
+    }
+
+    /// <summary>
+    /// Increases the upvote count adds the user to the list of upvoters.
+    /// </summary>
+    /// <param name="user">The upvoting user.</param>
+    public void Upvote(User user)
+    {
+        if (this.upvoters.FindIndex(u => u.Id == user.Id) < 0)
+        {
+            this.upvoters.Add(user);
+            this.UpvoteCount += 1;
+        }
+    }
+    
+    /// <summary>
+    /// Removes an upvote and removes the user from the list of upvoters.
+    /// </summary>
+    /// <param name="userId"></param>
+    public void UpvoteUndo(User user)
+    {
+        int upvoterIndex = this.upvoters.FindIndex(u => u.Id == user.Id);
+        if ( upvoterIndex >= 0)
+        {
+            this.upvoters.RemoveAt(upvoterIndex);
+            this.UpvoteCount -= 1;
+        }
     }
 }

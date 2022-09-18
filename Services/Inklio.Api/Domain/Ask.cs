@@ -148,9 +148,19 @@ public class Ask : Entity, IAggregateRoot
     public string Title { get; private set; }
 
     /// <summary>
-    /// Gets or sets the number of times the ask was upvoted.
+    /// Gets the number of times the ask was upvoted.
     /// </summary>
-    public int UpvoteCount { get; set; }
+    public int UpvoteCount { get; private set; }
+
+    /// <summary>
+    /// The list of users that have upvoted this Ask
+    /// </summary>
+    private List<User> upvoters = new List<User>();
+
+    /// <summary>
+    /// Gets a list of users that have upvoted the ask
+    /// </summary>
+    public IReadOnlyCollection<User> Upvoters => this.upvoters;
 
     /// <summary>
     /// Gets or sets the number of times the ask has been viewed.
@@ -289,15 +299,30 @@ public class Ask : Entity, IAggregateRoot
         this.EditedById = userId;
     }
 
-    public void Flag(int userId) { }
-
-    public void FlagUndo(int userId) { }
-
-    public void Save(int userId) { }
-
-    public void SaveUndo(int userId) { }
-
-    public void Upvote(int userId) { }
+    /// <summary>
+    /// Increases the upvote count adds the user to the list of upvoters.
+    /// </summary>
+    /// <param name="user">The upvoting user.</param>
+    public void Upvote(User user)
+    {
+        if (this.upvoters.FindIndex(u => u.Id == user.Id) < 0)
+        {
+            this.upvoters.Add(user);
+            this.UpvoteCount += 1;
+        }
+    }
     
-    public void UpvoteUndo(int userId) { }
+    /// <summary>
+    /// Removes an upvote and removes the user from the list of upvoters.
+    /// </summary>
+    /// <param name="userId"></param>
+    public void UpvoteUndo(User user)
+    {
+        int upvoterIndex = this.upvoters.FindIndex(u => u.Id == user.Id);
+        if ( upvoterIndex >= 0)
+        {
+            this.upvoters.RemoveAt(upvoterIndex);
+            this.UpvoteCount -= 1;
+        }
+    }
 }
