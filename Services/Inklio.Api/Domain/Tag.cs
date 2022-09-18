@@ -1,9 +1,11 @@
+using Inklio.Api.SeedWork;
+
 namespace Inklio.Api.Domain;
 
 /// <summary>
 /// Creates a tag for an object
 /// </summary>
-public class Tag
+public class Tag : Entity
 {
     /// <summary>
     /// Gets the value of the tag.

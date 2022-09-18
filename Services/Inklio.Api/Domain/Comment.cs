@@ -85,10 +85,10 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Initializes a new instance of a <see cref="Comment"/> object.
     /// </summary>
-#pragma warning disable CS8618
-    public Comment()
-#pragma warning restore CS8618
+    private Comment()
     {
+        this.Body = string.Empty;
+        this.Thread = new Ask("unset body", 0, false, false, "unset title");
     }
 
     /// <summary>
