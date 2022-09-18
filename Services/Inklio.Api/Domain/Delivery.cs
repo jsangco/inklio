@@ -7,6 +7,17 @@ namespace Inklio.Api.Domain;
 /// </summary>
 public class Delivery : Entity, IAggregateRoot
 {
+
+    /// <summary>
+    /// Gets the UTC time the delivery was accepted at. 
+    /// </summary>
+    public DateTime? AcceptedAtUtc { get; private set; }
+
+    /// <summary>
+    /// Gets the UTC time the delivery accepted was undone at. 
+    /// </summary>
+    public DateTime? AcceptedUndoAtUtc { get; private set; }
+
     /// <summary>
     /// Gets the ID for the parent <see cref="Ask"/>
     /// </summary>
@@ -118,6 +129,16 @@ public class Delivery : Entity, IAggregateRoot
     public int SaveCount { get; private set; }
 
     /// <summary>
+    /// The collection of tags assigned to the Delivery.
+    /// </summary>
+    private List<DeliveryTag> tags = new List<DeliveryTag>();
+
+    /// <summary>
+    /// Gets the collection of tags assigned to the Delivery.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryTag> Tags => this.tags;
+
+    /// <summary>
     /// Gets or sets the Title of the delivery.
     /// </summary>
     public string Title { get; private set; } = string.Empty;
@@ -163,6 +184,29 @@ public class Delivery : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Marks a delivery as accepted by the parent Ask.
+    /// </summary>
+    public void Accept()
+    {
+        this.AcceptedAtUtc = DateTime.UtcNow;
+        this.IsDeliveryAccepted = true;
+    }
+
+    /// <summary>
+    /// Undos an accepted delivery.
+    /// </summary>
+    public void AcceptUndo()
+    {
+        if (this.IsDeliveryAccepted == false)
+        {
+            throw new AskDomainException("Cannot unaccept the delivery because it has not been accepted yet.");
+        }
+
+        this.AcceptedUndoAtUtc = DateTime.UtcNow;
+        this.IsDeliveryAccepted = false;
+    }
+
+    /// <summary>
     /// Adds a comment to the delivery.
     /// </summary>
     /// <param name="body">The body of the <see cref="DeliveryComment"/>.</param>
@@ -173,5 +217,36 @@ public class Delivery : Entity, IAggregateRoot
         var comment = new DeliveryComment(body, createdById, this);
         this.comments.Add(comment);
         return comment;
+    }
+
+    /// <summary>
+    /// Add a tag to the <see cref="Delivery"/> object.
+    /// </summary>
+    /// <param name="value">The value of the tag to add.</param>
+    /// <param name="type">The type of the tag to add.</param>
+    /// <param name="createdById">The id of the user who added the tag</param>
+    /// <returns>The created tag</returns>
+    public Tag AddTag(int createdById, string type, string value)
+    {
+        if (string.IsNullOrWhiteSpace(type))
+        {
+            throw new ArgumentException($"'{nameof(type)}' cannot be null or whitespace.", nameof(type));
+        }
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentException($"'{nameof(value)}' cannot be null or whitespace.", nameof(value));
+        }
+
+        // Check for existing tag
+        var existingTag = this.tags.Find(t => t.Type == type && t.Value == value);
+        if (existingTag != null)
+        {
+            return existingTag;
+        }
+
+        var newTag = new DeliveryTag(createdById, type, value);
+        this.tags.Add(newTag);
+        return newTag;
     }
 }

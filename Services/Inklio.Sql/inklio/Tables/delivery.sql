@@ -1,6 +1,8 @@
 CREATE TABLE [inklio].[delivery]
 (
   [id] INT NOT NULL CONSTRAINT [PK_delivery] PRIMARY KEY CLUSTERED ([id] ASC),
+  [accept_at_utc] DATETIME2 NULL,
+  [accept_undo_at_utc] DATETIME2 NULL,
   [ask_id] INT NOT NULL
     CONSTRAINT [FK_delivery_askid] FOREIGN KEY REFERENCES [inklio].[ask] ([id]) ON UPDATE CASCADE,
   [body] NVARCHAR(max) NOT NULL,

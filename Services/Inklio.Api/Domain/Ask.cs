@@ -133,6 +133,16 @@ public class Ask : Entity, IAggregateRoot
     public int SaveCount { get; set; }
 
     /// <summary>
+    /// The collection of tags assigned to the ask.
+    /// </summary>
+    private List<AskTag> tags = new List<AskTag>();
+
+    /// <summary>
+    /// Gets the collection of tags assigned to the ask.
+    /// </summary>
+    public IReadOnlyCollection<AskTag> Tags => this.tags;
+
+    /// <summary>
     /// Gets the Title of the Ask.
     /// </summary>
     public string Title { get; private set; }
@@ -203,13 +213,81 @@ public class Ask : Entity, IAggregateRoot
         return delivery;
     }
 
-    public void Delete() { }
+    /// <summary>
+    /// Add a tag to the <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="value">The value of the tag to add.</param>
+    /// <param name="type">The type of the tag to add.</param>
+    /// <param name="createdById">The id of the user who added the tag</param>
+    /// <returns>The created tag</returns>
+    public Tag AddTag(int createdById, string type, string value)
+    {
+        if (string.IsNullOrWhiteSpace(type))
+        {
+            throw new ArgumentException($"'{nameof(type)}' cannot be null or whitespace.", nameof(type));
+        }
 
-    public void DeliveryAccept(int deliveryId) { }
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentException($"'{nameof(value)}' cannot be null or whitespace.", nameof(value));
+        }
 
-    public void DeliveryAcceptUndo(int deliveryId) { }
+        // Check for existing tag
+        var existingTag = this.tags.Find(t => t.Type == type && t.Value == value);
+        if (existingTag != null)
+        {
+            return existingTag;
+        }
 
-    public void Edit(int userId, string edit) { }
+        var newTag = new AskTag(createdById, type, value);
+        this.tags.Add(newTag);
+        return newTag;
+    }
+
+    /// <summary>
+    /// Marks an Ask as deleted. NOTE: It does not actually delete the Ask.
+    /// </summary>
+    /// <param name="userId">The Id of the user deleting Ask</param>
+    public void Delete(int userId)
+    {
+        this.IsDeleted = true;
+        this.EditedAtUtc = DateTime.UtcNow;
+        this.EditedById = userId;
+    }
+
+    /// <summary>
+    /// Mark a child delivery as accepted
+    /// </summary>
+    /// <param name="deliveryId">The delivery to accept</param>
+    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
+    public void DeliveryAccept(int deliveryId)
+    {
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not accept delivery. Delivery id {deliveryId} was not found.");
+        delivery.Accept();
+    }
+
+    /// <summary>
+    /// Removes the accept status of a child delivery.
+    /// </summary>
+    /// <param name="deliveryId">The delivery to unaccept</param>
+    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
+    public void DeliveryAcceptUndo(int deliveryId)
+    {
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
+        delivery.AcceptUndo();
+    }
+
+    /// <summary>
+    /// Edits the <see cref="Ask"/> message body.
+    /// </summary>
+    /// <param name="bodyEdit">The new message body.</param>
+    /// <param name="userId">The Id of the user editting the body</param>
+    public void BodyEdit(string bodyEdit, int userId)
+    {
+        this.Body = bodyEdit;
+        this.EditedAtUtc = DateTime.UtcNow;
+        this.EditedById = userId;
+    }
 
     public void Flag(int userId) { }
 

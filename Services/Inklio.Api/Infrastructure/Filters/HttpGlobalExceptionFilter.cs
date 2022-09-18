@@ -20,7 +20,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
             context.Exception,
             context.Exception.Message);
 
-        if (context.Exception.GetType() == typeof(AskException))
+        if (context.Exception.GetType() == typeof(AskDomainException))
         {
             var problemDetails = new ValidationProblemDetails()
             {

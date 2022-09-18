@@ -3,16 +3,16 @@ namespace Inklio.Api.Domain;
 /// <summary>
 /// The exception type thrown when errors occur within the application's Ask domain.
 /// </summary>
-public class AskException : Exception
+public class AskDomainException : Exception
 {
-    public AskException()
+    public AskDomainException()
     { }
 
-    public AskException(string message)
+    public AskDomainException(string message)
         : base(message)
     { }
 
-    public AskException(string message, Exception innerException)
+    public AskDomainException(string message, Exception innerException)
         : base(message, innerException)
     { }
 }

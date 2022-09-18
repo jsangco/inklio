@@ -30,7 +30,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
         {
             this.logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
 
-            throw new AskException(
+            throw new AskDomainException(
                 $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
         }
 

@@ -9,7 +9,7 @@ CREATE TABLE [inklio].[comment]
   [can_flag] BIT NOT NULL DEFAULT 1,
   [created_at_utc] DATETIME2 NOT NULL,
   [created_by_id] int NOT NULL,
-  [comment_type_id] TINYINT NOT NULL,
+  [comment_class_type_id] TINYINT NOT NULL,
   [delivery_id] INT DEFAULT NULL
     CONSTRAINT [FK_comment_delivery_id] FOREIGN KEY REFERENCES [inklio].[delivery] (id) ON UPDATE NO ACTION,
   [edited_at_utc] DATETIME2 NULL,
