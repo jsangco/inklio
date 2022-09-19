@@ -1,5 +1,5 @@
+using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.SeedWork;
-using MediatR;
 
 namespace Inklio.Api.Infrastructure;
 

@@ -22,6 +22,9 @@ public class UnitTest1
         {
             var context = scope.Resolve<InklioContext>();
 
+            var user = new User("testuser");
+            context.Users.Add(user);
+
             var ask = new Ask("myAskBody", 0, true, true, "myAskTitle");
             ask.AddComment("myAskCommentBody", 0);
             var delivery = ask.AddDelivery("myDeliveryBody", 0, true, true, "myDeliveryTitle");

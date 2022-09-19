@@ -1,6 +1,6 @@
 CREATE TABLE [inklio].[ask]
 (
-  [id] INT NOT NULL CONSTRAINT [PK_ask] PRIMARY KEY CLUSTERED ([id] ASC),
+  [id] INT NOT NULL CONSTRAINT [pk_ask] PRIMARY KEY CLUSTERED ([id] ASC),
   [body] NVARCHAR(max) NOT NULL,
   [can_comment] BIT NOT NULL DEFAULT 1,
   [can_deliver] BIT NOT NULL DEFAULT 1,
@@ -8,13 +8,13 @@ CREATE TABLE [inklio].[ask]
   [can_flag] BIT NOT NULL DEFAULT 1,
   [can_tag] BIT NOT NULL DEFAULT 1,
   [created_at_utc] DATETIME2 NOT NULL,
-  [created_by_id] INT NOT NULL,
-    CONSTRAINT [FK_ask_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE CASCADE,
+  [created_by_id] INT NOT NULL
+    CONSTRAINT [fk_ask_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,
   [delivery_count] INT NOT NULL DEFAULT 0,
   [delivery_accepted_count] INT NOT NULL DEFAULT 0,
   [edited_at_utc] DATETIME2 NULL,
-  [edited_by_id] INT NULL,
-    CONSTRAINT [FK_ask_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE CASCADE,
+  [edited_by_id] INT NULL
+    CONSTRAINT [fk_ask_edited_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,
   [flag_count] INT NOT NULL DEFAULT 0,
   [is_deleted] BIT NOT NULL DEFAULT 0,
   [is_locked] BIT NOT NULL DEFAULT 0,
