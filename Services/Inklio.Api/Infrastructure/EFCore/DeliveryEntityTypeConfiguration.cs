@@ -17,9 +17,6 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
 
         builder.Ignore(b => b.DomainEvents);
 
-        // builder.Property(o => o.Id);
-            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
-
         builder
             .HasOne(e => e.Ask)
             .WithMany(e => e.Deliveries);
@@ -30,7 +27,25 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
     
         builder.Ignore(e => e.Upvoters);
 
-        var navigation = builder.Metadata.FindNavigation(nameof(Delivery.Comments));
-        navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
+        builder
+            .HasMany(e => e.Tags)
+            .WithMany(e => e.Deliveries)
+            .UsingEntity<DeliveryTag>(
+                e => e
+                    .HasOne(dt => dt.Tag)
+                    .WithMany(t => t.DeliveryTags)
+                    .HasForeignKey(dt => dt.TagId),
+                e => e
+                    .HasOne(dt => dt.Delivery)
+                    .WithMany(a => a.DeliveryTags)
+                    .HasForeignKey(dt => dt.DeliveryId),
+                e =>
+                {
+                    // e.Property(f => f.CreatedAtUtc);
+                    // e.Property(f => f.CreatedBy);
+                    e.HasKey(dt => new { dt.DeliveryId, dt.TagId });
+                    e.HasIndex(dt => new { dt.DeliveryId, dt.TagId }).IsUnique();
+                });
+        
     }
 }

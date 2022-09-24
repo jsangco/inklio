@@ -79,6 +79,16 @@ public class Delivery : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
+    /// The tags associated with the <see cref="Delivery"/>.
+    /// </summary>
+    private List<DeliveryTag> deliveryTags { get; set; } = new List<DeliveryTag>();
+
+    /// <summary>
+    /// Gets the tags associated with the <see cref="Delivery"/>.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryTag> DeliveryTags => this.deliveryTags;
+
+    /// <summary>
     /// Gets or sets the UTC time the delivery was last edited.
     /// </summary>
     public DateTime? EditedAtUtc { get; private set; }
@@ -232,32 +242,16 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Add a tag to the <see cref="Delivery"/> object.
     /// </summary>
-    /// <param name="value">The value of the tag to add.</param>
-    /// <param name="type">The type of the tag to add.</param>
     /// <param name="createdBy">The user who added the tag</param>
-    /// <returns>The created tag</returns>
-    public Tag AddTag(User createdBy, string type, string value)
+    /// <param name="tag">The tag to add.</param>
+    public void AddTag(User createdBy, Tag tag)
     {
-        if (string.IsNullOrWhiteSpace(type))
+        var existingTagIndex = this.deliveryTags.FindIndex(t => t.TagId == tag.Id);
+        if (existingTagIndex < 0)
         {
-            throw new ArgumentException($"'{nameof(type)}' cannot be null or whitespace.", nameof(type));
+            this.deliveryTags.Add(new DeliveryTag(this, createdBy, tag));
+            this.tags.Add(tag);
         }
-
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException($"'{nameof(value)}' cannot be null or whitespace.", nameof(value));
-        }
-
-        // Check for existing tag
-        var existingTagIndex = this.tags.FindIndex(t => t.Type == type && t.Value == value);
-        if (existingTagIndex >= 0)
-        {
-            return this.tags[existingTagIndex];
-        }
-
-        var newTag = new Tag(createdBy, type, value);
-        this.tags.Add(newTag);
-        return newTag;
     }
     
     /// <summary>

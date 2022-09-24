@@ -27,11 +27,15 @@ public class Tag : Entity
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-    // TODO
-    // TODO
-    // TODO
-    // TODO
-    public List<Delivery> Deliveries { get; set; } = new List<Delivery>();
+    /// <summary>
+    /// Gets a collection of <see cref="Delivery"/> objects associated with the <see cref="Tag"/>.
+    /// </summary>
+    public IReadOnlyCollection<Delivery> Deliveries { get; private set; } = new List<Delivery>();
+
+    /// <summary>
+    /// Gets a collection of <see cref="AskTag"/> objects associated with the <see cref="Tag"/>.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryTag> DeliveryTags { get; private set; } = new List<DeliveryTag>();
 
     /// <summary>
     /// Gets the type of the tag.
