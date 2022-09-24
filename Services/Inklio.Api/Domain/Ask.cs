@@ -50,7 +50,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// The collection of comments for the <see cref="Ask"/>
     /// </summary>
-    public List<AskComment> comments = new List<AskComment>();
+    private List<AskComment> comments = new List<AskComment>();
 
     /// <summary>
     /// Gets the collection of comments for the <see cref="Ask"/>
@@ -80,12 +80,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the number of deliveries for the Ask. 
     /// </summary>
-    public int DeliveryCount { get; set; }
+    public int DeliveryCount { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of accepted deliveries for the Ask.
     /// </summary>
-    public int DeliveryAcceptedCount { get; set; }
+    public int DeliveryAcceptedCount { get; private set; }
 
     /// <summary>
     /// Gets the UTC time the ask was last edited.
@@ -98,9 +98,19 @@ public class Ask : Entity, IAggregateRoot
     public int? EditedById { get; private set; }
 
     /// <summary>
+    /// The flags for the ask.
+    /// </summary>
+    private List<AskFlag> flags = new List<AskFlag>();
+
+    /// <summary>
+    /// Gets a collection of the <see cref="Ask"/> object's flags.
+    /// </summary>
+    public IReadOnlyCollection<AskFlag> Flags => this.flags;
+
+    /// <summary>
     /// Gets or sets the number of times an account was flagged.
     /// </summary>
-    public int FlagCount { get; set; }
+    public int FlagCount { get; private set; }
 
     /// <summary>
     /// Gets a flag indicating whether or not the ask is deleted.
@@ -140,7 +150,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the number of times the ask was saved.
     /// </summary>
-    public int SaveCount { get; set; }
+    public int SaveCount { get; private set; }
 
     /// <summary>
     /// The collection of tags assigned to the ask.
@@ -262,6 +272,25 @@ public class Ask : Entity, IAggregateRoot
         var delivery = new Delivery(this, body, createdBy, isNsfl, isNsfw, title);
         this.deliveries.Add(delivery);
         return delivery;
+    }
+
+    /// <summary>
+    /// Flags the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="typeId">The type of the Flag.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Flag AddFlag(FlagType typeId, User user)
+    {
+        int existingFlagIndex = this.flags.FindIndex(u => u.CreatedBy.Id == user.Id);
+        if ( existingFlagIndex < 0)
+        {
+            var flag = new AskFlag(this, (int)typeId, user);
+            this.flags.Add(flag);
+            this.FlagCount += 1;
+            return flag;
+        }
+
+        return this.flags[existingFlagIndex];
     }
 
     /// <summary>

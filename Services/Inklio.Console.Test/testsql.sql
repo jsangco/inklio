@@ -15,9 +15,9 @@
 -- delete from inklio.[ask] where id > 0
 -- delete from inklio.[user] where id > 0
 
+select * from inklio.[upvote] where id > 0
 select * from inklio.[ask_tag] where ask_id > 0
 select * from inklio.[delivery_tag] where delivery_id > 0
-select * from inklio.[upvote] where id > 0
 select * from inklio.[tag] where id > 0
 select * from inklio.[comment] where id > 0
 select * from inklio.[delivery] where id > 0

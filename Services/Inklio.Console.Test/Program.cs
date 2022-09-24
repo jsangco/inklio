@@ -27,10 +27,11 @@ using (var scope = container.BeginLifetimeScope())
         context.Tags.Add(new Tag(user, "testType", "testValue"));
         context.SaveChanges();
     }
-    if (context.Asks.Count() < 1)
+    if (context.Asks.Count() < 2)
     {
         var ask = new Ask("myAskBody4", user, true, true, "myAskTitle3");
         ask.AddDelivery("myDeliveryBody", user, false, true, "myDeliveryTitle");
+        ask.AddComment("myCommentBody", user);
         context.Asks.Add(ask);
         context.SaveChanges();
     }
@@ -44,12 +45,19 @@ using (var scope = container.BeginLifetimeScope())
     var ask = context.Asks
         .Include(e => e.Tags)
         .Include(e => e.Upvotes)
+        .Include(e => e.Flags)
+        .Include(e => e.Comments).ThenInclude(e => e.Flags)
+        .Include(e => e.Comments).ThenInclude(e => e.Upvotes)
         .Include(e => e.Deliveries).ThenInclude(e => e.Tags)
         .Include(e => e.Deliveries).ThenInclude(e => e.Upvotes)
+        .Include(e => e.Deliveries).ThenInclude(e => e.Flags)
         .ToList().Last();
 
-    ask.AddUpvote(0, user);
+    ask.AddFlag(FlagType.Spam, user);
     ask.Deliveries.First().AddUpvote(0, user);
+    ask.Comments.First().AddUpvote(0, user);
+    ask.Deliveries.First().AddFlag(FlagType.Harassment, user);
+    ask.Comments.First().AddFlag(FlagType.ThreateningViolence, user);
 
     Console.WriteLine(context.ChangeTracker.DebugView.LongView);
     Console.WriteLine("");
@@ -61,7 +69,16 @@ using (var scope = container.BeginLifetimeScope())
 {
     var context = scope.Resolve<InklioContext>();
     var users = context.Users.ToArray();
-    var asks = context.Asks.Include(e => e.Upvotes).ToArray();
+    var asks = context.Asks
+        .Include(e => e.Tags)
+        .Include(e => e.Upvotes)
+        .Include(e => e.Flags)
+        .Include(e => e.Comments).ThenInclude(e => e.Flags)
+        .Include(e => e.Comments).ThenInclude(e => e.Upvotes)
+        .Include(e => e.Deliveries).ThenInclude(e => e.Tags)
+        .Include(e => e.Deliveries).ThenInclude(e => e.Upvotes)
+        .Include(e => e.Deliveries).ThenInclude(e => e.Flags)
+        .ToList();
     var tags = context.Tags.Include(e => e.Asks).ToArray();
     // var askTags = context.AskTags.ToArray();
     var comments = context.Comments.ToArray();

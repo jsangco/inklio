@@ -61,7 +61,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a collection of comments for the delivery.
     /// </summary>
-    public List<DeliveryComment> comments = new List<DeliveryComment>();
+    private List<DeliveryComment> comments = new List<DeliveryComment>();
 
     /// <summary>
     /// A collection of comments for the delivery.
@@ -81,7 +81,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// The tags associated with the <see cref="Delivery"/>.
     /// </summary>
-    private List<DeliveryTag> deliveryTags { get; set; } = new List<DeliveryTag>();
+    private List<DeliveryTag> deliveryTags = new List<DeliveryTag>();
 
     /// <summary>
     /// Gets the tags associated with the <see cref="Delivery"/>.
@@ -97,6 +97,16 @@ public class Delivery : Entity, IAggregateRoot
     /// Gets or sets the UTC time the delivery was last edited.
     /// </summary>
     public int? EditedById { get; private set; }
+
+    /// <summary>
+    /// The flags for the Delivery.
+    /// </summary>
+    private List<DeliveryFlag> flags = new List<DeliveryFlag>();
+
+    /// <summary>
+    /// Gets a collection of the <see cref="Delivery"/> object's flags.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryFlag> Flags => this.flags;
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
@@ -238,6 +248,26 @@ public class Delivery : Entity, IAggregateRoot
         this.comments.Add(comment);
         return comment;
     }
+
+    /// <summary>
+    /// Flags the <see cref="Delivery"/>.
+    /// </summary>
+    /// <param name="typeId">The type of the Flag.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Flag AddFlag(FlagType typeId, User user)
+    {
+        int existingFlagIndex = this.flags.FindIndex(u => u.CreatedBy.Id == user.Id);
+        if ( existingFlagIndex < 0)
+        {
+            var flag = new DeliveryFlag(this, (int)typeId, user);
+            this.flags.Add(flag);
+            this.FlagCount += 1;
+            return flag;
+        }
+
+        return this.flags[existingFlagIndex];
+    }
+
 
     /// <summary>
     /// Add a tag to the <see cref="Delivery"/> object.

@@ -43,6 +43,16 @@ public class Comment : Entity, IAggregateRoot
     public int? EditedById { get; private set; }
 
     /// <summary>
+    /// The flags for the comment.
+    /// </summary>
+    private List<CommentFlag> flags = new List<CommentFlag>();
+
+    /// <summary>
+    /// Gets a collection of the <see cref="Comment"/> object's flags.
+    /// </summary>
+    public IReadOnlyCollection<CommentFlag> Flags => this.flags;
+
+    /// <summary>
     /// Gets or sets the number of times an account was flagged.
     /// </summary>
     public int FlagCount { get; set; }
@@ -65,7 +75,7 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets the number of times the comment was saved.
     /// </summary>
-    public int SaveCount { get; set; }
+    public int SaveCount { get; private set; }
 
     /// <summary>
     /// Gets the ID of the parent Ask
@@ -116,6 +126,25 @@ public class Comment : Entity, IAggregateRoot
         this.CreatedBy = createdBy;
         this.Thread = ask;
         this.ThreadId = ask.Id;
+    }
+
+    /// <summary>
+    /// Flags the <see cref="Comment"/>.
+    /// </summary>
+    /// <param name="typeId">The type of the Flag.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Flag AddFlag(FlagType typeId, User user)
+    {
+        int existingFlagIndex = this.flags.FindIndex(u => u.CreatedBy.Id == user.Id);
+        if ( existingFlagIndex < 0)
+        {
+            var flag = new CommentFlag(this, (int)typeId, user);
+            this.flags.Add(flag);
+            this.FlagCount += 1;
+            return flag;
+        }
+
+        return this.flags[existingFlagIndex];
     }
 
     /// <summary>
