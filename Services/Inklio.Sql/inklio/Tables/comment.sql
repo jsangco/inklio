@@ -1,6 +1,6 @@
 CREATE TABLE [inklio].[comment]
 (
-  [id] INT NOT NULL CONSTRAINT [pk_comment] PRIMARY KEY CLUSTERED ([id] ASC),
+  [id] INT NOT NULL CONSTRAINT [pk_comment] PRIMARY KEY CLUSTERED IDENTITY(1,1),
   [ask_id] INT DEFAULT NULL
     CONSTRAINT [fk_comment_ask_id] FOREIGN KEY REFERENCES [inklio].[ask] (id) ON UPDATE NO ACTION,
   [body] NVARCHAR(max) NOT NULL,

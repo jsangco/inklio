@@ -3,7 +3,7 @@ namespace Inklio.Api.Infrastructure.EFCore;
 /// <summary>
 /// The type of comment
 /// </summary>
-public enum CommentType
+public enum CommentClassType
 {
     Unknown = 0,
     Comment = 1,

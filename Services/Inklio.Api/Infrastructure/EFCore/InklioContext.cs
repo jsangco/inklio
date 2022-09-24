@@ -17,6 +17,7 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     public DbSet<Delivery> Deliveries => Set<Delivery>();
     public DbSet<DeliveryComment> DeliveryComments  => Set<DeliveryComment>();
     public DbSet<User> Users  => Set<User>();
+    public DbSet<Tag> Tags  => Set<Tag>();
 
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {
@@ -44,9 +45,12 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     {
         builder.ApplyConfiguration(new AskEntityTypeConfiguration());
         builder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
+        // builder.ApplyConfiguration(new AskTagEntityTypeConfiguration());
         builder.ApplyConfiguration(new CommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
+        builder.ApplyConfiguration(new TagEntityTypeConfiguration());
+        builder.ApplyConfiguration(new UserEntityTypeConfiguration());
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)

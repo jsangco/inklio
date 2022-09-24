@@ -12,20 +12,23 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.ToTable("comment", InklioContext.DefaultDbSchema);
 
-        builder.HasKey(o => o.Id);
+        builder.HasKey(e => e.Id).IsClustered();
+        builder.HasIndex(e => e.Id).IsUnique();
 
         builder.Ignore(b => b.DomainEvents);
 
-        builder.Property(o => o.Id)
-            .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
+        // builder.Property(o => o.Id);
+            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
         builder.HasOne(e => e.Thread);
         builder.Property<int>(e => e.ThreadId).IsRequired();
 
         builder
-            .HasDiscriminator<byte>("CommentTypeId")
-            .HasValue<Comment>((byte)CommentType.Comment)
-            .HasValue<AskComment>((byte)CommentType.AskComment)
-            .HasValue<DeliveryComment>((byte)CommentType.DeliveryComment);
+            .HasDiscriminator<byte>("CommentClassTypeId")
+            .HasValue<Comment>((byte)CommentClassType.Comment)
+            .HasValue<AskComment>((byte)CommentClassType.AskComment)
+            .HasValue<DeliveryComment>((byte)CommentClassType.DeliveryComment);
+
+        builder.Ignore(e => e.Upvoters);
     }
 }

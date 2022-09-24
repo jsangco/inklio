@@ -74,9 +74,9 @@ public class Delivery : Entity, IAggregateRoot
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>
-    /// Gets the ID of the user that created the delivery.
+    /// Gets the user that created the delivery.
     /// </summary>
-    public int CreatedById { get; private set; }
+    public User CreatedBy { get; private set; }
 
     /// <summary>
     /// Gets or sets the UTC time the delivery was last edited.
@@ -131,12 +131,12 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// The collection of tags assigned to the Delivery.
     /// </summary>
-    private List<DeliveryTag> tags = new List<DeliveryTag>();
+    private List<Tag> tags = new List<Tag>();
 
     /// <summary>
     /// Gets the collection of tags assigned to the Delivery.
     /// </summary>
-    public IReadOnlyCollection<DeliveryTag> Tags => this.tags;
+    public IReadOnlyCollection<Tag> Tags => this.tags;
 
     /// <summary>
     /// Gets or sets the Title of the delivery.
@@ -177,16 +177,16 @@ public class Delivery : Entity, IAggregateRoot
     /// </summary>
     /// <param name="ask">The parent <see cref="Ask"/> object.</param>
     /// <param name="body">The body of the <see cref="Delivery"/></param>
-    /// <param name="createdById">The creator of the <see cref="Delivery"/></param>
+    /// <param name="createdBy">The creator of the <see cref="Delivery"/></param>
     /// <param name="isNsfl">A flag indicating the <see cref="Delivery"/> is NSFL</param>
     /// <param name="isNsfw">A flag indicating the <see cref="Delivery"/> is NSFW</param>
     /// <param name="title">The title for the <see cref="Delivery"/></param>
-    public Delivery(Ask ask, string body, int createdById, bool isNsfl, bool isNsfw, string title)
+    public Delivery(Ask ask, string body, User createdBy, bool isNsfl, bool isNsfw, string title)
     {
         this.AskId = ask.Id;
         this.Ask = ask;
         this.Body = body;
-        this.CreatedById = createdById;
+        this.CreatedBy = createdBy;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
@@ -222,9 +222,9 @@ public class Delivery : Entity, IAggregateRoot
     /// <param name="body">The body of the <see cref="DeliveryComment"/>.</param>
     /// <param name="createdById">The creator of the <see cref="DeliveryComment"/>.</param>
     /// <returns>The newly created comment</returns>
-    public DeliveryComment AddComment(string body, int createdById)
+    public DeliveryComment AddComment(string body, User createdBy)
     {
-        var comment = new DeliveryComment(body, createdById, this);
+        var comment = new DeliveryComment(body, createdBy, this);
         this.comments.Add(comment);
         return comment;
     }
@@ -234,9 +234,9 @@ public class Delivery : Entity, IAggregateRoot
     /// </summary>
     /// <param name="value">The value of the tag to add.</param>
     /// <param name="type">The type of the tag to add.</param>
-    /// <param name="createdById">The id of the user who added the tag</param>
+    /// <param name="createdBy">The user who added the tag</param>
     /// <returns>The created tag</returns>
-    public Tag AddTag(int createdById, string type, string value)
+    public Tag AddTag(User createdBy, string type, string value)
     {
         if (string.IsNullOrWhiteSpace(type))
         {
@@ -255,7 +255,7 @@ public class Delivery : Entity, IAggregateRoot
             return this.tags[existingTagIndex];
         }
 
-        var newTag = new DeliveryTag(createdById, type, value);
+        var newTag = new Tag(createdBy, type, value);
         this.tags.Add(newTag);
         return newTag;
     }

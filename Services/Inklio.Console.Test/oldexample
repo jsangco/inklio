@@ -1,0 +1,32 @@
+﻿// // See https://aka.ms/new-console-template for more information
+// using Inklio.Api.Infrastructure.EFCore;
+// using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore.SqlServer;
+
+// Console.WriteLine("Hello, World!");
+// string connectionString = "Server=tcp:inklio.database.windows.net,1433;Initial Catalog=inklio;Persist Security Info=False;User ID=adminaoeu;Password=d4hQqkHbtue7fDbk54dGdhb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+// var o = new DbContextOptionsBuilder<MyContext>()
+//     .UseSqlServer(connectionString, sqlServerOptions =>
+//     {
+//         sqlServerOptions.EnableRetryOnFailure(
+//             maxRetryCount: 5,
+//             maxRetryDelay: TimeSpan.FromSeconds(30),
+//             errorNumbersToAdd: null);
+//     }).Options;
+// // using (var ctx = new MyContext(o))
+// // {
+// //     var p = new Post() { Title = "myTitle", Content = "mycontent" };
+// //     var t = new Tag() { TagId = "mytagid" };
+// //     var pt = new PostTag() { Post = p, Tag = t, PostId = p.PostId, TagId = t.TagId, PublicationDate = DateTime.UtcNow, MyProperty = 234 };
+
+// //     p.Tag.Add(t); // 1 
+// //     p.PostTag.Add(pt); // 2
+// //     ctx.Post.Add(p);
+
+// //     ctx.SaveChanges();
+// // }
+// using (var ctx = new MyContext(o))
+// {
+//     var p = ctx.Post.Include(e => e.Tag).First();
+//     // var t = ctx.Tags.First();
+// }

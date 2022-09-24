@@ -40,6 +40,11 @@ public class User : Entity, IAggregateRoot
     public DateTime LastActivityAtUtc { get; private set; }
 
     /// <summary>
+    /// Gets the last time the user logged in to the site.
+    /// </summary>
+    public DateTime LastLoginAtUtc { get; private set; }
+
+    /// <summary>
     /// Gets the reputation of the user including comments, asks, deliveries, etc...
     /// </summary>
     public int Reputation { get; private set; }
@@ -75,6 +80,8 @@ public class User : Entity, IAggregateRoot
         this.DeliveryCount = 0;
         this.Reputation = 0;
         this.CreatedAtUtc = DateTime.UtcNow;
+        this.LastActivityAtUtc = DateTime.UtcNow;
+        this.LastLoginAtUtc = DateTime.UtcNow;
         this.Asks = new List<Ask>();
         this.Comments = new List<Comment>();
         this.Deliveries = new List<Delivery>();
@@ -96,11 +103,12 @@ public class User : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Sets the number of deliveries a user has made
+    /// Sets the number of deliveries a user has made.
     /// </summary>
     /// <param name="deliveryCount">The new delivery count</param>
     public void SetDeliveryCount(int deliveryCount)
     {
         this.DeliveryCount = deliveryCount;
+        this.LastActivityAtUtc = DateTime.UtcNow;
     }
 }

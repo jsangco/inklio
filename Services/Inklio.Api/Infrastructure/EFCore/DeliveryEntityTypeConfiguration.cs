@@ -12,12 +12,13 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
     {
         builder.ToTable("delivery", InklioContext.DefaultDbSchema);
 
-        builder.HasKey(o => o.Id);
+        builder.HasKey(e => e.Id).IsClustered();
+        builder.HasIndex(e => e.Id).IsUnique();
 
         builder.Ignore(b => b.DomainEvents);
 
-        builder.Property(o => o.Id)
-            .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
+        // builder.Property(o => o.Id);
+            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 
         builder
             .HasOne(e => e.Ask)
@@ -27,6 +28,8 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
             .HasMany(e => e.Comments)
             .WithOne();
     
+        builder.Ignore(e => e.Upvoters);
+
         var navigation = builder.Metadata.FindNavigation(nameof(Delivery.Comments));
         navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }

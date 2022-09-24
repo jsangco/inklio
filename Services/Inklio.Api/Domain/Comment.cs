@@ -28,9 +28,9 @@ public class Comment : Entity, IAggregateRoot
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>
-    /// Gets the ID of the user that created the comment.
+    /// Gets the user that created the comment.
     /// </summary>
-    public int CreatedById { get; private set; }
+    public User CreatedBy { get; private set; }
 
     /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
@@ -95,10 +95,12 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Initializes a new instance of a <see cref="Comment"/> object.
     /// </summary>
-    private Comment()
+    protected Comment()
     {
         this.Body = string.Empty;
-        this.Thread = new Ask("unset body", 0, false, false, "unset title");
+        var user = new User("empty username");
+        this.Thread = new Ask("unset body", user, false, false, "unset title");
+        this.CreatedBy = user;
     }
 
     /// <summary>
@@ -106,11 +108,12 @@ public class Comment : Entity, IAggregateRoot
     /// </summary>
     /// <param name="ask">The parent <see cref="Ask"/> object</param>
     /// <param name="body">The body of the comment</param>
-    /// <param name="createdById">The id of the comment creator</param>
-    public Comment(Ask ask, string body, int createdById)
+    /// <param name="createdBy">The comment creator</param>
+    public Comment(Ask ask, string body, User createdBy)
     {
         this.Body = body;
         this.CreatedAtUtc = DateTime.UtcNow;
+        this.CreatedBy = createdBy;
         this.Thread = ask;
         this.ThreadId = ask.Id;
     }

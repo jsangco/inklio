@@ -21,29 +21,6 @@ public class UnitTest1
         using (var scope = container.BeginLifetimeScope())
         {
             var context = scope.Resolve<InklioContext>();
-
-            var user = new User("testuser");
-            context.Users.Add(user);
-
-            var ask = new Ask("myAskBody", 0, true, true, "myAskTitle");
-            ask.AddComment("myAskCommentBody", 0);
-            var delivery = ask.AddDelivery("myDeliveryBody", 0, true, true, "myDeliveryTitle");
-            delivery.AddComment("myDeliveryCommentBody", 0);
-
-            context.Asks.Add(ask);
-
-            context.SaveChanges();
-        }
-        using (var scope = container.BeginLifetimeScope())
-        {
-            var context = scope.Resolve<InklioContext>();
-            var asks = context.Asks.ToArray();
-            var comments = context.Comments.ToArray();
-            var askComments = context.AskComments.ToArray();
-            var deliveries = context.Deliveries.ToArray();
-            var test = JsonSerializer.Serialize(asks.First(), new JsonSerializerOptions(){ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles});
-            Console.WriteLine(test);
-            Console.WriteLine(asks.Length);
         }
     }
 

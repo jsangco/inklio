@@ -8,6 +8,11 @@ namespace Inklio.Api.Domain;
 public class Ask : Entity, IAggregateRoot
 {
     /// <summary>
+    /// Gets or sets the tags associated with the ask.
+    /// </summary>
+    public List<AskTag> AskTags { get; set; } = new List<AskTag>();
+
+    /// <summary>
     /// Gets the Body of the Ask.
     /// </summary>
     public string Body { get; private set; }
@@ -53,9 +58,9 @@ public class Ask : Entity, IAggregateRoot
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>
-    /// Gets the ID of the user that created the ask.
+    /// Gets the user that created the ask.
     /// </summary>
-    public int CreatedById { get; private set; }
+    public User CreatedBy { get; private set; }
 
     /// <summary>
     /// The deliveries for the ask.
@@ -135,12 +140,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// The collection of tags assigned to the ask.
     /// </summary>
-    private List<AskTag> tags = new List<AskTag>();
+    // private List<Tag> tags = new List<Tag>();
 
     /// <summary>
     /// Gets the collection of tags assigned to the ask.
     /// </summary>
-    public IReadOnlyCollection<AskTag> Tags => this.tags;
+    public ICollection<Tag> Tags { get; set; }
 
     /// <summary>
     /// Gets the Title of the Ask.
@@ -174,20 +179,21 @@ public class Ask : Entity, IAggregateRoot
     {
         this.Body = string.Empty;
         this.Title = string.Empty;
+        this.CreatedBy = new User("empty username");
     }
 
     /// <summary>
     /// Initializes a new instance of a <see cref="Ask"/> object.
     /// </summary>
     /// <param name="body">The body of the <see cref="Ask"/> object.</param>
-    /// <param name="createdById">The ID of the creator of the <see cref="Ask"/> object.</param>
+    /// <param name="createdBy">The creator of the <see cref="Ask"/> object.</param>
     /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
     /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
     /// <param name="title">The title of the <see cref="Ask"/> object.</param>
-    public Ask(string body, int createdById, bool isNsfl, bool isNsfw, string title)
+    public Ask(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
     {
         this.Body = body;
-        this.CreatedById = createdById;
+        this.CreatedBy = createdBy;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
@@ -198,11 +204,11 @@ public class Ask : Entity, IAggregateRoot
     /// Adds a comment to the <see cref="Ask"/> object.
     /// </summary>
     /// <param name="body"></param>
-    /// <param name="createdById"></param>
+    /// <param name="createdBy"></param>
     /// <returns>The newly created comment</returns>
-    public AskComment AddComment(string body, int createdById)
+    public AskComment AddComment(string body, User createdBy)
     {
-        var comment = new AskComment(this, body, createdById);
+        var comment = new AskComment(this, body, createdBy);
         this.comments.Add(comment);
         return comment;
     }
@@ -211,14 +217,20 @@ public class Ask : Entity, IAggregateRoot
     /// Adds a delivery to the <see cref="Ask"/> object.
     /// </summary>
     /// <param name="body">The body of the <see cref="Delivery"/>.</param>
-    /// <param name="createdById">The ID of the user creating the <see cref="Delivery"/>.</param>
+    /// <param name="createdBy">The user creating the <see cref="Delivery"/>.</param>
     /// <param name="isNsfl">A flag indicating whether the <see cref="Delivery"/> is NSFL.</param>
     /// <param name="isNsfw">A flag indicating whether the <see cref="Delivery"/> is NSFW.</param>
     /// <param name="title">The title of the Delivery.</param>
     /// <returns>The newly created <see cref="Delivery"/> object.</returns>
-    public Delivery AddDelivery(string body, int createdById, bool isNsfl, bool isNsfw, string title)
+    public Delivery AddDelivery(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
     {
-        var delivery = new Delivery(this, body, createdById, isNsfl, isNsfw, title);
+        if (createdBy.Id == this.CreatedBy.Id)
+        {
+            // TODO: Enable this exception once testing is over.
+            // throw new AskDomainException($"A delivery cannot be submitted by the original asker. User Id {createdById}");
+        }
+
+        var delivery = new Delivery(this, body, createdBy, isNsfl, isNsfw, title);
         this.deliveries.Add(delivery);
         return delivery;
     }
@@ -230,28 +242,16 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="type">The type of the tag to add.</param>
     /// <param name="createdById">The id of the user who added the tag</param>
     /// <returns>The created tag</returns>
-    public Tag AddTag(int createdById, string type, string value)
+    public void AddTag(User createdBy, Tag tag)
     {
-        if (string.IsNullOrWhiteSpace(type))
+        var existingTagIndex = this.AskTags.FindIndex(t => t.TagId == tag.Id);
+        if (existingTagIndex < 0)
         {
-            throw new ArgumentException($"'{nameof(type)}' cannot be null or whitespace.", nameof(type));
+            this.AskTags.Add(new AskTag(this, createdBy, tag));
+            this.Tags = this.Tags ?? new List<Tag>();
+            this.Tags.Add(tag);
+            tag.Asks.Add(this);
         }
-
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException($"'{nameof(value)}' cannot be null or whitespace.", nameof(value));
-        }
-
-        // Check for existing tag
-        var existingTag = this.tags.Find(t => t.Type == type && t.Value == value);
-        if (existingTag != null)
-        {
-            return existingTag;
-        }
-
-        var newTag = new AskTag(createdById, type, value);
-        this.tags.Add(newTag);
-        return newTag;
     }
 
     /// <summary>

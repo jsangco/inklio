@@ -18,9 +18,10 @@ public class AskComment : Comment
     /// <summary>
     /// Initializes a new instance of a <see cref="AskComment"/> object.
     /// </summary>
-    private AskComment() : base(new Ask("empty body", 0, false, false, "empty title"), "empty body", 0)
+    private AskComment()
     {
-        this.Ask = new Ask("empty body", 0, false, false, "empty title");
+        var user = new User("empty username");
+        this.Ask = new Ask("empty body", user, false, false, "empty title");
     }
 
     /// <summary>
@@ -28,8 +29,8 @@ public class AskComment : Comment
     /// </summary>
     /// <param name="ask">The parent <see cref="Ask"/> object</param>
     /// <param name="body">The body of the comment</param>
-    /// <param name="createdById">The id of the comment creator</param>
-    public AskComment(Ask ask, string body, int createdById) : base(ask, body, createdById)
+    /// <param name="createdBy">The comment creator</param>
+    public AskComment(Ask ask, string body, User user) : base(ask, body, user)
     {
         this.Ask = ask;
         this.AskId = ask.Id;

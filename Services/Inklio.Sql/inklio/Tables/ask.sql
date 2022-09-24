@@ -1,6 +1,6 @@
 CREATE TABLE [inklio].[ask]
 (
-  [id] INT NOT NULL CONSTRAINT [pk_ask] PRIMARY KEY CLUSTERED ([id] ASC),
+  [id] INT NOT NULL CONSTRAINT [pk_ask] PRIMARY KEY CLUSTERED IDENTITY(1,1),
   [body] NVARCHAR(max) NOT NULL,
   [can_comment] BIT NOT NULL DEFAULT 1,
   [can_deliver] BIT NOT NULL DEFAULT 1,
