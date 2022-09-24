@@ -2,13 +2,39 @@ using Inklio.Api.SeedWork;
 
 namespace Inklio.Api.Domain;
 
+/// <summary>
+/// The referenc object mapping an Ask to a Tag 
+/// </summary>
 public class AskTag
 {
+    /// <summary>
+    /// Gets the ID of the referenced <see cref="AskTag"/>.
+    /// </summary>
     public int AskId { get; private set; }
+
+    /// <summary>
+    /// Gets the referenced <see cref="AskTag"/> entity.
+    /// </summary>
     public Ask Ask { get; private set; }
+
+    /// <summary>
+    /// Gets the user that created the <see cref="AskTag"/>. 
+    /// </summary>
     public User CreatedBy { get; private set; }
+
+    /// <summary>
+    /// Gets the time that the <see cref="Tag"/> was added to the <see cref="AskTag"/>
+    /// </summary>
     public DateTime CreatedAtUtc { get; private set; }
+
+    /// <summary>
+    /// Gets the ID of the <see cref="Tag"/> referenced by the <see cref="AskTag"/>.
+    /// </summary>
     public int TagId { get; private set; }
+
+    /// <summary>
+    /// Gets the <see cref="Tag"/> associated with the <see cref="Ask"/>.
+    /// </summary>
     public Tag Tag { get; private set; }
 
 #pragma warning disable CS8618

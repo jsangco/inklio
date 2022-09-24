@@ -25,8 +25,6 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
             .HasMany(e => e.Comments)
             .WithOne();
     
-        builder.Ignore(e => e.Upvoters);
-
         builder
             .HasMany(e => e.Tags)
             .WithMany(e => e.Deliveries)
@@ -41,8 +39,8 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
                     .HasForeignKey(dt => dt.DeliveryId),
                 e =>
                 {
-                    // e.Property(f => f.CreatedAtUtc);
-                    // e.Property(f => f.CreatedBy);
+                    e.Property(f => f.CreatedAtUtc);
+                    e.HasOne(f => f.CreatedBy);
                     e.HasKey(dt => new { dt.DeliveryId, dt.TagId });
                     e.HasIndex(dt => new { dt.DeliveryId, dt.TagId }).IsUnique();
                 });

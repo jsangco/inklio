@@ -28,7 +28,5 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
             .HasValue<Comment>((byte)CommentClassType.Comment)
             .HasValue<AskComment>((byte)CommentClassType.AskComment)
             .HasValue<DeliveryComment>((byte)CommentClassType.DeliveryComment);
-
-        builder.Ignore(e => e.Upvoters);
     }
 }

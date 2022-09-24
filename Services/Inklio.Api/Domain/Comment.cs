@@ -83,14 +83,14 @@ public class Comment : Entity, IAggregateRoot
     public int UpvoteCount { get; set; }
 
     /// <summary>
-    /// The list of users that have upvoted this comment.
+    /// The list of upvotes for the comment
     /// </summary>
-    private List<User> upvoters = new List<User>();
+    private List<CommentUpvote> upvotes = new List<CommentUpvote>();
 
     /// <summary>
-    /// Gets a list of users that have upvoted the comment.
+    /// Gets the list of upvotes for the comment
     /// </summary>
-    public IReadOnlyCollection<User> Upvoters => this.upvoters;
+    public IReadOnlyCollection<CommentUpvote> Upvotes => this.upvotes;
 
     /// <summary>
     /// Initializes a new instance of a <see cref="Comment"/> object.
@@ -119,28 +119,34 @@ public class Comment : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Increases the upvote count adds the user to the list of upvoters.
+    /// Upvotes the <see cref="Comment"/>.
     /// </summary>
+    /// <param name="typeId">The type of the upvote.</param>
     /// <param name="user">The upvoting user.</param>
-    public void Upvote(User user)
+    public Upvote AddUpvote(int typeId, User user)
     {
-        if (this.upvoters.FindIndex(u => u.Id == user.Id) < 0)
+        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedBy.Id == user.Id);
+        if ( existingUpvoteIndex < 0)
         {
-            this.upvoters.Add(user);
+            var upvote = new CommentUpvote(this, typeId, user);
+            this.upvotes.Add(upvote);
             this.UpvoteCount += 1;
+            return upvote;
         }
+
+        return this.upvotes[existingUpvoteIndex];
     }
-    
+
     /// <summary>
     /// Removes an upvote and removes the user from the list of upvoters.
     /// </summary>
     /// <param name="userId"></param>
-    public void UpvoteUndo(User user)
+    public void RemoveUpvote(Upvote upvote)
     {
-        int upvoterIndex = this.upvoters.FindIndex(u => u.Id == user.Id);
+        int upvoterIndex = this.upvotes.FindIndex(u => u.Id == upvote.Id);
         if ( upvoterIndex >= 0)
         {
-            this.upvoters.RemoveAt(upvoterIndex);
+            this.upvotes.RemoveAt(upvoterIndex);
             this.UpvoteCount -= 1;
         }
     }

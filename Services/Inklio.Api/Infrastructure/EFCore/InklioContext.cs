@@ -49,6 +49,7 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         builder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new TagEntityTypeConfiguration());
+        builder.ApplyConfiguration(new UpvoteEntityTypeConfiguration());
         builder.ApplyConfiguration(new UserEntityTypeConfiguration());
     }
 

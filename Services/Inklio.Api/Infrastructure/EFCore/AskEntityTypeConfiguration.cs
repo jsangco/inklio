@@ -39,12 +39,10 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
                     .HasForeignKey(at => at.AskId),
                 e =>
                 {
-                    // e.Property(f => f.CreatedAtUtc);
-                    // e.Property(f => f.CreatedBy);
+                    e.Property(f => f.CreatedAtUtc);
+                    e.HasOne(f => f.CreatedBy);
                     e.HasKey(at => new { at.AskId, at.TagId });
                     e.HasIndex(at => new { at.AskId, at.TagId }).IsUnique();
                 });
-        
-        builder.Ignore(e => e.Upvoters);
     }
 }

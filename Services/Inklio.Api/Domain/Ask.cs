@@ -163,14 +163,14 @@ public class Ask : Entity, IAggregateRoot
     public int UpvoteCount { get; private set; }
 
     /// <summary>
-    /// The list of users that have upvoted this Ask
+    /// The list of upvotes for the ask
     /// </summary>
-    private List<User> upvoters = new List<User>();
+    private List<AskUpvote> upvotes = new List<AskUpvote>();
 
     /// <summary>
-    /// Gets a list of users that have upvoted the ask
+    /// Gets the list of upvotes for the ask
     /// </summary>
-    public IReadOnlyCollection<User> Upvoters => this.upvoters;
+    public IReadOnlyCollection<AskUpvote> Upvotes => this.upvotes;
 
     /// <summary>
     /// Gets or sets the number of times the ask has been viewed.
@@ -203,6 +203,30 @@ public class Ask : Entity, IAggregateRoot
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
         this.Title = title;
+    }
+
+    /// <summary>
+    /// Mark a child delivery as accepted
+    /// </summary>
+    /// <param name="deliveryId">The delivery to accept</param>
+    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
+    public void AcceptDelivery(int deliveryId)
+    {
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not accept delivery. Delivery id {deliveryId} was not found.");
+        delivery.Accept();
+        this.DeliveryAcceptedCount += 1;
+    }
+
+    /// <summary>
+    /// Removes the accept status of a child delivery.
+    /// </summary>
+    /// <param name="deliveryId">The delivery to unaccept</param>
+    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
+    public void AcceptUndoDelivery(int deliveryId)
+    {
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
+        delivery.AcceptUndo();
+        this.DeliveryAcceptedCount -= 1;
     }
 
     /// <summary>
@@ -243,19 +267,59 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Add a tag to the <see cref="Ask"/> object.
     /// </summary>
-    /// <param name="value">The value of the tag to add.</param>
-    /// <param name="type">The type of the tag to add.</param>
+    /// <param name="addToDeliveries">A flag indicating whether to add the tag to chilld deliveries</param>
     /// <param name="createdById">The id of the user who added the tag</param>
+    /// <param name="Tag">The tag to add to the ask</param>
     /// <returns>The created tag</returns>
-    public void AddTag(User createdBy, Tag tag)
+    public void AddTag(bool addToDeliveries, User createdBy, Tag tag)
     {
         var existingTagIndex = this.askTags.FindIndex(t => t.TagId == tag.Id);
         if (existingTagIndex < 0)
         {
             this.askTags.Add(new AskTag(this, createdBy, tag));
             this.tags.Add(tag);
+
+            if (addToDeliveries)
+            {
+                foreach (var delivery in this.deliveries)
+                {
+                    delivery.AddTag(createdBy, tag);
+                }
+            }
         }
     }
+
+    /// <summary>
+    /// Upvotes the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="typeId">The type of the upvote.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Upvote AddUpvote(int typeId, User user)
+    {
+        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedBy.Id == user.Id);
+        if ( existingUpvoteIndex < 0)
+        {
+            var upvote = new AskUpvote(this, typeId, user);
+            this.upvotes.Add(upvote);
+            this.UpvoteCount += 1;
+            return upvote;
+        }
+
+        return this.upvotes[existingUpvoteIndex];
+    }
+
+    /// <summary>
+    /// Edits the <see cref="Ask"/> message body.
+    /// </summary>
+    /// <param name="bodyEdit">The new message body.</param>
+    /// <param name="userId">The Id of the user editting the body</param>
+    public void EditBody(string bodyEdit, int userId)
+    {
+        this.Body = bodyEdit;
+        this.EditedAtUtc = DateTime.UtcNow;
+        this.EditedById = userId;
+    }
+    
 
     /// <summary>
     /// Marks an Ask as deleted. NOTE: It does not actually delete the Ask.
@@ -269,62 +333,15 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Mark a child delivery as accepted
-    /// </summary>
-    /// <param name="deliveryId">The delivery to accept</param>
-    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
-    public void DeliveryAccept(int deliveryId)
-    {
-        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not accept delivery. Delivery id {deliveryId} was not found.");
-        delivery.Accept();
-    }
-
-    /// <summary>
-    /// Removes the accept status of a child delivery.
-    /// </summary>
-    /// <param name="deliveryId">The delivery to unaccept</param>
-    /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
-    public void DeliveryAcceptUndo(int deliveryId)
-    {
-        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
-        delivery.AcceptUndo();
-    }
-
-    /// <summary>
-    /// Edits the <see cref="Ask"/> message body.
-    /// </summary>
-    /// <param name="bodyEdit">The new message body.</param>
-    /// <param name="userId">The Id of the user editting the body</param>
-    public void BodyEdit(string bodyEdit, int userId)
-    {
-        this.Body = bodyEdit;
-        this.EditedAtUtc = DateTime.UtcNow;
-        this.EditedById = userId;
-    }
-
-    /// <summary>
-    /// Increases the upvote count adds the user to the list of upvoters.
-    /// </summary>
-    /// <param name="user">The upvoting user.</param>
-    public void Upvote(User user)
-    {
-        if (this.upvoters.FindIndex(u => u.Id == user.Id) < 0)
-        {
-            this.upvoters.Add(user);
-            this.UpvoteCount += 1;
-        }
-    }
-    
-    /// <summary>
     /// Removes an upvote and removes the user from the list of upvoters.
     /// </summary>
     /// <param name="userId"></param>
-    public void UpvoteUndo(User user)
+    public void RemoveUpvote(AskUpvote upvote)
     {
-        int upvoterIndex = this.upvoters.FindIndex(u => u.Id == user.Id);
+        int upvoterIndex = this.upvotes.FindIndex(u => u.Id == upvote.Id);
         if ( upvoterIndex >= 0)
         {
-            this.upvoters.RemoveAt(upvoterIndex);
+            this.upvotes.RemoveAt(upvoterIndex);
             this.UpvoteCount -= 1;
         }
     }

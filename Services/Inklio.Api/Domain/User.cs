@@ -7,12 +7,27 @@ public class User : Entity, IAggregateRoot
     /// <summary>
     /// Gets the asks created by the user.
     /// </summary>
-    public IReadOnlyCollection<Ask> Asks { get; private set; }
+    public IReadOnlyCollection<Ask> Asks { get; private set; } = new List<Ask>();
+
+    /// <summary>
+    /// Gets the ask tags created by the user.
+    /// </summary>
+    public IReadOnlyCollection<AskTag> AskTags { get; private set; } = new List<AskTag>();
+
+    /// <summary>
+    /// Gets the ask Upvotes created by the user.
+    /// </summary>
+    public IReadOnlyCollection<AskUpvote> AskUpvotes { get; private set; } = new List<AskUpvote>();
 
     /// <summary>
     /// Gets the comments created by the user.
     /// </summary>
-    public IReadOnlyCollection<Comment> Comments { get; private set; }
+    public IReadOnlyCollection<Comment> Comments { get; private set; } = new List<Comment>();
+
+    /// <summary>
+    /// Gets the comment Upvotes created by the user.
+    /// </summary>
+    public IReadOnlyCollection<CommentUpvote> CommentUpvotes { get; private set; } = new List<CommentUpvote>();
 
     /// <summary>
     /// Gets the UTC time the user was created.
@@ -27,7 +42,17 @@ public class User : Entity, IAggregateRoot
     /// <summary>
     /// Gets the deliveries made by the user.
     /// </summary>
-    public IReadOnlyCollection<Delivery> Deliveries { get; private set; }
+    public IReadOnlyCollection<Delivery> Deliveries { get; private set; } = new List<Delivery>();
+
+    /// <summary>
+    /// Gets the Delivery Upvotes created by the user.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryUpvote> DeliveryUpvotes { get; private set; } = new List<DeliveryUpvote>();
+
+    /// <summary>
+    /// Gets the deleviry tags created by the user.
+    /// </summary>
+    public IReadOnlyCollection<DeliveryTag> DeliveryTags { get; private set; } = new List<DeliveryTag>();
 
     /// <summary>
     /// Gets the reputation a user has earned by making deliveries. 
@@ -57,13 +82,11 @@ public class User : Entity, IAggregateRoot
     /// <summary>
     /// Initializes a new <see cref="User"/> object. 
     /// </summary>
+#pragma warning disable CS8618
     private User()
     {
-        this.Username = string.Empty;
-        this.Asks = new List<Ask>();
-        this.Comments = new List<Comment>();
-        this.Deliveries = new List<Delivery>();
     }
+#pragma warning restore CS8618
 
     /// <summary>
     /// Initializes a new <see cref="User"/> object. 
@@ -82,9 +105,6 @@ public class User : Entity, IAggregateRoot
         this.CreatedAtUtc = DateTime.UtcNow;
         this.LastActivityAtUtc = DateTime.UtcNow;
         this.LastLoginAtUtc = DateTime.UtcNow;
-        this.Asks = new List<Ask>();
-        this.Comments = new List<Comment>();
-        this.Deliveries = new List<Delivery>();
     }
 
     /// <summary>
