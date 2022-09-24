@@ -7,14 +7,15 @@ namespace Inklio.Api.Domain;
 /// </summary>
 public class Tag : Entity
 {
-    // TODO
-    // TODO
-    // TODO
-    // TODO
-    // public List<AskTag> AskTags { get; set; } = new List<AskTag>();
-    public List<Ask> Asks { get; set; } = new List<Ask>();
+    /// <summary>
+    /// Gets a collection of <see cref="Ask"/> objects associated with the <see cref="Tag"/>.
+    /// </summary>
+    public IReadOnlyCollection<Ask> Asks { get; private set; } = new List<Ask>();
 
-    public List<AskTag> AskTags { get; set; } = new List<AskTag>();
+    /// <summary>
+    /// Gets a collection of <see cref="AskTag"/> objects associated with the <see cref="Tag"/>.
+    /// </summary>
+    public IReadOnlyCollection<AskTag> AskTags { get; private set; } = new List<AskTag>();
 
     /// <summary>
     /// Gets the ID of the user that created the tag. 

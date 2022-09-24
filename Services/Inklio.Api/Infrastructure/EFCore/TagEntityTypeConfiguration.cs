@@ -15,17 +15,6 @@ class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();
 
-        // builder.Property(e => e.Id);
-            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
-
         builder.Ignore(e => e.DomainEvents);
-        
-        // builder
-        //     .HasMany(e => e.Asks)
-        //     .WithMany(e => e.Tags)
-        //     .UsingEntity(e => e.ToTable("ask_tag"));
-
-        // builder.HasMany("AskTags");
-        // builder.HasMany(e => e.AskTags).WithOne(e => e.Tag);
     }
 }

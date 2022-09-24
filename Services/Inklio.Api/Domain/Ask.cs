@@ -8,9 +8,14 @@ namespace Inklio.Api.Domain;
 public class Ask : Entity, IAggregateRoot
 {
     /// <summary>
-    /// Gets or sets the tags associated with the ask.
+    /// The tags associated with the ask.
     /// </summary>
-    public List<AskTag> AskTags { get; set; } = new List<AskTag>();
+    private List<AskTag> askTags { get; set; } = new List<AskTag>();
+
+    /// <summary>
+    /// Gets the tags associated with the ask.
+    /// </summary>
+    public IReadOnlyCollection<AskTag> AskTags => this.askTags;
 
     /// <summary>
     /// Gets the Body of the Ask.
@@ -140,12 +145,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// The collection of tags assigned to the ask.
     /// </summary>
-    // private List<Tag> tags = new List<Tag>();
+    private List<Tag> tags = new List<Tag>();
 
     /// <summary>
     /// Gets the collection of tags assigned to the ask.
     /// </summary>
-    public ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public IReadOnlyCollection<Tag> Tags => this.tags;
 
     /// <summary>
     /// Gets the Title of the Ask.
@@ -244,13 +249,11 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The created tag</returns>
     public void AddTag(User createdBy, Tag tag)
     {
-        var existingTagIndex = this.AskTags.FindIndex(t => t.TagId == tag.Id);
+        var existingTagIndex = this.askTags.FindIndex(t => t.TagId == tag.Id);
         if (existingTagIndex < 0)
         {
-            this.AskTags.Add(new AskTag(this, createdBy, tag));
-            this.Tags.Add(tag);
-            // tag.Asks.Add(this);
-            // tag.AskTags.Add(at);
+            this.askTags.Add(new AskTag(this, createdBy, tag));
+            this.tags.Add(tag);
         }
     }
 

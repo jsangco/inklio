@@ -17,9 +17,6 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
 
         builder.Ignore(b => b.DomainEvents);
 
-        // builder.Property(o => o.Id);
-            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
-
         builder
             .HasMany(e => e.Comments)
             .WithOne();
@@ -48,8 +45,6 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
                     e.HasIndex(at => new { at.AskId, at.TagId }).IsUnique();
                 });
         
-        // builder.HasMany("AskTags").WithOne(e => e.);
-        // builder.HasMany(e => e.AskTags).WithOne(e => e.Ask);
         builder.Ignore(e => e.Upvoters);
     }
 }

@@ -27,9 +27,9 @@ using (var scope = container.BeginLifetimeScope())
         context.Tags.Add(new Tag(user, "testType", "testValue"));
         context.SaveChanges();
     }
-    if (context.Asks.Count() < 3)
+    if (context.Asks.Count() < 5)
     {
-        context.Asks.Add(new Ask("myAskBody3", user, true, true, "myAskTitle3"));
+        context.Asks.Add(new Ask("myAskBody4", user, true, true, "myAskTitle3"));
         context.SaveChanges();
     }
 }
@@ -39,7 +39,7 @@ using (var scope = container.BeginLifetimeScope())
     var context = scope.Resolve<InklioContext>();
 
     var user = context.Users.First();
-    var ask = context.Asks.Where(e => e.Id > 2).First();
+    var ask = context.Asks.Where(e => e.Id > 4).First();
     var tag = context.Tags.First();
     // var ask = context.Asks.Where(e => e.Id > 1).Include(e => e.Tags).Include(e => e.AskTags).First();
     // var tag = context.Tags.Include(e => e.Asks).Include(e => e.AskTags).First();
