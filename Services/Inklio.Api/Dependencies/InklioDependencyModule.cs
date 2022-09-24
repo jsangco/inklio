@@ -37,6 +37,7 @@ public class InklioDependencyModule : Autofac.Module
             {
                 return new DbContextOptionsBuilder<InklioContext>()
                     .UseSnakeCaseNamingConvention()
+                    .EnableSensitiveDataLogging()
                     .UseSqlServer(connectionString, sqlServerOptions =>
                     {
                         sqlServerOptions.EnableRetryOnFailure(

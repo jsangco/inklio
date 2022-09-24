@@ -29,10 +29,10 @@ public class AskTag
     public AskTag(Ask ask, User createdBy, Tag tag)
     {
         this.Ask = ask;
-        // this.AskId = ask.Id;
+        this.AskId = ask.Id;
         this.CreatedBy = createdBy;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.Tag = tag;
-        // this.TagId = tag.Id;
+        this.TagId = tag.Id;
     }
 }

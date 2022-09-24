@@ -35,16 +35,17 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
                 e => e
                     .HasOne(at => at.Tag)
                     .WithMany(t => t.AskTags)
-                    .HasForeignKey(at => at.AskId),
+                    .HasForeignKey(at => at.TagId),
                 e => e
                     .HasOne(at => at.Ask)
                     .WithMany(a => a.AskTags)
-                    .HasForeignKey(at => at.TagId),
+                    .HasForeignKey(at => at.AskId),
                 e =>
                 {
                     // e.Property(f => f.CreatedAtUtc);
                     // e.Property(f => f.CreatedBy);
-                    e.HasKey(f => new { f.AskId, f.TagId });
+                    e.HasKey(at => new { at.AskId, at.TagId });
+                    e.HasIndex(at => new { at.AskId, at.TagId }).IsUnique();
                 });
         
         // builder.HasMany("AskTags").WithOne(e => e.);

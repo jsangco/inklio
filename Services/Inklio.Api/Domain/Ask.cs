@@ -145,7 +145,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets the collection of tags assigned to the ask.
     /// </summary>
-    public ICollection<Tag> Tags { get; set; }
+    public ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
     /// <summary>
     /// Gets the Title of the Ask.
@@ -248,9 +248,9 @@ public class Ask : Entity, IAggregateRoot
         if (existingTagIndex < 0)
         {
             this.AskTags.Add(new AskTag(this, createdBy, tag));
-            this.Tags = this.Tags ?? new List<Tag>();
             this.Tags.Add(tag);
-            tag.Asks.Add(this);
+            // tag.Asks.Add(this);
+            // tag.AskTags.Add(at);
         }
     }
 

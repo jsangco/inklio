@@ -12,7 +12,7 @@ public class Tag : Entity
     // TODO
     // TODO
     // public List<AskTag> AskTags { get; set; } = new List<AskTag>();
-    public ICollection<Ask> Asks { get; set; } = new List<Ask>();
+    public List<Ask> Asks { get; set; } = new List<Ask>();
 
     public List<AskTag> AskTags { get; set; } = new List<AskTag>();
 

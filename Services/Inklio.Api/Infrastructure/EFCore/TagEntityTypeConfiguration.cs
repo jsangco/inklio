@@ -20,10 +20,10 @@ class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
 
         builder.Ignore(e => e.DomainEvents);
         
-        builder
-            .HasMany(e => e.Asks)
-            .WithMany(e => e.Tags)
-            .UsingEntity(e => e.ToTable("ask_tag"));
+        // builder
+        //     .HasMany(e => e.Asks)
+        //     .WithMany(e => e.Tags)
+        //     .UsingEntity(e => e.ToTable("ask_tag"));
 
         // builder.HasMany("AskTags");
         // builder.HasMany(e => e.AskTags).WithOne(e => e.Tag);
