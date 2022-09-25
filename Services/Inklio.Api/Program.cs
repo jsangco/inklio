@@ -48,11 +48,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseRouting();
 app.MapControllers();
-
 app.MapHealthChecks("/", new HealthCheckOptions
 {
     ResponseWriter = HealthCheckWriter.WriteResponse,

@@ -105,6 +105,11 @@ public class Delivery
     public int SaveCount { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of Tags for the ask.
+    /// </summary>
+    public IEnumerable<string> Tags { get; set; } = Array.Empty<string>();
+
+    /// <summary>
     /// Gets or sets the Title of the delivery.
     /// </summary>
     public string Title { get; set; } = string.Empty;

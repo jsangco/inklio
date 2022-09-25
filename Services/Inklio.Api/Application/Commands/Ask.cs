@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Inklio.Api.Application.Commands;
 
 /// <summary>
-/// An Inklio Ask
+/// An Inklio Ask DTO
 /// </summary>
 public class Ask
 {
@@ -44,6 +44,11 @@ public class Ask
     public bool CanTag { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of comments for the ask.
+    /// </summary>
+    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
+
+    /// <summary>
     /// Gets or sets the UTC time the ask was created.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
@@ -52,6 +57,11 @@ public class Ask
     /// Gets or sets the ID of the user that created the ask.
     /// </summary>
     public int CreatedById { get; set; }
+
+    /// <summary>
+    /// Gets or sets the deliveries for the ask.
+    /// </summary>
+    public IEnumerable<Delivery> Deliveries { get; set; } = Array.Empty<Delivery>();
 
     /// <summary>
     /// Gets or sets the UTC time the ask was last edited.
@@ -109,6 +119,11 @@ public class Ask
     public int SaveCount { get; set; }
 
     /// <summary>
+    /// Gets or sets a collection of Tags for the ask.
+    /// </summary>
+    public IEnumerable<string> Tags { get; set; } = Array.Empty<string>();
+
+    /// <summary>
     /// Gets or sets the Title of the Ask.
     /// </summary>
     public string Title { get; set; } = string.Empty;
@@ -117,19 +132,8 @@ public class Ask
     /// Gets or sets the number of times the ask was upvoted.
     /// </summary>
     public int UpvoteCount { get; set; }
-
     /// <summary>
     /// Gets or sets the number of times the ask has been viewed.
     /// </summary>
     public int ViewCount { get; set; }
-
-    /// <summary>
-    /// Gets or sets a collection of comments for the ask.
-    /// </summary>
-    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
-
-    /// <summary>
-    /// Gets or sets the deliveries for the ask.
-    /// </summary>
-    public IEnumerable<Delivery> Deliveries { get; set; } = Array.Empty<Delivery>();
 }

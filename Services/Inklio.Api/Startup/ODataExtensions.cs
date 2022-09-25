@@ -1,4 +1,5 @@
-using Inklio.Api.Application.Commands;
+using Inklio.Api.Domain;
+// using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
@@ -12,14 +13,16 @@ public static class ODataExtensions
     {
         mvcBuilder.AddOData(options => 
         {
-            options.AddRouteComponents("v1", CreateEdmModel());
             options.EnableQueryFeatures();
             options.EnableNoDollarQueryOptions = true;
+            options.RouteOptions.EnableKeyAsSegment = true;
+            options.RouteOptions.EnableUnqualifiedOperationCall = true;
             options.RouteOptions.EnableActionNameCaseInsensitive = true;
             options.RouteOptions.EnableControllerNameCaseInsensitive = true;
             options.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
             options.RouteOptions.EnablePropertyNameCaseInsensitive = true;
             options.UrlKeyDelimiter = ODataUrlKeyDelimiter.Slash;
+            options.AddRouteComponents("v1", CreateEdmModel());
         });
         return mvcBuilder;
     }
@@ -27,14 +30,18 @@ public static class ODataExtensions
     private static IEdmModel CreateEdmModel()
     {
         var builder = new ODataConventionModelBuilder();
+        builder.ModelAliasingEnabled = true;
         builder.EnableLowerCamelCase();
-        builder.EntitySet<Ask>("Asks");
+        var ask = builder.EntitySet<Ask>("Asks");
+        ask.EntityType.Name = "Ask";
         builder.EntityType<Ask>()
             .HasKey(e => e.Id);
-        builder.EntitySet<Delivery>("Deliveries");
+        var delivery = builder.EntitySet<Delivery>("Deliveries");
+        delivery.EntityType.Name = "Delivery";
         builder.EntityType<Delivery>()
             .HasKey(e => e.Id);
-        builder.EntitySet<Comment>("Comments");
+        var comment = builder.EntitySet<Comment>("Comments");
+        comment.EntityType.Name = "Comment";
         builder.EntityType<Comment>()
             .HasKey(e => e.Id);
 
