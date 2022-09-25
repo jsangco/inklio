@@ -13,7 +13,6 @@ public static class ODataExtensions
         mvcBuilder.AddOData(options => 
         {
             options.AddRouteComponents("v1", CreateEdmModel());
-
             options.EnableQueryFeatures();
             options.EnableNoDollarQueryOptions = true;
             options.RouteOptions.EnableActionNameCaseInsensitive = true;
@@ -27,10 +26,18 @@ public static class ODataExtensions
     
     private static IEdmModel CreateEdmModel()
     {
-        var builder = new ODataModelBuilder();
+        var builder = new ODataConventionModelBuilder();
+        builder.EnableLowerCamelCase();
         builder.EntitySet<Ask>("Asks");
         builder.EntityType<Ask>()
             .HasKey(e => e.Id);
+        builder.EntitySet<Delivery>("Deliveries");
+        builder.EntityType<Delivery>()
+            .HasKey(e => e.Id);
+        builder.EntitySet<Comment>("Comments");
+        builder.EntityType<Comment>()
+            .HasKey(e => e.Id);
+
 
         return builder.GetEdmModel();
     }

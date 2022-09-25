@@ -16,10 +16,18 @@ public class AsksController : ControllerBase
     private readonly IAskRepository askRepository;
     private readonly IMediator mediator;
 
-    private readonly IMapper mapper = new MapperConfiguration(cfg => {
+    private readonly IMapper projector = new MapperConfiguration(cfg =>
+    {
         cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
         cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
         cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
+    }).CreateMapper();
+
+    private readonly IMapper mapper = new MapperConfiguration(cfg =>
+    {
+        cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
+        cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
     }).CreateMapper();
 
     public AsksController(ILogger<AsksController> logger, IAskRepository askRepository, IMediator mediator)
@@ -30,10 +38,21 @@ public class AsksController : ControllerBase
     }
 
     [HttpGet]
-    [EnableQuery(PageSize=2)]
+    [EnableQuery()]
     public IQueryable<Inklio.Api.Application.Commands.Ask> Get()
     {
-        return mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
+        var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.Get());
+        return asks;
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    [EnableQuery()]
+    public async Task<Inklio.Api.Application.Commands.Ask> GetById(int id, CancellationToken cancellationToken)
+    {
+        var ask = await this.askRepository.GetByIdAsync(id, cancellationToken);
+        var askDto = mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
+        return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
     }
 
     [HttpPost]

@@ -222,7 +222,7 @@ public class Ask : Entity, IAggregateRoot
     /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
     public void AcceptDelivery(int deliveryId)
     {
-        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not accept delivery. Delivery id {deliveryId} was not found.");
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not accept delivery. Delivery id {deliveryId} was not found.");
         delivery.Accept();
         this.DeliveryAcceptedCount += 1;
     }
@@ -234,7 +234,7 @@ public class Ask : Entity, IAggregateRoot
     /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
     public void AcceptUndoDelivery(int deliveryId)
     {
-        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new AskDomainException($"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
+        Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
         delivery.AcceptUndo();
         this.DeliveryAcceptedCount -= 1;
     }

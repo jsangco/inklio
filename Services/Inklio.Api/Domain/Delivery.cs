@@ -229,7 +229,7 @@ public class Delivery : Entity, IAggregateRoot
     {
         if (this.IsDeliveryAccepted == false)
         {
-            throw new AskDomainException("Cannot unaccept the delivery because it has not been accepted yet.");
+            throw new InklioDomainException(400, "Cannot unaccept the delivery because it has not been accepted yet.");
         }
 
         this.AcceptedUndoAtUtc = DateTime.UtcNow;

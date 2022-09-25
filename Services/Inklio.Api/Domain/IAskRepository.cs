@@ -33,5 +33,5 @@ public interface IAskRepository : IRepository<Ask>
     /// <param name="askId">The id of the ask to get.</param>
     /// <param name="cancellationToken">A cancellation token</param>
     /// <returns>The ask.</returns>
-    Task<Ask?> GetByIdAsync(int askId, CancellationToken cancellationToken);
+    Task<Ask> GetByIdAsync(int askId, CancellationToken cancellationToken);
 }

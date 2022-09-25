@@ -20,12 +20,12 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
             context.Exception,
             context.Exception.Message);
 
-        if (context.Exception.GetType() == typeof(AskDomainException))
+        if (context.Exception.GetType() == typeof(InklioDomainException))
         {
             var problemDetails = new ValidationProblemDetails()
             {
                 Instance = context.HttpContext.Request.Path,
-                Status = StatusCodes.Status400BadRequest,
+                Status = ((InklioDomainException)context.Exception).RecommendedStatusCode,
                 Detail = "Please refer to the errors property for additional details."
             };
 

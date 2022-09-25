@@ -42,9 +42,19 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Ask?> GetByIdAsync(int askId, CancellationToken cancellationToken)
+    public async Task<Ask> GetByIdAsync(int askId, CancellationToken cancellationToken)
     {
-        var ask = await this.context.Asks.FindAsync(askId, cancellationToken);
-        return ask;
+        Ask? ask = await this.context.Asks
+            .Include(a => a.Tags)
+            .Include(a => a.Comments)
+            .Include(a => a.Deliveries)
+            .FirstOrDefaultAsync(a => a.Id == askId, cancellationToken);
+
+        if (ask is not null)
+        {
+            return ask;
+        }
+
+        throw new InklioDomainException(404, $"The specified Ask {askId} was not found");
     }
 }
