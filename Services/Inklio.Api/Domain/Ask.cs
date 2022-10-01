@@ -8,6 +8,11 @@ namespace Inklio.Api.Domain;
 public class Ask : Entity, IAggregateRoot
 {
     /// <summary>
+    /// The maximum number of tags that can be added to an Ask
+    /// </summary>
+    public const int MaxTagCount = 15;
+
+    /// <summary>
     /// The tags associated with the ask.
     /// </summary>
     private List<AskTag> askTags { get; set; } = new List<AskTag>();
@@ -205,7 +210,7 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
     /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
     /// <param name="title">The title of the <see cref="Ask"/> object.</param>
-    public Ask(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    protected Ask(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
     {
         this.Body = body;
         this.CreatedBy = createdBy;
@@ -213,6 +218,26 @@ public class Ask : Entity, IAggregateRoot
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
         this.Title = title;
+    }
+    
+    /// <summary>
+    /// Creates a new instance of an <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="body">The body of the <see cref="Ask"/> object.</param>
+    /// <param name="createdBy">The creator of the <see cref="Ask"/> object.</param>
+    /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
+    /// <param name="title">The title of the <see cref="Ask"/> object.</param>
+    public static Ask Create(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    {
+        // TODO - Future Validation
+        // 1. User has not created any asks within the last X hours
+        // 2. User has the ability to create a new ask
+        // 3. Validate user can create the specified tag
+        // 4. Validate the user can use the specified tag
+
+        var ask = new Ask(body, createdBy, isNsfl, isNsfw, title);
+        return ask;
     }
 
     /// <summary>
@@ -247,6 +272,11 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public AskComment AddComment(string body, User createdBy)
     {
+        if (this.CanComment == false)
+        {
+            throw new InklioDomainException(400, "New comments cannot be added to this Ask.");
+        }
+
         var comment = new AskComment(this, body, createdBy);
         this.comments.Add(comment);
         return comment;
@@ -302,9 +332,19 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The created tag</returns>
     public void AddTag(bool addToDeliveries, User createdBy, Tag tag)
     {
+        if (this.CanTag == false)
+        {
+            throw new InklioDomainException(400, "Tags cannot be added to this Ask.");
+        }
+
         var existingTagIndex = this.askTags.FindIndex(t => t.TagId == tag.Id);
         if (existingTagIndex < 0)
         {
+            if (this.askTags.Count > MaxTagCount)
+            {
+                throw new InklioDomainException(400, $"The number of tags added to the ask exceeded the maximum amount of {MaxTagCount}");
+            }
+
             this.askTags.Add(new AskTag(this, createdBy, tag));
             this.tags.Add(tag);
 
@@ -348,7 +388,6 @@ public class Ask : Entity, IAggregateRoot
         this.EditedAtUtc = DateTime.UtcNow;
         this.EditedById = userId;
     }
-    
 
     /// <summary>
     /// Marks an Ask as deleted. NOTE: It does not actually delete the Ask.
@@ -359,6 +398,20 @@ public class Ask : Entity, IAggregateRoot
         this.IsDeleted = true;
         this.EditedAtUtc = DateTime.UtcNow;
         this.EditedById = userId;
+    }
+
+    /// <summary>
+    /// Removes a Tag from the ask.
+    /// </summary>
+    /// <param name="tag">The tag to remove</param>
+    /// <param name="user">The user removing the tag.</param>
+    public void RemoveTag(Tag tag, User user)
+    {
+        int tagIndex = this.tags.FindIndex(t => t.Id == tag.Id);
+        if (tagIndex >= 0)
+        {
+            this.tags.RemoveAt(tagIndex);
+        }
     }
 
     /// <summary>

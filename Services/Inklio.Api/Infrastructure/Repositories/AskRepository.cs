@@ -7,10 +7,6 @@ namespace Inklio.Api.Infrastructure.Repositories;
 public class AskRepository : IAskRepository
 {
     private readonly InklioContext context;
-
-    /// <inheritdoc/>
-    public IUnitOfWork MyProperty => context;
-
     public IUnitOfWork UnitOfWork => this.context;
 
     /// <summary>
@@ -39,6 +35,7 @@ public class AskRepository : IAskRepository
     public IQueryable<Ask> Get()
     {
         return this.context.Asks
+            .Where(a => a.IsDeleted == false)
             .Include(e => e.Tags)
             .Include(e => e.Comments)
             .Include(e => e.Deliveries);

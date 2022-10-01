@@ -10,7 +10,7 @@ public class Comment
     /// </summary>
     [JsonPropertyName("id")]
     public int Id { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the Body of the comment.
     /// </summary>
@@ -82,6 +82,12 @@ public class Comment
     /// </summary>
     [JsonPropertyName("save_count")]
     public int SaveCount { get; set; }
+
+    /// <summary>
+    /// Gets or sets the ID of ask for the comment.
+    /// </summary>
+    [JsonPropertyName("thread_id")]
+    public int ThreadId { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times the comment was upvoted.

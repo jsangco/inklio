@@ -105,13 +105,11 @@ public class Comment : Entity, IAggregateRoot
     /// <summary>
     /// Initializes a new instance of a <see cref="Comment"/> object.
     /// </summary>
+#pragma warning disable CS8618
     protected Comment()
     {
-        this.Body = string.Empty;
-        var user = new User("empty username");
-        this.Thread = new Ask("unset body", user, false, false, "unset title");
-        this.CreatedBy = user;
     }
+#pragma warning restore CS8618
 
     /// <summary>
     /// Initilaizes an instance of a <see cref="Comment"/>
@@ -119,13 +117,19 @@ public class Comment : Entity, IAggregateRoot
     /// <param name="ask">The parent <see cref="Ask"/> object</param>
     /// <param name="body">The body of the comment</param>
     /// <param name="createdBy">The comment creator</param>
-    public Comment(Ask ask, string body, User createdBy)
+    protected Comment(Ask ask, string body, User createdBy)
     {
         this.Body = body;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.CreatedBy = createdBy;
         this.Thread = ask;
         this.ThreadId = ask.Id;
+    }
+
+    public static Comment Create(Ask ask, string body, User createdBy)
+    {
+        // TODO - Verify user can create a comment
+        return new Comment(ask, body, createdBy);
     }
 
     /// <summary>

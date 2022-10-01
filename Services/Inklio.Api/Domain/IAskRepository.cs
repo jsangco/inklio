@@ -16,12 +16,6 @@ public interface IAskRepository : IRepository<Ask>
     Task<Ask> AddAsync(Ask ask, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Updates an <see cref="Ask"/> in the repository.
-    /// </summary>
-    /// <param name="ask">The ask to update.</param>
-    void Update(Ask ask);
-
-    /// <summary>
     /// Gets all <see cref="Ask"/> objects from the repository.
     /// </summary>
     /// <returns>All ask obojects</returns>

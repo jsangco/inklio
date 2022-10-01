@@ -18,16 +18,11 @@ public class DeliveryComment : Comment
     /// <summary>
     /// Initializes a new instance of a <see cref="DeliveryComment"/> object.
     /// </summary>
+#pragma warning disable CS8618
     private DeliveryComment()
     {
-        this.Delivery = new Delivery(
-            new Ask("empty body", new User("empty username"), false, false, "empty title"),
-            "empty body",
-            new User("empty username"),
-            false,
-            false,
-            "empty title");
     }
+#pragma warning restore CS8618
 
     /// <summary>
     /// Initilaizes an instance of a <see cref="DeliveryComment"/>

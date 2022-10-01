@@ -8,8 +8,25 @@ namespace Inklio.Api.Domain;
 public interface ITagRepository : IRepository<Tag>
 {
     /// <summary>
-    /// Gets a <see cref="Tag"/> objects from the repository based on the type and vaule. If no tag exsists, a new tag is created.
+    /// Adds a tag to the repository.
     /// </summary>
-    /// <returns>All tag obojects</returns>
-    Tag GetOrCreate(string type, string value);
+    /// <param name="tag">The tag to add</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    Task AddAsync(Tag tag, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Deletes a tag.
+    /// </summary>
+    /// <param name="type">The type of the tag</param>
+    /// <param name="value">The value of the tag</param>
+    void Delete(string type, string value);
+
+    /// <summary>
+    /// Attempts to fetcha a <see cref="Tag"/> from the tag repository.
+    /// </summary>
+    /// <param name="type">The type of the tag</param>
+    /// <param name="value">The value of the tag</param>
+    /// <param name="tag">An out parameter that contains the tag if it exists</param>
+    /// <returns>A flag indicating if the Tag exists in the repository.</returns>
+    bool TryGetByName(string type, string value, out Tag? tag);
 }

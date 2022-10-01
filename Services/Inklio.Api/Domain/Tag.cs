@@ -8,6 +8,16 @@ namespace Inklio.Api.Domain;
 public class Tag : Entity, IAggregateRoot
 {
     /// <summary>
+    /// The default type of a tag if one does not exist 
+    /// </summary>
+    public const string DefaultTagType = "general";
+
+    /// <summary>
+    /// The maximum number of characters a tag value or type can have. 
+    /// </summary>
+    public const int MaxTagLength = 32;
+
+    /// <summary>
     /// Gets a collection of <see cref="Ask"/> objects associated with the <see cref="Tag"/>.
     /// </summary>
     public IReadOnlyCollection<Ask> Asks { get; private set; } = new List<Ask>();
@@ -64,21 +74,46 @@ public class Tag : Entity, IAggregateRoot
     /// <param name="type">The type of the tag.</param>
     /// <param name="value">The value of the tag.</param>
     /// <exception cref="ArgumentException"></exception>
-    public Tag(User createdBy, string type, string value)
+    protected Tag(User createdBy, string type, string value)
     {
-        if (string.IsNullOrWhiteSpace(type) || type.Length < 1 || type.Length > 32)
-        {
-            throw new ArgumentNullException($"'{nameof(type)}' cannot be null or empty.", nameof(type));
-        }
-
-        if (string.IsNullOrWhiteSpace(value) || type.Length < 1 || type.Length > 32)
-        {
-            throw new ArgumentNullException($"'{nameof(value)}' cannot be null or empty.", nameof(value));
-        }
-
         this.CreatedBy = createdBy;
         this.Type = type;
         this.Value = value;
         this.CreatedAtUtc = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Creates a new instance of a <see cref="Tag"/> object.
+    /// </summary>
+    /// <param name="createdBy">The user that created the tag.</param>
+    /// <param name="type">The type of the tag.</param>
+    /// <param name="value">The value of the tag.</param>
+    /// <exception cref="ArgumentException"></exception>
+    public static Tag Create(User createdBy, string type, string value)
+    {
+        // TODO - Validate User can create a new tag
+
+        if (type.Length < 1 || type.Length > 32)
+        {
+            throw new InklioDomainException(400, $"Invalid tag. A tag type cannot be longer than {Tag.MaxTagLength} characters");
+        }
+
+        if (string.IsNullOrWhiteSpace(value) || value.Length < 1 || value.Length > Tag.MaxTagLength)
+        {
+            throw new InklioDomainException(400, $"Invalid tag. A tag must have a value and cannot be longer than {Tag.MaxTagLength} characters");
+        }
+
+        string tagType = string.IsNullOrWhiteSpace(type) ? Tag.DefaultTagType : type;
+        string tagValue = value.ToLowerInvariant();
+        return new Tag(createdBy, tagType, tagValue);
+    }
+
+    /// <summary>
+    /// Converts the tag to a string in the format "tagType:tagValue"
+    /// </summary>
+    /// <returns>The tag to a string in the format "tagType:tagValue"</returns>
+    public override string ToString()
+    {
+        return $"{this.Type}:{this.Value}";
     }
 }

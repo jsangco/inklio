@@ -20,4 +20,12 @@ public class Tag
     [JsonPropertyName("value")]
     public string Value { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Converts the tag to a string in the format "tagType:tagValue"
+    /// </summary>
+    /// <returns>The tag to a string in the format "tagType:tagValue"</returns>
+    public override string ToString()
+    {
+        return $"{this.Type}:{this.Value}";
+    }
 }

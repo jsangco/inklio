@@ -5,6 +5,11 @@ namespace Inklio.Api.Domain;
 public class User : Entity, IAggregateRoot
 {
     /// <summary>
+    /// The temporary ID used for all users until registration has been completed. 
+    /// </summary>
+    public const int TemporaryGlobalUserId = 1;
+
+    /// <summary>
     /// Gets the asks created by the user.
     /// </summary>
     public IReadOnlyCollection<Ask> Asks { get; private set; } = new List<Ask>();

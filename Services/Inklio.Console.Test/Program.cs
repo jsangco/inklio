@@ -24,12 +24,12 @@ using (var scope = container.BeginLifetimeScope())
     var user = context.Users.First();
     if (context.Tags.Count() < 1)
     {
-        context.Tags.Add(new Tag(user, "testType", "testValue"));
+        context.Tags.Add(Tag.Create(user, "testType", "testValue"));
         context.SaveChanges();
     }
     if (context.Asks.Count() < 2)
     {
-        var ask = new Ask("myAskBody4", user, true, true, "myAskTitle3");
+        var ask = Ask.Create("myAskBody4", user, true, true, "myAskTitle3");
         ask.AddDelivery("myDeliveryBody", user, false, true, "myDeliveryTitle");
         ask.AddComment("myCommentBody", user);
         context.Asks.Add(ask);

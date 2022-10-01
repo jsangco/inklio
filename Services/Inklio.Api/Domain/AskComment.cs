@@ -18,11 +18,12 @@ public class AskComment : Comment
     /// <summary>
     /// Initializes a new instance of a <see cref="AskComment"/> object.
     /// </summary>
+#pragma warning disable CS8618
     private AskComment()
     {
-        var user = new User("empty username");
-        this.Ask = new Ask("empty body", user, false, false, "empty title");
     }
+#pragma warning restore CS8618
+
 
     /// <summary>
     /// Initilaizes an instance of a <see cref="AskComment"/>
