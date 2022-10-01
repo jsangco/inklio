@@ -20,7 +20,7 @@ public class InklioDependencyModule : Autofac.Module
     {
         builder.RegisterType<MyService>().AsSelf();
 
-        if (this.hostEnvironment.IsDevelopment() && false)
+        if (this.hostEnvironment.IsDevelopment())
         {
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
