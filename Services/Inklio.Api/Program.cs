@@ -43,7 +43,7 @@ appBuilder.Services.AddHealthChecks()
 var app = appBuilder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment()) Leaving swagger on for now
 {
     app.UseSwagger();
     app.UseSwaggerUI();
