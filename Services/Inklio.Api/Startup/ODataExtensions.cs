@@ -22,7 +22,7 @@ public static class ODataExtensions
             options.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
             options.RouteOptions.EnablePropertyNameCaseInsensitive = true;
             options.UrlKeyDelimiter = ODataUrlKeyDelimiter.Slash;
-            options.AddRouteComponents("v1", CreateEdmModel());
+            // options.AddRouteComponents("v1", CreateEdmModel());
         });
         return mvcBuilder;
     }
@@ -33,15 +33,12 @@ public static class ODataExtensions
         builder.ModelAliasingEnabled = true;
         builder.EnableLowerCamelCase();
         var ask = builder.EntitySet<Ask>("Asks");
-        ask.EntityType.Name = "Ask";
         builder.EntityType<Ask>()
             .HasKey(e => e.Id);
         var delivery = builder.EntitySet<Delivery>("Deliveries");
-        delivery.EntityType.Name = "Delivery";
         builder.EntityType<Delivery>()
             .HasKey(e => e.Id);
         var comment = builder.EntitySet<Comment>("Comments");
-        comment.EntityType.Name = "Comment";
         builder.EntityType<Comment>()
             .HasKey(e => e.Id);
 

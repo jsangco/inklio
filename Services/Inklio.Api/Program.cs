@@ -8,6 +8,9 @@ using System.Text.Json.Serialization;
 using Inklio.Api.Startup;
 using Inklio.Api.Dependencies;
 using Inklio.Api.Infrastructure.Filters;
+using Inklio.Api.Infrastructure;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 appBuilder.Host
@@ -21,7 +24,7 @@ appBuilder.Host
         builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration, hostContext.HostingEnvironment));
     });
 
-appBuilder.Services.AddControllers( options =>
+appBuilder.Services.AddControllers(options =>
     {
         options.Filters.Add<HttpGlobalExceptionFilter>();
         options.Filters.Add<ValidateModelStateFilter>();
@@ -30,8 +33,7 @@ appBuilder.Services.AddControllers( options =>
     .AddJsonOptions(jsonOptions =>
     {
 	    jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-	    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-	    jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+        jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
     });
 appBuilder.Services.AddEndpointsApiExplorer();
 appBuilder.Services.AddSwaggerGen();

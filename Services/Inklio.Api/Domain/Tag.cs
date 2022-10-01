@@ -5,7 +5,7 @@ namespace Inklio.Api.Domain;
 /// <summary>
 /// Creates a tag for an object
 /// </summary>
-public class Tag : Entity
+public class Tag : Entity, IAggregateRoot
 {
     /// <summary>
     /// Gets a collection of <see cref="Ask"/> objects associated with the <see cref="Tag"/>.

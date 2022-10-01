@@ -190,7 +190,7 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Initializes a new instance of a <see cref="Ask"/> object.
     /// </summary>
-    private Ask()
+    protected Ask()
     {
         this.Body = string.Empty;
         this.Title = string.Empty;

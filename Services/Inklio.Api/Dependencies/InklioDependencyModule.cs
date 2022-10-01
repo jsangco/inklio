@@ -31,11 +31,11 @@ public class InklioDependencyModule : Autofac.Module
         }
         else
         {
-            // string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
-            string connectionString = "Server=tcp:inklio.database.windows.net,1433;Initial Catalog=inklio;Persist Security Info=False;User ID=adminaoeu;Password=d4hQqkHbtue7fDbk54dGdhb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
-                return new DbContextOptionsBuilder<InklioContext>()
+                var optionBuilder = new DbContextOptionsBuilder<InklioContext>()
+                    .LogTo(Console.WriteLine)
                     .UseSnakeCaseNamingConvention()
                     .UseSqlServer(connectionString, sqlServerOptions =>
                     {
@@ -43,7 +43,14 @@ public class InklioDependencyModule : Autofac.Module
                             maxRetryCount: 5,
                             maxRetryDelay: TimeSpan.FromSeconds(30),
                             errorNumbersToAdd: null);
-                    }).Options;
+                    });
+
+                if (this.hostEnvironment.IsDevelopment())
+                {
+                    optionBuilder.LogTo(Console.WriteLine);
+                }
+
+                return optionBuilder.Options;
             }).SingleInstance();
         }
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();

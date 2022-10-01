@@ -11,7 +11,7 @@ public class AskRepository : IAskRepository
     /// <inheritdoc/>
     public IUnitOfWork MyProperty => context;
 
-    public IUnitOfWork UnitOfWork => throw new NotImplementedException();
+    public IUnitOfWork UnitOfWork => this.context;
 
     /// <summary>
     /// Initialize of a new instance of a <see cref="AskRepository"/> object
@@ -38,7 +38,10 @@ public class AskRepository : IAskRepository
     /// <inheritdoc/>
     public IQueryable<Ask> Get()
     {
-        return this.context.Asks;
+        return this.context.Asks
+            .Include(e => e.Tags)
+            .Include(e => e.Comments)
+            .Include(e => e.Deliveries);
     }
 
     /// <inheritdoc/>
