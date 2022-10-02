@@ -10,7 +10,7 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
 {
     public void Configure(EntityTypeBuilder<Delivery> builder)
     {
-        builder.ToTable("delivery", InklioContext.DefaultDbSchema);
+        builder.ToTable("delivery", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

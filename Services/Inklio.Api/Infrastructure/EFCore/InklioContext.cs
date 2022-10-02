@@ -7,7 +7,7 @@ namespace Inklio.Api.Infrastructure.EFCore;
 
 public sealed class InklioContext : DbContext, IUnitOfWork
 {
-    public const string DefaultDbSchema = "inklio";
+    public static string DbSchema { get; private set; } = "inklio";
     
     private readonly IMediator mediator;
 
@@ -22,6 +22,16 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
+
+    /// <summary>
+    /// Set the global db schema. The default is "inklio" and targets the production environment. This value
+    /// can be changed to target a staging environment schema.
+    /// </summary>
+    /// <param name="dbSchema">The schema to change to</param>
+    public static void SetDbSchema(string dbSchema)
+    {
+        DbSchema = dbSchema;
     }
 
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)

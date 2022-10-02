@@ -10,7 +10,7 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
 {
     public void Configure(EntityTypeBuilder<Comment> builder)
     {
-        builder.ToTable("comment", InklioContext.DefaultDbSchema);
+        builder.ToTable("comment", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

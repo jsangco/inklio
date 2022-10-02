@@ -10,7 +10,7 @@ class DeliveryCommentEntityTypeConfiguration : IEntityTypeConfiguration<Delivery
 {
     public void Configure(EntityTypeBuilder<DeliveryComment> builder)
     {
-        builder.ToTable("comment", InklioContext.DefaultDbSchema);
+        builder.ToTable("comment", InklioContext.DbSchema);
 
         builder
             .HasOne(e => e.Delivery)

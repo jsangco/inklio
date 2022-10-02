@@ -10,7 +10,7 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
 {
     public void Configure(EntityTypeBuilder<Ask> builder)
     {
-        builder.ToTable("ask", InklioContext.DefaultDbSchema);
+        builder.ToTable("ask", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

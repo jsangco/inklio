@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 Console.WriteLine("Starting program");
 
-var configuration = new ConfigurationBuilder().Build();
+var configuration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 ContainerBuilder builder = new ContainerBuilder();
 builder.RegisterModule(new InklioDependencyModule(configuration, new TestHost()));
 IContainer container = builder.Build();

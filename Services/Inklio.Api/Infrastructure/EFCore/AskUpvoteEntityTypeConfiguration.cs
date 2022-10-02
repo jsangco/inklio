@@ -10,7 +10,7 @@ class AskUpvoteEntityTypeConfiguration : IEntityTypeConfiguration<AskUpvote>
 {
     public void Configure(EntityTypeBuilder<AskUpvote> builder)
     {
-        builder.ToTable("upvote", InklioContext.DefaultDbSchema);
+        builder.ToTable("upvote", InklioContext.DbSchema);
 
         builder
             .HasOne(e => e.Ask)

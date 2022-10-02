@@ -10,7 +10,7 @@ class AskCommentEntityTypeConfiguration : IEntityTypeConfiguration<AskComment>
 {
     public void Configure(EntityTypeBuilder<AskComment> builder)
     {
-        builder.ToTable("comment", InklioContext.DefaultDbSchema);
+        builder.ToTable("comment", InklioContext.DbSchema);
 
         builder
             .HasOne(e => e.Ask)

@@ -10,7 +10,7 @@ class UpvoteEntityTypeConfiguration : IEntityTypeConfiguration<Upvote>
 {
     public void Configure(EntityTypeBuilder<Upvote> builder)
     {
-        builder.ToTable("upvote", InklioContext.DefaultDbSchema);
+        builder.ToTable("upvote", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

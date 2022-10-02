@@ -10,7 +10,7 @@ class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
-        builder.ToTable("tag", InklioContext.DefaultDbSchema);
+        builder.ToTable("tag", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

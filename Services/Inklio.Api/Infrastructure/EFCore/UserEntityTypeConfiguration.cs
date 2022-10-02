@@ -10,7 +10,7 @@ class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("user", InklioContext.DefaultDbSchema);
+        builder.ToTable("user", InklioContext.DbSchema);
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();

@@ -10,7 +10,7 @@ class DeliveryUpvoteEntityTypeConfiguration : IEntityTypeConfiguration<DeliveryU
 {
     public void Configure(EntityTypeBuilder<DeliveryUpvote> builder)
     {
-        builder.ToTable("upvote", InklioContext.DefaultDbSchema);
+        builder.ToTable("upvote", InklioContext.DbSchema);
 
         builder
             .HasOne(e => e.Delivery)

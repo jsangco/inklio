@@ -20,7 +20,8 @@ public class InklioDependencyModule : Autofac.Module
     {
         builder.RegisterType<MyService>().AsSelf();
 
-        if (this.hostEnvironment.IsDevelopment())
+        string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+        if (this.hostEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(connectionString))
         {
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
@@ -31,7 +32,6 @@ public class InklioDependencyModule : Autofac.Module
         }
         else
         {
-            string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
                 var optionBuilder = new DbContextOptionsBuilder<InklioContext>()

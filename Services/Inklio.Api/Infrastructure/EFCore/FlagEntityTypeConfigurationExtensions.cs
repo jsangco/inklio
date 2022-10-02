@@ -10,10 +10,10 @@ public static class FlagEntityTypeConfigurationExtensions
 {
     public static ModelBuilder ApplyFlagEntityConfiguration(this ModelBuilder builder)
     {
-        builder.Entity<Flag>().ToTable("flag", InklioContext.DefaultDbSchema);
-        builder.Entity<AskFlag>().ToTable("flag", InklioContext.DefaultDbSchema);
-        builder.Entity<CommentFlag>().ToTable("flag", InklioContext.DefaultDbSchema);
-        builder.Entity<DeliveryFlag>().ToTable("flag", InklioContext.DefaultDbSchema);
+        builder.Entity<Flag>().ToTable("flag", InklioContext.DbSchema);
+        builder.Entity<AskFlag>().ToTable("flag", InklioContext.DbSchema);
+        builder.Entity<CommentFlag>().ToTable("flag", InklioContext.DbSchema);
+        builder.Entity<DeliveryFlag>().ToTable("flag", InklioContext.DbSchema);
 
         builder.Entity<Flag>().HasKey(e => e.Id).IsClustered();
         builder.Entity<Flag>().HasIndex(e => e.Id).IsUnique();

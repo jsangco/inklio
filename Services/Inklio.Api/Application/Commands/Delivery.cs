@@ -63,13 +63,13 @@ public class Delivery
     /// Gets or sets the UTC time the delivery was last edited.
     /// </summary>
     [JsonPropertyName("edited_at_utc")]
-    public DateTime EditedAtUtc { get; set; }
+    public DateTime? EditedAtUtc { get; set; }
 
     /// <summary>
     /// Gets or sets the id of the user that edited the delivery.
     /// </summary>    
     [JsonPropertyName("edited_by_id")]
-    public int EditedById { get; set; }
+    public int? EditedById { get; set; }
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
