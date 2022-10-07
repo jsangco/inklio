@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Repositories;
 using MediatR.Extensions.Autofac.DependencyInjection;
@@ -20,8 +21,8 @@ public class InklioDependencyModule : Autofac.Module
     {
         builder.RegisterType<MyService>().AsSelf();
 
-        string connectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
-        if (this.hostEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(connectionString))
+        string sqlConnectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+        if (this.hostEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(sqlConnectionString))
         {
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
@@ -37,7 +38,7 @@ public class InklioDependencyModule : Autofac.Module
                 var optionBuilder = new DbContextOptionsBuilder<InklioContext>()
                     .LogTo(Console.WriteLine)
                     .UseSnakeCaseNamingConvention()
-                    .UseSqlServer(connectionString, sqlServerOptions =>
+                    .UseSqlServer(sqlConnectionString, sqlServerOptions =>
                     {
                         sqlServerOptions.EnableRetryOnFailure(
                             maxRetryCount: 5,
@@ -53,8 +54,13 @@ public class InklioDependencyModule : Autofac.Module
                 return optionBuilder.Options;
             }).SingleInstance();
         }
+
+        builder.Register<BlobServiceClient>(ctx => new BlobServiceClient(this.configuration.GetConnectionString("InklioStorageConnectionString"))).SingleInstance();
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
         builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
+        builder.RegisterType<BlobRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
+        builder.RegisterType<TagRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
+        builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterMediatR(typeof(Program).Assembly);
         builder.RegisterModule(new MediatorDependencyModule());
     }

@@ -13,6 +13,11 @@ public class Ask : Entity, IAggregateRoot
     public const int MaxTagCount = 15;
 
     /// <summary>
+    /// The maximum number of images that can be added to an Ask.
+    /// </summary>
+    public const int MaxAskImageCount = 5;
+
+    /// <summary>
     /// The tags associated with the ask.
     /// </summary>
     private List<AskTag> askTags { get; set; } = new List<AskTag>();
@@ -113,9 +118,19 @@ public class Ask : Entity, IAggregateRoot
     public IReadOnlyCollection<AskFlag> Flags => this.flags;
 
     /// <summary>
-    /// Gets or sets the number of times an account was flagged.
+    /// Gets the number of times an account was flagged.
     /// </summary>
     public int FlagCount { get; private set; }
+
+    /// <summary>
+    /// The images associated with the ask.
+    /// </summary>
+    private List<AskImage> images = new List<AskImage>();
+
+    /// <summary>
+    /// Gets the images associated with the ask.
+    /// </summary>m
+    public IReadOnlyCollection<AskImage> Images => this.images;
 
     /// <summary>
     /// Gets a flag indicating whether or not the ask is deleted.
@@ -324,6 +339,18 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Adds a comment to the <see cref="Ask"/> object.
+    /// </summary>
+    /// <param name="image">The image to add</param>
+    /// <param name="createdBy">The user adding the blob</param>
+    /// <returns>The newly created comment</returns>
+    public void AddImage(AskImage image, User createdBy)
+    {
+        ValidateCanAddAskImages(1, createdBy);
+        this.images.Add(image);
+    }
+
+    /// <summary>
     /// Add a tag to the <see cref="Ask"/> object.
     /// </summary>
     /// <param name="addToDeliveries">A flag indicating whether to add the tag to chilld deliveries</param>
@@ -375,6 +402,30 @@ public class Ask : Entity, IAggregateRoot
         }
 
         return this.upvotes[existingUpvoteIndex];
+    }
+
+    /// <summary>
+    /// Validates that a number of blobs can be added to an ask.
+    /// </summary>
+    /// <param name="blobCount">The number of blobs to check that can be added.</param>
+    /// <param name="createdby">The user that wants to add the blobs</param>
+    /// <exception cref="InklioDomainException">An exception is thrown if the number of blobs cannot be added.</exception>
+    public void ValidateCanAddAskImages(int blobCount, User createdBy)
+    {
+        if (this.CreatedBy != createdBy)
+        {
+            throw new InklioDomainException(403, $"Only the Ask creator can add images.");
+        }
+
+        if (blobCount + this.images.Count > MaxAskImageCount)
+        {
+            throw new InklioDomainException(400, $"Cannot add more than {MaxAskImageCount} images to an Ask.");
+        }
+
+        if (this.CanEdit == false)
+        {
+            throw new InklioDomainException(400, $"Unable to add images. This Ask is no longer editable.");
+        }
     }
 
     /// <summary>

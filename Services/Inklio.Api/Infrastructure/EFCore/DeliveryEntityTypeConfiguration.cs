@@ -24,6 +24,10 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         builder
             .HasMany(e => e.Comments)
             .WithOne();
+
+        builder
+            .HasMany(e => e.Images)
+            .WithOne();
     
         builder
             .HasMany(e => e.Tags)

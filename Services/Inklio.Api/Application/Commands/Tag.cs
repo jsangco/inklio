@@ -12,7 +12,7 @@ public class Tag
     /// Gets the type of the tag.
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; set; } = "general";
 
     /// <summary>
     /// Gets the value of the tag.

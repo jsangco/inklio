@@ -21,7 +21,7 @@ public class DeliveryCommentCreateCommandHandler : IRequestHandler<DeliveryComme
     public async Task<bool> Handle(DeliveryCommentCreateCommand request, CancellationToken cancellationToken)
     {
         var user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
-        var ask = await this.askRepository.GetByIdAsync(request.AskId, cancellationToken);
+        var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         var delivery = ask.Deliveries.FirstOrDefault(d => d.Id == request.DeliveryId);
         if (delivery is null)

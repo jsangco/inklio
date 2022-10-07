@@ -94,6 +94,12 @@ public class Ask
     public int FlagCount { get; set; }
 
     /// <summary>
+    /// Gets or sets the images of the ask.
+    /// </summary>
+    [JsonPropertyName("images")]
+    public IEnumerable<AskImage> Images { get; set; } = Array.Empty<AskImage>();
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not the ask is deleted.
     /// </summary>
     [JsonPropertyName("is_deleted")]

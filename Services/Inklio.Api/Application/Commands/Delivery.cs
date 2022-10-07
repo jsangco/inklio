@@ -78,6 +78,12 @@ public class Delivery
     public int FlagCount { get; set; }
 
     /// <summary>
+    /// Gets or sets the images of the ask.
+    /// </summary>
+    [JsonPropertyName("images")]
+    public IEnumerable<DeliveryImage> Images { get; set; } = Array.Empty<DeliveryImage>();
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is deleted.
     /// </summary>
     [JsonPropertyName("is_deleted")]

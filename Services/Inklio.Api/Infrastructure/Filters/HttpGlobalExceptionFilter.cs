@@ -29,7 +29,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
                 Detail = "Please refer to the errors property for additional details."
             };
 
-            problemDetails.Errors.Add("DomainValidations", new string[] { context.Exception.Message.ToString() });
+            problemDetails.Errors.Add("reasons", new string[] { context.Exception.Message.ToString() });
 
             context.Result = new BadRequestObjectResult(problemDetails);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;

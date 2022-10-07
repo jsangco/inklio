@@ -21,6 +21,7 @@ public static class ODataExtensions
             options.RouteOptions.EnableControllerNameCaseInsensitive = true;
             options.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
             options.RouteOptions.EnablePropertyNameCaseInsensitive = true;
+            options.RouteOptions.EnableKeyInParenthesis = true;
             options.UrlKeyDelimiter = ODataUrlKeyDelimiter.Slash;
             // options.AddRouteComponents("v1", CreateEdmModel());
         });

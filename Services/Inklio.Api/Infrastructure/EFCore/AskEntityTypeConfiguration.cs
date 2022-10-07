@@ -26,6 +26,10 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
             .WithOne();
 
         builder
+            .HasMany(e => e.Images)
+            .WithOne();
+
+        builder
             .HasMany(e => e.Tags)
             .WithMany(e => e.Asks)
             .UsingEntity<AskTag>(

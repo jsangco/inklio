@@ -19,7 +19,7 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Ask> AddAsync(Ask ask, CancellationToken cancellationToken)
+    public async Task<Ask> AddAskAsync(Ask ask, CancellationToken cancellationToken)
     {
         var addedAsk = await this.context.Asks.AddAsync(ask, cancellationToken);
         return addedAsk.Entity;
@@ -32,7 +32,7 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public IQueryable<Ask> Get()
+    public IQueryable<Ask> GetAsks()
     {
         return this.context.Asks
             .Where(a => a.IsDeleted == false)
@@ -42,7 +42,7 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Ask> GetByIdAsync(int askId, CancellationToken cancellationToken)
+    public async Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken)
     {
         Ask? ask = await this.context.Asks
             .Include(a => a.Tags)
@@ -56,5 +56,12 @@ public class AskRepository : IAskRepository
         }
 
         throw new InklioDomainException(404, $"The specified Ask {askId} was not found");
+    }
+
+    /// <inheritdoc/>
+    public bool TryGetTagByName(string type, string value, out Tag? tag)
+    {
+        tag = this.context.Tags.FirstOrDefault(t => t.Type == type && t.Value == value);
+        return tag is not null;
     }
 }

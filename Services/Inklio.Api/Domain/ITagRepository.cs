@@ -3,7 +3,7 @@ using Inklio.Api.SeedWork;
 namespace Inklio.Api.Domain;
 
 /// <summary>
-/// An interface for an <see cref="Tag"/> repository
+/// An interface for a <see cref="Tag"/> repository
 /// </summary>
 public interface ITagRepository : IRepository<Tag>
 {

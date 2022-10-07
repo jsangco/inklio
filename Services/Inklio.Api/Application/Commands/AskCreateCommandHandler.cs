@@ -4,11 +4,13 @@ using MediatR;
 using CommandAsk = Inklio.Api.Application.Commands.Ask;
 using CommandTag = Inklio.Api.Application.Commands.Tag;
 using DomainAsk = Inklio.Api.Domain.Ask;
+using DomainAskImage = Inklio.Api.Domain.AskImage;
 using DomainTag = Inklio.Api.Domain.Tag;
 
 public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
 {
     private readonly IAskRepository askRepository;
+    private readonly IBlobRepository blobRepository;
     private readonly IUserRepository userRepository;
     private readonly ITagRepository tagRepository;
 
@@ -16,12 +18,18 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     /// Initializes an instance of a new <see cref="AskCreateCommandHandler"/>
     /// </summary>
     /// <param name="askRepository">A repository for ask objects</param>
-    /// <param name="userRepository">A repository for user objects</param>
+    /// <param name="blobRepository">A repository for blob objects</param>
     /// <param name="tagRepository">A repository for tag objects</param>
+    /// <param name="userRepository">A repository for user objects</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public AskCreateCommandHandler(IAskRepository askRepository, IUserRepository userRepository, ITagRepository tagRepository)
+    public AskCreateCommandHandler(
+        IAskRepository askRepository,
+        IBlobRepository blobRepository,
+        ITagRepository tagRepository,
+        IUserRepository userRepository)
     {
         this.askRepository = askRepository ?? throw new ArgumentNullException(nameof(askRepository));
+        this.blobRepository = blobRepository ?? throw new ArgumentNullException(nameof(blobRepository));
         this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         this.tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
     }
@@ -41,55 +49,105 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
         DomainAsk ask = DomainAsk.Create(request.Body, user, request.IsNsfl, request.IsNswf, request.Title);
 
         // Get and add tags to the new Ask
-        IEnumerable<DomainTag> tags = await this.GetOrCreateTagsAsync(request.Tags, user, cancellationToken);
+        IEnumerable<DomainTag> tags = this.GetOrCreateTags(request.Tags, user);
         foreach (var tag in tags)
         {
             ask.AddTag(false, user, tag);
         }
 
-        // Add the ask in the repository
-        await this.askRepository.AddAsync(ask, cancellationToken);
+        // Upload relevant images to storage
+        var forms = request.Images == null ? new IFormFile[] { } : new IFormFile[] { request.Images };
+        IEnumerable<DomainAskImage> askImages = await this.StoreAskImageAsync(ask, forms, user, cancellationToken);
 
-        // Save changes
-        await this.askRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        try
+        {
+            // Add images to the ask
+            foreach (var image in askImages)
+            {
+                ask.AddImage(image, user);
+            }
+
+            // Add the ask in the repository
+            await this.askRepository.AddAskAsync(ask, cancellationToken);
+
+            // Save changes
+            await this.askRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception)
+        {
+            // If an ask image was created, then there was an image uploaded to storage.
+            // We need to delete uploads as part of a compensary transaction.
+            var deleteTasks = askImages
+                .Select(askImages => this.blobRepository.DeleteAskImageAsync(askImages.Name, cancellationToken))
+                .ToArray();
+            await Task.WhenAll(deleteTasks);
+
+            throw;
+        }
 
         return true;
     }
 
     /// <summary>
-    /// Gets all tags from the tag repository. If a tag does not exist, it is added to the repository.
+    /// Gets all tags from the tag repository. If a tag does not exist, it creates a new one.
     /// </summary>
     /// <param name="tags">The tags to get.</param>
     /// <param name="user">The user creating getting or creating the tags</param>
-    /// <param name="cancellationToken">A cancellation token</param>
     /// <returns>A collection of all relevant Tags that were retrieved from the repository.</returns>
-    private async Task<IEnumerable<DomainTag>> GetOrCreateTagsAsync(IEnumerable<CommandTag> tags, User user, CancellationToken cancellationToken)
+    private IEnumerable<DomainTag> GetOrCreateTags(IEnumerable<CommandTag> tags, User user)
     {
         // Get all existing tags
         var existingTags = new List<DomainTag>();
         foreach (var askTag in tags)
         {
-            this.tagRepository.TryGetByName(askTag.Type, askTag.Value, out DomainTag? tag);
+            this.askRepository.TryGetTagByName(askTag.Type, askTag.Value, out DomainTag? tag);
             if (tag is not null)
             {
                 existingTags.Add(tag);
             }
         }
         
-        // Add any tags that don't exist to the repository.
+        // Create any tags that don't exist
         var newTags = tags.Select(t => t.ToString()).Except(existingTags.Select(t => t.ToString()));
         foreach (var newTag in newTags)
         {
             var tagSplit = newTag.Split(':');
-            var tag = DomainTag.Create(user, tagSplit[0], tagSplit[1]);
-            await this.tagRepository.AddAsync(tag, cancellationToken);
+            var tagType = string.IsNullOrWhiteSpace(tagSplit[0]) ? DomainTag.DefaultTagType : tagSplit[0];
+            var tagValue = tagSplit[1];
+            var tag = DomainTag.Create(user, tagType, tagValue);
 
             // Add to the list of existing tags to be returned later
             existingTags.Add(tag);
         }
 
-        await this.tagRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-
         return existingTags;
+    }
+
+    /// <summary>
+    /// Creates new AskImages and uploads their data to storage.
+    /// </summary>
+    /// <param name="ask">The associated ask.</param>
+    /// <param name="forms">The image to upload</param>
+    /// <param name="user">The user uploading the image</param>
+    /// <param name="cancellationToken">A cancelation token</param>
+    /// <returns>The AskImage if it was created. Null if no AskImage was created.</returns>
+    private async Task<IEnumerable<DomainAskImage>> StoreAskImageAsync(DomainAsk ask, IEnumerable<IFormFile> forms, User user, CancellationToken cancellationToken)
+    {
+        ask.ValidateCanAddAskImages(forms.Count(), user); // Validate we can add the images before we start uploading forms.
+
+        // Create the AskImages. This is done first so that domain validation can be done.
+        var images = forms.Select(form => DomainAskImage.Create(ask, form.ContentType, user, form.Length)).ToArray();
+
+        // Upload each image to storage then set it on the blob
+        var imagesAndForms = images.Zip(forms);
+        foreach (var imageAndForm in imagesAndForms)
+        {
+            var image = imageAndForm.First;
+            var form = imageAndForm.Second;
+            Uri blobUri = await this.blobRepository.AddAskImageAsync(image.ContentType, form, image.Name, cancellationToken);
+            image.SetUrl(blobUri);
+        }
+
+        return images;
     }
 }

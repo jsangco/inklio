@@ -21,7 +21,7 @@ public class AskCommentCreateCommandHandler : IRequestHandler<AskCommentCreateCo
     public async Task<bool> Handle(AskCommentCreateCommand request, CancellationToken cancellationToken)
     {
         var user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
-        var ask = await this.askRepository.GetByIdAsync(request.AskId, cancellationToken);
+        var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         ask.AddComment(request.Body, user);
 

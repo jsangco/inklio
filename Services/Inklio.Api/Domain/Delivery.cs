@@ -114,6 +114,16 @@ public class Delivery : Entity, IAggregateRoot
     public int FlagCount { get; private set; }
 
     /// <summary>
+    /// The images associated with the ask.
+    /// </summary>
+    private List<DeliveryImage> images = new List<DeliveryImage>();
+
+    /// <summary>
+    /// Gets the images associated with the ask.
+    /// </summary>m
+    public IReadOnlyCollection<DeliveryImage> Images => this.images;
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is deleted.
     /// </summary>
     public bool IsDeleted { get; private set; }

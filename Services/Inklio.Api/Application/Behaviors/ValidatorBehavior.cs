@@ -30,8 +30,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
         {
             this.logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
 
-            throw new InklioDomainException(
-                400, $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+            throw new InklioDomainException(400, string.Join(", ", failures.Select(f => f.ErrorMessage)));
         }
 
         return await next();
