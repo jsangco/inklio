@@ -56,8 +56,8 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
         }
 
         // Upload relevant images to storage
-        var forms = request.Images == null ? new IFormFile[] { } : new IFormFile[] { request.Images };
-        IEnumerable<DomainAskImage> askImages = await this.StoreAskImageAsync(ask, forms, user, cancellationToken);
+        IEnumerable<IFormFile> forms = request?.Images ?? new IFormFile[] { };
+        IEnumerable<DomainAskImage> askImages = await this.CreateImageAsync(ask, forms, user, cancellationToken);
 
         try
         {
@@ -78,7 +78,7 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
             // If an ask image was created, then there was an image uploaded to storage.
             // We need to delete uploads as part of a compensary transaction.
             var deleteTasks = askImages
-                .Select(askImages => this.blobRepository.DeleteAskImageAsync(askImages.Name, cancellationToken))
+                .Select(askImages => this.blobRepository.DeleteAskBlobAsync(askImages.Name, cancellationToken))
                 .ToArray();
             await Task.WhenAll(deleteTasks);
 
@@ -131,12 +131,12 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     /// <param name="user">The user uploading the image</param>
     /// <param name="cancellationToken">A cancelation token</param>
     /// <returns>The AskImage if it was created. Null if no AskImage was created.</returns>
-    private async Task<IEnumerable<DomainAskImage>> StoreAskImageAsync(DomainAsk ask, IEnumerable<IFormFile> forms, User user, CancellationToken cancellationToken)
+    private async Task<IEnumerable<DomainAskImage>> CreateImageAsync(DomainAsk ask, IEnumerable<IFormFile> forms, User user, CancellationToken cancellationToken)
     {
-        ask.ValidateCanAddAskImages(forms.Count(), user); // Validate we can add the images before we start uploading forms.
+        ask.ValidateCanAddImages(forms.Count(), user); // Validate we can add the images before we start uploading forms.
 
         // Create the AskImages. This is done first so that domain validation can be done.
-        var images = forms.Select(form => DomainAskImage.Create(ask, form.ContentType, user, form.Length)).ToArray();
+        var images = forms.Select(form => DomainAskImage.Create(ask, user, form.Length)).ToArray();
 
         // Upload each image to storage then set it on the blob
         var imagesAndForms = images.Zip(forms);
@@ -144,8 +144,8 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
         {
             var image = imageAndForm.First;
             var form = imageAndForm.Second;
-            Uri blobUri = await this.blobRepository.AddAskImageAsync(image.ContentType, form, image.Name, cancellationToken);
-            image.SetUrl(blobUri);
+            var blob = await this.blobRepository.AddAskBlobAsync(form, image.Name, cancellationToken);
+            image.SetBlob(blob);
         }
 
         return images;

@@ -23,6 +23,17 @@ public class DeliveryCreateCommand : IRequest<bool>
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets a flag indicating whether to include the parent tags when creating the delivery.
+    /// </summary>
+    public bool IncludeAskTags { get; set; } = true;
+
+    /// <summary>
+    /// Gets or set the tags associated with the Delivery
+    /// </summary>
+    [JsonPropertyName("images")]
+    public IEnumerable<IFormFile>? Images { get; set; } = null;
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is NSFW.
     /// </summary>
     [JsonPropertyName("is_nsfw")]

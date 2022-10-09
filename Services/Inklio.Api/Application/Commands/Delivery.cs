@@ -21,31 +21,25 @@ public class Delivery
     /// Gets or sets a flag indicating whether or not a user can comment on the delivery.
     /// </summary>
     [JsonPropertyName("can_comment")]
-    public bool CanComment { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not deliveries can be added.
-    /// </summary>
-    [JsonPropertyName("can_deliver")]
-    public bool CanDeliver { get; set; }
+    public bool CanComment { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can edit the delivery.
     /// </summary>
     [JsonPropertyName("can_edit")]
-    public bool CanEdit { get; set; }
+    public bool CanEdit { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can flag the delivery.
     /// </summary>
     [JsonPropertyName("can_flag")]
-    public bool CanFlag { get; set; }
+    public bool CanFlag { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not can tag the delivery.
     /// </summary>
     [JsonPropertyName("can_tag")]
-    public bool CanTag { get; set; }
+    public bool CanTag { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the UTC time the delivery was created.

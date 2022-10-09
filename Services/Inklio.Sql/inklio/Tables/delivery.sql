@@ -7,7 +7,6 @@ CREATE TABLE [inklio].[delivery]
     CONSTRAINT [fk_delivery_ask_id] FOREIGN KEY REFERENCES [inklio].[ask] ([id]) ON UPDATE CASCADE,
   [body] NVARCHAR(max) NOT NULL,
   [can_comment] BIT NOT NULL DEFAULT 1,
-  [can_deliver] BIT NOT NULL DEFAULT 2,
   [can_edit] BIT NOT NULL DEFAULT 1,
   [can_flag] BIT NOT NULL DEFAULT 1,
   [can_tag] BIT NOT NULL DEFAULT 1,

@@ -21,13 +21,13 @@ public class Comment
     /// Gets or sets a flag indicating whether or not a user can edit the comment.
     /// </summary>
     [JsonPropertyName("can_edit")]
-    public bool CanEdit { get; set; }
+    public bool CanEdit { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can flag the comment.
     /// </summary>
     [JsonPropertyName("can_flag")]
-    public bool CanFlag { get; set; }
+    public bool CanFlag { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the UTC time the comment was created.

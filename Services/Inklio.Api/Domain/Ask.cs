@@ -78,6 +78,11 @@ public class Ask : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
+    /// Gets or sets the ID of the user that created the delivery.
+    /// </summary>
+    public int CreatedById { get; private set; }
+
+    /// <summary>
     /// The deliveries for the ask.
     /// </summary>
     private List<Delivery> deliveries = new List<Delivery>();
@@ -346,7 +351,7 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public void AddImage(AskImage image, User createdBy)
     {
-        ValidateCanAddAskImages(1, createdBy);
+        this.ValidateCanAddImages(1, createdBy);
         this.images.Add(image);
     }
 
@@ -410,7 +415,7 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="blobCount">The number of blobs to check that can be added.</param>
     /// <param name="createdby">The user that wants to add the blobs</param>
     /// <exception cref="InklioDomainException">An exception is thrown if the number of blobs cannot be added.</exception>
-    public void ValidateCanAddAskImages(int blobCount, User createdBy)
+    public void ValidateCanAddImages(int blobCount, User createdBy)
     {
         if (this.CreatedBy != createdBy)
         {

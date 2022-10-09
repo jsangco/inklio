@@ -7,6 +7,10 @@ namespace Inklio.Api.Domain;
 /// </summary>
 public class Delivery : Entity, IAggregateRoot
 {
+    /// <summary>
+    /// The maximum number of images that can be added to a Delivery.
+    /// </summary>
+    public const int MaxDeliveryImageCount = 5;
 
     /// <summary>
     /// Gets the UTC time the delivery was accepted at. 
@@ -36,27 +40,22 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can comment on the delivery.
     /// </summary>
-    public bool CanComment { get; private set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not deliveries can be added.
-    /// </summary>
-    public bool CanDeliver { get; private set; }
+    public bool CanComment { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can edit the delivery.
     /// </summary>
-    public bool CanEdit { get; private set; }
+    public bool CanEdit { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can flag the delivery.
     /// </summary>
-    public bool CanFlag { get; private set; }
+    public bool CanFlag { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not can tag the delivery.
     /// </summary>
-    public bool CanTag { get; private set; }
+    public bool CanTag { get; private set; } = true;
 
     /// <summary>
     /// Gets or sets a collection of comments for the delivery.
@@ -77,6 +76,11 @@ public class Delivery : Entity, IAggregateRoot
     /// Gets the user that created the delivery.
     /// </summary>
     public User CreatedBy { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the ID of the user that created the delivery.
+    /// </summary>
+    public int CreatedById { get; private set; }
 
     /// <summary>
     /// The tags associated with the <see cref="Delivery"/>.
@@ -260,6 +264,19 @@ public class Delivery : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Adds a comment to the <see cref="Delivery"/> object.
+    /// </summary>
+    /// <param name="image">The image to add</param>
+    /// <param name="createdBy">The user adding the blob</param>
+    /// <returns>The newly created comment</returns>
+    public void AddImage(DeliveryImage image, User createdBy)
+    {
+        this.ValidateCanAddImages(1, createdBy);
+        this.images.Add(image);
+    }
+
+
+    /// <summary>
     /// Flags the <see cref="Delivery"/>.
     /// </summary>
     /// <param name="typeId">The type of the Flag.</param>
@@ -324,6 +341,30 @@ public class Delivery : Entity, IAggregateRoot
         {
             this.upvotes.RemoveAt(upvoterIndex);
             this.UpvoteCount -= 1;
+        }
+    }
+
+    /// <summary>
+    /// Validates that a number of blobs can be added to a delivery.
+    /// </summary>
+    /// <param name="blobCount">The number of blobs to check that can be added.</param>
+    /// <param name="createdby">The user that wants to add the blobs</param>
+    /// <exception cref="InklioDomainException">An exception is thrown if the number of blobs cannot be added.</exception>
+    public void ValidateCanAddImages(int blobCount, User createdBy)
+    {
+        if (this.CreatedBy != createdBy)
+        {
+            throw new InklioDomainException(403, $"Only the Delivery creator can add images.");
+        }
+
+        if (blobCount + this.images.Count > MaxDeliveryImageCount)
+        {
+            throw new InklioDomainException(400, $"Cannot add more than {MaxDeliveryImageCount} images to an Delivery.");
+        }
+
+        if (this.CanEdit == false)
+        {
+            throw new InklioDomainException(400, $"Unable to add images. This Delivery is no longer editable.");
         }
     }
 }

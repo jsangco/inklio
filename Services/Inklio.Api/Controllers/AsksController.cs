@@ -25,27 +25,32 @@ public class AsksController : ControllerBase
         cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
             .ForMember(x => x.Comments, x => x.ExplicitExpansion())
             .ForMember(x => x.Deliveries, x => x.ExplicitExpansion())
-            .ForMember(x => x.Images, x => x.ExplicitExpansion());
+            .ForMember(x => x.Images, x => x.ExplicitExpansion())
+            .ForMember(x => x.Tags, x => x.ExplicitExpansion());
         cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
         cfg.CreateProjection<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
         cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
         cfg.CreateProjection<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateProjection<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
-        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
         cfg.CreateProjection<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
         cfg.CreateProjection<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
     }).CreateMapper();
 
     private readonly IMapper mapper = new MapperConfiguration(cfg =>
     {
-        cfg.CreateMap<Inklio.Api.Application.Commands.AskCreateForm, Inklio.Api.Application.Commands.AskCreateCommand>();
         cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
         cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
+        cfg.CreateMap<Inklio.Api.Application.Commands.DeliveryCreateForm, Inklio.Api.Application.Commands.DeliveryCreateCommand>()
+            .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
         cfg.CreateMap<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
+        cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
-        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
         cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
+        cfg.CreateMap<Inklio.Api.Application.Commands.AskCreateForm, Inklio.Api.Application.Commands.AskCreateCommand>()
+            .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
         cfg.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
     }).CreateMapper();
 
@@ -80,6 +85,10 @@ public class AsksController : ControllerBase
         if (expandStr.Contains("images"))
         {
             expansions.Add(x => x.Images);
+        }
+        if (expandStr.Contains("tags"))
+        {
+            expansions.Add(x => x.Tags);
         }
 
         var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(),
@@ -186,13 +195,20 @@ public class AsksController : ControllerBase
 
     [HttpPost]
     [Route("{askId}/deliveries")]
-    public async Task AddDelivery(int askId, DeliveryCreateCommand deliveryCreateCommand, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddDelivery(int askId, [FromForm] DeliveryCreateForm deliveryCreateForm, CancellationToken cancellationToken)
     {
+        var deliveryCreateCommand = this.mapper.Map<DeliveryCreateCommand>(deliveryCreateForm);
         deliveryCreateCommand.AskId = askId;
         deliveryCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
 
+        if (deliveryCreateForm.Images == null)
+        {
+            return this.BadRequest("Deliveries must contain a delivery image");
+        }
+
         this.logger.LogInformation("----- Sending command: {CommandName}", deliveryCreateCommand.GetGenericTypeName());
         await this.mediator.Send(deliveryCreateCommand, cancellationToken);
+        return this.Accepted();
     }
 
     [HttpPost]

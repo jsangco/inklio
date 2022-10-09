@@ -38,7 +38,9 @@ public class AskRepository : IAskRepository
             .Where(a => a.IsDeleted == false)
             .Include(e => e.Tags)
             .Include(e => e.Comments)
-            .Include(e => e.Deliveries);
+            .Include(e => e.Deliveries)
+            .Include(e => e.Deliveries).ThenInclude(e => e.Images)
+            .Include(e => e.Deliveries).ThenInclude(e => e.Tags);
     }
 
     /// <inheritdoc/>
@@ -48,6 +50,8 @@ public class AskRepository : IAskRepository
             .Include(a => a.Tags)
             .Include(a => a.Comments)
             .Include(a => a.Deliveries)
+            .Include(a => a.Deliveries).ThenInclude(d => d.Images)
+            .Include(e => e.Deliveries).ThenInclude(e => e.Tags)
             .FirstOrDefaultAsync(a => a.Id == askId, cancellationToken);
 
         if (ask is not null)

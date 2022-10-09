@@ -4,6 +4,6 @@ public class JsonErrorResponse
 {
     public string[] Messages { get; set; } = new string[] { };
 
-    public object DeveloperMessage { get; set; } = new object();
+    public string DeveloperMessage { get; set; } = string.Empty;
 }
 

@@ -37,19 +37,19 @@ public class Ask
     /// Gets or sets a flag indicating whether or not a user can edit the ask.
     /// </summary>
     [JsonPropertyName("can_edit")]
-    public bool CanEdit { get; set; }
+    public bool CanEdit { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not a user can flag the ask.
     /// </summary>
     [JsonPropertyName("can_flag")]
-    public bool CanFlag { get; set; }
+    public bool CanFlag { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not can tag the ask.
     /// </summary>
     [JsonPropertyName("can_tag")]
-    public bool CanTag { get; set; }
+    public bool CanTag { get; set; } = true;
 
     /// <summary>
     /// Gets or sets a collection of comments for the ask.

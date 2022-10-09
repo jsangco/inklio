@@ -71,27 +71,26 @@ public class Image : Entity, IAggregateRoot
     /// </summary>
     /// <param name="ask">The ask associated with the image</param>
     /// <param name="contentType">The contet type of the image</param>
-    /// <param name="imageUrl">The url of the image</param>
     /// <param name="createdBy">The user that created the image</param>
     /// <param name="name">The name of the image</param>
     /// <param name="sizeInBytes">The size in bytes of the image</param>
-    protected Image(Ask ask, Uri? imageUrl, string contentType, User createdBy, Guid name, long sizeInBytes)
+    protected Image(Ask ask, User createdBy, Guid name, long sizeInBytes)
     {
-        this.ContentType = contentType;
+        this.ContentType = string.Empty;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.CreatedBy = createdBy;
         this.Name = name;
         this.ThreadId = ask.Id;
         this.Thread = ask;
-        this.Url = imageUrl?.AbsoluteUri;
     }
 
     /// <summary>
     /// Sets the url of the image.
     /// </summary>
     /// <param name="imageUrl">The url of the image to set</param>
-    public void SetUrl(Uri imageUrl)
+    public void SetBlob(Blob blob)
     {
-        this.Url = imageUrl.AbsoluteUri;
+        this.ContentType = blob.ContentType;
+        this.Url = blob.Url.ToString();
     }
 }

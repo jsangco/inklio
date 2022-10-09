@@ -28,16 +28,48 @@ public class BlobRepository : IBlobRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Uri> AddAskImageAsync(string contentType, IFormFile formFile, Guid name, CancellationToken cancellationToken)
+    public Task<Blob> AddAskBlobAsync(IFormFile formFile, Guid name, CancellationToken cancellationToken)
     {
-        // TODO: Figure out how to pass the content-type in the form file correctly
-        contentType = "image/png";
+        return this.AddBlobAsync(this.askContainer, formFile, name, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task<Blob> AddDeliveryBlobAsync(IFormFile formFile, Guid name, CancellationToken cancellationToken)
+    {
+        return this.AddBlobAsync(this.deliveryContainer, formFile, name, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task DeleteAskBlobAsync(Guid name, CancellationToken cancellationToken)
+    {
+        return this.DeleteBlobAsync(this.askContainer, name, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public Task DeleteDeliveryBlobAsync(Guid name, CancellationToken cancellationToken)
+    {
+        return this.DeleteBlobAsync(this.deliveryContainer, name, cancellationToken);
+    }
+
+    /// <summary>
+    /// Adds a formfile to a blob container.
+    /// </summary>
+    /// <param name="blobContainer">The blob container to upload to</param>
+    /// <param name="formFile">The form file to upload</param>
+    /// <param name="name">The name of the file to upload</param>
+    /// <param name="cancellationToken">A cancellation token</param>
+    /// <returns>The blob uri of the stored image.</returns>
+    private async Task<Blob> AddBlobAsync(BlobContainerClient blobContainer, IFormFile formFile, Guid name, CancellationToken cancellationToken)
+    {
+        // Read file header and determine content type
+        using Stream readStream = formFile.OpenReadStream();
+        (byte[] fileHeader, string contentType) = this.ReadAndValidateFileHeader(readStream);
 
         // Create blob
         string blobName = name.ToString() + this.GetFileExtensionFromContentType(contentType);
-        var blobClient = this.askContainer.GetBlobClient(blobName);
+        var blobClient = blobContainer.GetBlobClient(blobName);
 
-        // Open streams for reading and writing the blob
+        // Write to blob storage
         var blobWriterOptions = new BlobOpenWriteOptions
         {
             HttpHeaders = new BlobHttpHeaders()
@@ -47,34 +79,39 @@ public class BlobRepository : IBlobRepository
         };
         using Stream blobStream = await blobClient.OpenWriteAsync(true, blobWriterOptions, cancellationToken);
         using BinaryWriter writer = new BinaryWriter(blobStream);
-        using Stream readStream = formFile.OpenReadStream();
 
-        // Read and validate the file header bytes, then write the file header bytes
-        // to the blob, then write the rest of the image data to the blob.
-        byte[] fileHeader = this.ReadAndValidateFileHeader(readStream);
+        // Write file header to blob, then write the rest of the image data
         writer.Write(fileHeader);
         readStream.CopyTo(writer.BaseStream);
         readStream.Close();
         writer.Flush();
         writer.Close();
 
-        return blobClient.Uri;
+        return new Blob(contentType, blobClient.Uri);
+
     }
 
     /// <inheritdoc/>
-    public async Task DeleteAskImageAsync(Guid name, CancellationToken cancellationToken)
+    public async Task DeleteBlobAsync(BlobContainerClient blobContainer, Guid name, CancellationToken cancellationToken)
     {
-        var blobClient = this.askContainer.GetBlobClient(name.ToString());
+        var blobClient = blobContainer.GetBlobClient(name.ToString());
         await blobClient.DeleteIfExistsAsync(cancellationToken: cancellationToken);
     }
 
+    /// <summary>
+    /// Gets the file extension to use based on the content type
+    /// </summary>
+    /// <param name="contentType"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException">Thrown when content type is invalid.</exception>
     private string GetFileExtensionFromContentType(string contentType)
     {
         var extensions = new Dictionary<string, string>()
         {
-            {"image/png", ".png"},
             {"image/gif", ".gif"},
+            {"image/png", ".png"},
             {"image/jpeg", ".jpeg"},
+            {"video/webm", ".webm"},
         };
         string type = contentType.ToLowerInvariant();
 
@@ -83,33 +120,42 @@ public class BlobRepository : IBlobRepository
             return extension;
         }
 
-        throw new InklioDomainException(400, "This filetype is not supported");
+        throw new ArgumentException($"This content-type is not supported: {contentType}");
     }
 
-    private static bool IsImage(byte[] fileBytes)
+    /// <summary>
+    /// Reads the content header from a stream and determines the content type.
+    /// If the header is not a supported format it throws an exception.
+    /// </summary>
+    /// <param name="stream">The stream of the form file.</param>
+    /// <returns>The file header bytes and the content type for the stream.</returns>
+    private (byte[], string) ReadAndValidateFileHeader(Stream stream)
     {
-        var headers = new List<byte[]>
+        byte[] fileHeader = new byte[4];
+        stream.Read(fileHeader, 0, fileHeader.Length);
+
+        var headers = new Dictionary<byte[], string>
         {
-            Encoding.ASCII.GetBytes("BM"),      // BMP
-            Encoding.ASCII.GetBytes("GIF"),     // GIF
-            new byte[] { 137, 80, 78, 71 },     // PNG
-            new byte[] { 73, 73, 42 },          // TIFF
-            new byte[] { 77, 77, 42 },          // TIFF
-            new byte[] { 255, 216, 255, 224 },  // JPEG
-            new byte[] { 255, 216, 255, 225 }   // JPEG CANON
+            {Encoding.ASCII.GetBytes("GIF"), "image/gif"},    // GIF
+            {new byte[] { 137, 80, 78, 71 }, "image/png"},    // PNG
+            {new byte[] { 255, 216, 255, 224 }, "image/jpeg"},// JPEG
+            {new byte[] { 255, 216, 255, 225 }, "image/jpeg"},// JPEG CANON
+            {new byte[] { 26, 69, 223, 163 }, "video/webm"},  // WEBM
+
+            // Disabled formats
+            // {Encoding.ASCII.GetBytes("BM"), "image/bmp"},     // BMP
+            // {new byte[] { 73, 73, 42 }, "image/tiff"},        // TIFF
+            // {new byte[] { 77, 77, 42 }, "image/tiff"},        // TIFF
         };
 
-        return headers.Any(x => x.SequenceEqual(fileBytes.Take(x.Length)));
-    }
+        KeyValuePair<byte[], string>? headerContentType = headers
+            .FirstOrDefault(header => header.Key.SequenceEqual(fileHeader.Take(header.Key.Length)));
 
-    private byte[] ReadAndValidateFileHeader(Stream stream)
-    {
-        byte[] buffer = new byte[4];
-        stream.Read(buffer, 0, buffer.Length);
-        if (IsImage(buffer) == false)
+        if (headerContentType.HasValue == false)
         {
-            throw new InklioDomainException(400, "Invalid file");
+            throw new InklioDomainException(400, "Invalid file.");
         }
-        return buffer;
+
+        return (fileHeader, headerContentType.Value.Value);
     }
 }
