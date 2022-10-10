@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MediatR;
 
 namespace Inklio.Api.SeedWork;

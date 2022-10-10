@@ -47,9 +47,11 @@ public class AskRepository : IAskRepository
     public async Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken)
     {
         Ask? ask = await this.context.Asks
-            .Include(a => a.Tags)
             .Include(a => a.Comments)
             .Include(a => a.Deliveries)
+            .Include(a => a.Images)
+            .Include(a => a.Tags)
+            .Include(a => a.Deliveries).ThenInclude(d => d.Comments)
             .Include(a => a.Deliveries).ThenInclude(d => d.Images)
             .Include(e => e.Deliveries).ThenInclude(e => e.Tags)
             .FirstOrDefaultAsync(a => a.Id == askId, cancellationToken);

@@ -8,12 +8,11 @@ using Inklio.Api.Infrastructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inklio.Api.Controllers;
 
-[ApiController]
-[Route("asks")]
-public class AsksController : ControllerBase
+public class AsksController : ODataController
 {
     private readonly ILogger<AsksController> logger;
     private readonly IAskRepository askRepository;
@@ -22,11 +21,7 @@ public class AsksController : ControllerBase
     private readonly IWebHostEnvironment hostEnvironment;
     private readonly IMapper projector = new MapperConfiguration(cfg =>
     {
-        cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
-            .ForMember(x => x.Comments, x => x.ExplicitExpansion())
-            .ForMember(x => x.Deliveries, x => x.ExplicitExpansion())
-            .ForMember(x => x.Images, x => x.ExplicitExpansion())
-            .ForMember(x => x.Tags, x => x.ExplicitExpansion());
+        cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
         cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
         cfg.CreateProjection<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
         cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
@@ -68,67 +63,53 @@ public class AsksController : ControllerBase
         this.hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
-    [HttpGet]
-    [EnableQueryWithCount()]
-    public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsk(ODataQueryOptions options)
+    [EnableQuery()]
+    [HttpGet("v1/asks")]
+    public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {
-        var expandStr = options.SelectExpand?.RawExpand?.ToLowerInvariant() ?? string.Empty;
-        var expansions = new List<Expression<Func<Application.Commands.Ask, object>>>();
-        if (expandStr.Contains("comments"))
-        {
-            expansions.Add(x => x.Comments);
-        }
-        if (expandStr.Contains("deliver"))
-        {
-            expansions.Add(x => x.Deliveries);
-        }
-        if (expandStr.Contains("images"))
-        {
-            expansions.Add(x => x.Images);
-        }
-        if (expandStr.Contains("tags"))
-        {
-            expansions.Add(x => x.Tags);
-        }
-
-        var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(),
-            null,
-            expansions.ToArray());
+        var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks());
         return asks;
     }
 
-    [HttpGet]
-    [Route("{askId}")]
-    [EnableQueryWithCount()]
-    public async Task<Inklio.Api.Application.Commands.Ask> GetAskById(int askId, CancellationToken cancellationToken)
+    [EnableQuery()]
+    [HttpGet("v1/asks/{askId}")]
+    public async Task<Inklio.Api.Application.Commands.Ask> GetAskById(
+        int askId,
+        CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
         var askDto = mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
         return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
     }
 
-    [HttpGet]
-    [Route("{askId}/comments")]
-    public async Task<IQueryable<Inklio.Api.Application.Commands.AskComment>> GetComments(int askId, CancellationToken cancellationToken)
+    [EnableQuery()]
+    [HttpGet("v1/asks/{askId}/comments")]
+    public async Task<IQueryable<Inklio.Api.Application.Commands.AskComment>> GetComments(
+        int askId,
+        CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
         var comments = this.projector.ProjectTo<Inklio.Api.Application.Commands.AskComment>(ask.Comments.AsQueryable());
         return comments;
     }
 
-    [HttpGet]
-    [Route("{askId}/deliveries")]
-    public async Task<IQueryable<Inklio.Api.Application.Commands.Delivery>> GetDeliveries(int askId, CancellationToken cancellationToken)
+    [EnableQuery()]
+    [HttpGet("v1/asks/{askId}/deliveries")]
+    public async Task<IQueryable<Inklio.Api.Application.Commands.Delivery>> GetDeliveries(
+        int askId,
+        CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
         var deliveries = this.projector.ProjectTo<Inklio.Api.Application.Commands.Delivery>(ask.Deliveries.AsQueryable());
         return deliveries;
     }
 
-    [HttpGet]
-    [Route("{askId}/deliveries/{deliveryId}")]
-    [EnableQueryWithCount()]
-    public async Task<Inklio.Api.Application.Commands.Delivery> GetDeliveryById(int askId, int deliveryId, CancellationToken cancellationToken)
+    [EnableQuery()]
+    [HttpGet("v1/asks/{askId}/deliveries/{deliveryId}")]
+    public async Task<Inklio.Api.Application.Commands.Delivery> GetDeliveryById(
+        int askId,
+        int deliveryId,
+        CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
         var delivery = ask.Deliveries.FirstOrDefault(d => d.Id == deliveryId);
@@ -141,9 +122,12 @@ public class AsksController : ControllerBase
         return deliveryDto ?? throw new InvalidOperationException("Could not map Delivery DTO");
     }
 
-    [HttpGet]
-    [Route("{askId}/deliveries/{deliveryId}/comments")]
-    public async Task<IQueryable<Inklio.Api.Application.Commands.DeliveryComment>> GetDeliveryComments(int askId, int deliveryId, CancellationToken cancellationToken)
+    [EnableQuery()]
+    [HttpGet("v1/asks/{askId}/deliveries/{deliveryId}/comments")]
+    public async Task<IQueryable<Inklio.Api.Application.Commands.DeliveryComment>> GetDeliveryComments(
+        int askId,
+        int deliveryId,
+        CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
         var delivery = ask.Deliveries.FirstOrDefault(d => d.Id == deliveryId);
@@ -157,10 +141,10 @@ public class AsksController : ControllerBase
         return comments;
     }
 
-    [HttpPost]
-    [ValidateModelStateFilter]
-    [Route("")]
-    public async Task<IActionResult> AddAsk([FromForm] AskCreateForm askCreateForm, CancellationToken cancellationToken)
+    [HttpPost("v1/asks")]
+    public async Task<IActionResult> AddAsk(
+        [FromForm] AskCreateForm askCreateForm,
+        CancellationToken cancellationToken)
     {
         var askCreateCommand = this.mapper.Map<AskCreateCommand>(askCreateForm);
         askCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
@@ -171,9 +155,11 @@ public class AsksController : ControllerBase
         return this.Accepted();
     }
 
-    [HttpPost]
-    [Route("{askId}/comments")]
-    public async Task AddAskComment(int askId, AskCommentCreateCommand commentCreateCommand, CancellationToken cancellationToken)
+    [HttpPost("v1/asks/{askId}/comments")]
+    public async Task AddAskComment(
+        int askId,
+        AskCommentCreateCommand commentCreateCommand,
+        CancellationToken cancellationToken)
     {
         commentCreateCommand.AskId = askId;
         commentCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
@@ -182,9 +168,11 @@ public class AsksController : ControllerBase
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
-    [HttpPost]
-    [Route("{askId}/tags")]
-    public async Task AddAskTag(int askId, AskTagAddCommand tagCommand, CancellationToken cancellationToken)
+    [HttpPost("v1/asks/{askId}/tags")]
+    public async Task AddAskTag(
+        int askId,
+        AskTagAddCommand tagCommand,
+        CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
         tagCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
@@ -193,9 +181,11 @@ public class AsksController : ControllerBase
         await this.mediator.Send(tagCommand, cancellationToken);
     }
 
-    [HttpPost]
-    [Route("{askId}/deliveries")]
-    public async Task<IActionResult> AddDelivery(int askId, [FromForm] DeliveryCreateForm deliveryCreateForm, CancellationToken cancellationToken)
+    [HttpPost("v1/asks/{askId}/deliveries")]
+    public async Task<IActionResult> AddDelivery(
+        int askId,
+        [FromForm] DeliveryCreateForm deliveryCreateForm,
+        CancellationToken cancellationToken)
     {
         var deliveryCreateCommand = this.mapper.Map<DeliveryCreateCommand>(deliveryCreateForm);
         deliveryCreateCommand.AskId = askId;
@@ -211,9 +201,12 @@ public class AsksController : ControllerBase
         return this.Accepted();
     }
 
-    [HttpPost]
-    [Route("{askId}/deliveries/{deliveryId}/comments")]
-    public async Task AddDeliveryComment(int askId, int deliveryId, DeliveryCommentCreateCommand commentCreateCommand, CancellationToken cancellationToken)
+    [HttpPost("v1/asks/{askId}/deliveries/{deliveryId}/comments")]
+    public async Task AddDeliveryComment(
+        int askId,
+        int deliveryId,
+        DeliveryCommentCreateCommand commentCreateCommand,
+        CancellationToken cancellationToken)
     {
         commentCreateCommand.AskId = askId;
         commentCreateCommand.DeliveryId = deliveryId;
@@ -223,9 +216,12 @@ public class AsksController : ControllerBase
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
-    [HttpPost]
-    [Route("{askId}/deliveries/{deliveryId}")]
-    public async Task AddDeliveryTag(int askId, int deliveryId, DeliveryTagAddCommand tagCommand, CancellationToken cancellationToken)
+    [HttpPost("v1/asks/{askId}/deliveries/{deliveryId}/tags")]
+    public async Task AddDeliveryTag(
+        int askId,
+        int deliveryId,
+        DeliveryTagAddCommand tagCommand,
+        CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
         tagCommand.DeliveryId = deliveryId;

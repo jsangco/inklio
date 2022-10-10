@@ -33,6 +33,11 @@ public class Comment : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
+    /// Gets or sets the UTC time the ask was created.
+    /// </summary>
+    public int CreatedById { get; private set; }
+
+    /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
     public DateTime? EditedAtUtc { get; private set;}
@@ -122,6 +127,7 @@ public class Comment : Entity, IAggregateRoot
         this.Body = body;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.CreatedBy = createdBy;
+        this.CreatedById = createdBy.Id;
         this.Thread = ask;
         this.ThreadId = ask.Id;
     }

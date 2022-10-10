@@ -1,5 +1,5 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Inklio.Api.SeedWork;
 
 namespace Inklio.Api.Application.Commands;
 

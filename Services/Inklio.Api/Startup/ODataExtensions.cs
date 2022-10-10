@@ -1,5 +1,5 @@
-using Inklio.Api.Domain;
-// using Inklio.Api.Application.Commands;
+// using Inklio.Api.Domain;
+using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
@@ -23,7 +23,7 @@ public static class ODataExtensions
             options.RouteOptions.EnablePropertyNameCaseInsensitive = true;
             options.RouteOptions.EnableKeyInParenthesis = true;
             options.UrlKeyDelimiter = ODataUrlKeyDelimiter.Slash;
-            // options.AddRouteComponents("v1", CreateEdmModel());
+            options.AddRouteComponents("v1", CreateEdmModel());
         });
         return mvcBuilder;
     }
@@ -33,16 +33,20 @@ public static class ODataExtensions
         var builder = new ODataConventionModelBuilder();
         builder.ModelAliasingEnabled = true;
         builder.EnableLowerCamelCase();
-        var ask = builder.EntitySet<Ask>("Asks");
-        builder.EntityType<Ask>()
-            .HasKey(e => e.Id);
-        var delivery = builder.EntitySet<Delivery>("Deliveries");
-        builder.EntityType<Delivery>()
-            .HasKey(e => e.Id);
-        var comment = builder.EntitySet<Comment>("Comments");
+        builder.EntitySet<Ask>("asks")
+            .EntityType
+            .HasKey(e => e.Id)
+            .Expand(2, SelectExpandType.Automatic, "tags");
+        builder.EntitySet<Delivery>("deliveries")
+            .EntityType
+            .HasKey(e => e.Id)
+            .Expand(2, SelectExpandType.Automatic, "images")
+            .Expand(2, SelectExpandType.Automatic, "tags");
+        builder.EntitySet<Comment>("comments");
         builder.EntityType<Comment>()
             .HasKey(e => e.Id);
-
+        var foo = builder.EntityType<Image>()
+            .HasKey(e => e.Url);
 
         return builder.GetEdmModel();
     }

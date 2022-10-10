@@ -13,6 +13,7 @@ public class Ask
     /// Gets or sets the ID of the ask.
     /// </summary>
     [JsonPropertyName("id")]
+    [Key]
     public int Id { get; set; }
 
     /// <summary>
