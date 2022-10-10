@@ -10,5 +10,6 @@ public class AskComment : Comment
     /// Gets or sets the ID of the comment.
     /// </summary>
     [DataMember(Name = "ask_id")]
+    [JsonPropertyName("ask_id")]
     public int AskId { get; set; }
 }

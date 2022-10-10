@@ -36,7 +36,12 @@ appBuilder.Services.AddControllers(options =>
         jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
     });
 appBuilder.Services.AddEndpointsApiExplorer();
-appBuilder.Services.AddSwaggerGen();
+appBuilder.Services.AddSwaggerGen( c =>
+{
+    c.ResolveConflictingActions(api => api.First());
+    c.IgnoreObsoleteActions();
+    c.IgnoreObsoleteProperties();
+});
 appBuilder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
 

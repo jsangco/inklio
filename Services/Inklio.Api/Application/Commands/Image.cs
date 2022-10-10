@@ -10,11 +10,13 @@ public class Image
     /// Gets or sets the ID of the image.
     /// </summary>
     [DataMember(Name = "id")]
+    [JsonIgnore]
     public int Id { get; set; }
 
     /// <summary>
     /// Gets or sets the url of the image.
     /// </summary>
     [DataMember(Name = "url")]
+    [JsonPropertyName("url")]
     public string? Url { get; set; }
 }

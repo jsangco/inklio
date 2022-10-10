@@ -13,18 +13,21 @@ public class Tag
     /// Gets or sets the ID of the image.
     /// </summary>
     [DataMember(Name = "id")]
+    [JsonIgnore]
     public int Id { get; set; }
 
     /// <summary>
     /// Gets the type of the tag.
     /// </summary>
     [DataMember(Name = "type")]
+    [JsonPropertyName("type")]
     public string Type { get; set; } = "general";
 
     /// <summary>
     /// Gets the value of the tag.
     /// </summary>
     [DataMember(Name = "value")]
+    [JsonPropertyName("value")]
     public string Value { get; set; } = string.Empty;
 
     /// <summary>
