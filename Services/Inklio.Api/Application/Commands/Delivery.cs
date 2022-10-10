@@ -48,6 +48,13 @@ public class Delivery
     public bool CanTag { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the comments for the delivery.
+    /// </summary>
+    [DataMember(Name = "comments")]
+    [JsonPropertyName("comments")]
+    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
+
+    /// <summary>
     /// Gets or sets the UTC time the delivery was created.
     /// </summary>
     [DataMember(Name = "created_at_utc")]
