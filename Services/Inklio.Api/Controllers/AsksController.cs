@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inklio.Api.Controllers;
 
+[Route("v1/asks")]
 public class AsksController : ODataController
 {
     private readonly ILogger<AsksController> logger;
@@ -63,8 +64,8 @@ public class AsksController : ODataController
         this.hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
-    [EnableQuery()]
-    [HttpGet("v1/asks")]
+    [EnableQuery]
+    [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {
         var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks());
@@ -72,7 +73,7 @@ public class AsksController : ODataController
     }
 
     [EnableQuery()]
-    [HttpGet("v1/asks/{askId}")]
+    [HttpGet("{askId}")]
     public async Task<Inklio.Api.Application.Commands.Ask> GetAskById(
         int askId,
         CancellationToken cancellationToken)
@@ -83,7 +84,7 @@ public class AsksController : ODataController
     }
 
     [EnableQuery()]
-    [HttpGet("v1/asks/{askId}/comments")]
+    [HttpGet("{askId}/comments")]
     public async Task<IQueryable<Inklio.Api.Application.Commands.AskComment>> GetComments(
         int askId,
         CancellationToken cancellationToken)
@@ -94,7 +95,7 @@ public class AsksController : ODataController
     }
 
     [EnableQuery()]
-    [HttpGet("v1/asks/{askId}/deliveries")]
+    [HttpGet("{askId}/deliveries")]
     public async Task<IQueryable<Inklio.Api.Application.Commands.Delivery>> GetDeliveries(
         int askId,
         CancellationToken cancellationToken)
@@ -105,7 +106,7 @@ public class AsksController : ODataController
     }
 
     [EnableQuery()]
-    [HttpGet("v1/asks/{askId}/deliveries/{deliveryId}")]
+    [HttpGet("{askId}/deliveries/{deliveryId}")]
     public async Task<Inklio.Api.Application.Commands.Delivery> GetDeliveryById(
         int askId,
         int deliveryId,
@@ -123,7 +124,7 @@ public class AsksController : ODataController
     }
 
     [EnableQuery()]
-    [HttpGet("v1/asks/{askId}/deliveries/{deliveryId}/comments")]
+    [HttpGet("{askId}/deliveries/{deliveryId}/comments")]
     public async Task<IQueryable<Inklio.Api.Application.Commands.DeliveryComment>> GetDeliveryComments(
         int askId,
         int deliveryId,
@@ -141,7 +142,7 @@ public class AsksController : ODataController
         return comments;
     }
 
-    [HttpPost("v1/asks")]
+    [HttpPost]
     public async Task<IActionResult> AddAsk(
         [FromForm] AskCreateForm askCreateForm,
         CancellationToken cancellationToken)
@@ -155,7 +156,7 @@ public class AsksController : ODataController
         return this.Accepted();
     }
 
-    [HttpPost("v1/asks/{askId}/comments")]
+    [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
         int askId,
         AskCommentCreateCommand commentCreateCommand,
@@ -168,7 +169,7 @@ public class AsksController : ODataController
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
-    [HttpPost("v1/asks/{askId}/tags")]
+    [HttpPost("{askId}/tags")]
     public async Task AddAskTag(
         int askId,
         AskTagAddCommand tagCommand,
@@ -181,7 +182,7 @@ public class AsksController : ODataController
         await this.mediator.Send(tagCommand, cancellationToken);
     }
 
-    [HttpPost("v1/asks/{askId}/deliveries")]
+    [HttpPost("{askId}/deliveries")]
     public async Task<IActionResult> AddDelivery(
         int askId,
         [FromForm] DeliveryCreateForm deliveryCreateForm,
@@ -201,7 +202,7 @@ public class AsksController : ODataController
         return this.Accepted();
     }
 
-    [HttpPost("v1/asks/{askId}/deliveries/{deliveryId}/comments")]
+    [HttpPost("{askId}/deliveries/{deliveryId}/comments")]
     public async Task AddDeliveryComment(
         int askId,
         int deliveryId,
@@ -216,7 +217,7 @@ public class AsksController : ODataController
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
-    [HttpPost("v1/asks/{askId}/deliveries/{deliveryId}/tags")]
+    [HttpPost("{askId}/deliveries/{deliveryId}/tags")]
     public async Task AddDeliveryTag(
         int askId,
         int deliveryId,

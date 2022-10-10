@@ -5,7 +5,7 @@ namespace Inklio.Api.Domain;
 /// <summary>
 /// Reperesents a image
 /// </summary>
-public class Image : Entity, IAggregateRoot
+public class Image : Entity
 {
     /// <summary>
     /// Gets or sets the UTC time the ask was created.

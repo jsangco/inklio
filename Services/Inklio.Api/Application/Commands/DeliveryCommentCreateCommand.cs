@@ -8,29 +8,30 @@ namespace Inklio.Api.Application.Commands;
 /// <summary>
 /// An request body to create a new comment
 /// </summary>
+[DataContract]
 public class DeliveryCommentCreateCommand : IRequest<bool>
 {
     /// <summary>
     /// Gets or sets the ID of the ask to add the comment to
     /// </summary>
-    [JsonIgnore]
+    [IgnoreDataMember]
     public int AskId { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the ask to add the comment to
     /// </summary>
-    [JsonIgnore]
+    [IgnoreDataMember]
     public int DeliveryId { get; set; }
 
     /// <summary>
     /// Gets or sets the Body of the Comment.
     /// </summary>
-    [JsonPropertyName("body")]
+    [DataMember(Name = "body")]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the ID of the user
     /// </summary>
-    [JsonIgnore]
+    [IgnoreDataMember]
     public int UserId { get; set; }
 }

@@ -6,18 +6,25 @@ namespace Inklio.Api.Application.Commands;
 /// <summary>
 /// A DTO reperesenting a Tag 
 /// </summary>
+[DataContract]
 public class Tag
 {
     /// <summary>
+    /// Gets or sets the ID of the image.
+    /// </summary>
+    [DataMember(Name = "id")]
+    public int Id { get; set; }
+
+    /// <summary>
     /// Gets the type of the tag.
     /// </summary>
-    [JsonPropertyName("type")]
+    [DataMember(Name = "type")]
     public string Type { get; set; } = "general";
 
     /// <summary>
     /// Gets the value of the tag.
     /// </summary>
-    [JsonPropertyName("value")]
+    [DataMember(Name = "value")]
     public string Value { get; set; } = string.Empty;
 
     /// <summary>

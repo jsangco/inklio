@@ -8,47 +8,48 @@ namespace Inklio.Api.Application.Commands;
 /// <summary>
 /// An request body to create a new ask
 /// </summary>
+[DataContract]
 public class AskCreateCommand : IRequest<bool>
 {
     /// <summary>
     /// Gets or sets the Body of the Ask.
     /// </summary>
-    [JsonPropertyName("body")]
+    [DataMember(Name = "body")]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets optional images to include in the ask
     /// </summary>
-    [JsonPropertyName("images")]
+    [DataMember(Name = "images")]
     public IEnumerable<IFormFile>? Images { get; set; } = null;
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask is NSFW.
     /// </summary>
-    [JsonPropertyName("is_nsfw")]
+    [DataMember(Name = "is_nsfw")]
     public bool IsNswf { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask NSFL.
     /// </summary>
-    [JsonPropertyName("is_nsfl")]
+    [DataMember(Name = "is_nsfl")]
     public bool IsNsfl { get; set; }
 
     /// <summary>
     /// Gets or sets the Title of the Ask.
     /// </summary>
-    [JsonPropertyName("title")]
+    [DataMember(Name = "title")]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or set the tags associated with the Ask
     /// </summary>
-    [JsonPropertyName("tags")]
+    [DataMember(Name = "tags")]
     public IEnumerable<Tag> Tags { get; set; } = new Tag[] { };
 
     /// <summary>
     /// Gets or sets the ID of the user
     /// </summary>
-    [JsonIgnore]
+    [IgnoreDataMember]
     public int UserId { get; set; }
 }

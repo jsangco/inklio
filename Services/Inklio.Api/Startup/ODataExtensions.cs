@@ -33,20 +33,22 @@ public static class ODataExtensions
         var builder = new ODataConventionModelBuilder();
         builder.ModelAliasingEnabled = true;
         builder.EnableLowerCamelCase();
-        builder.EntitySet<Ask>("asks")
-            .EntityType
+        builder.EntitySet<Ask>("asks").EntityType
             .HasKey(e => e.Id)
+            .Page(100, 100)
             .Expand(2, SelectExpandType.Automatic, "tags");
-        builder.EntitySet<Delivery>("deliveries")
-            .EntityType
+        builder.EntitySet<Delivery>("deliveries").EntityType
             .HasKey(e => e.Id)
+            .Page(100, 100)
             .Expand(2, SelectExpandType.Automatic, "images")
             .Expand(2, SelectExpandType.Automatic, "tags");
-        builder.EntitySet<Comment>("comments");
-        builder.EntityType<Comment>()
+        builder.EntitySet<Comment>("comments").EntityType
+            .HasKey(e => e.Id)
+            .Page(100, 100);
+        builder.EntityType<Image>()
             .HasKey(e => e.Id);
-        var foo = builder.EntityType<Image>()
-            .HasKey(e => e.Url);
+        builder.EntityType<Tag>()
+            .HasKey(e => e.Id);
 
         return builder.GetEdmModel();
     }

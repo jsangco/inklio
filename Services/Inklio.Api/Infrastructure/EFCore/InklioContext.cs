@@ -65,8 +65,6 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         builder.ApplyConfiguration(new UpvoteEntityTypeConfiguration());
         builder.ApplyConfiguration(new UserEntityTypeConfiguration());
         builder.ApplyFlagEntityConfiguration();
-
-
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)

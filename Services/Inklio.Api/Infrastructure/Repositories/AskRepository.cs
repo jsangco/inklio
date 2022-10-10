@@ -35,18 +35,14 @@ public class AskRepository : IAskRepository
     public IQueryable<Ask> GetAsks()
     {
         return this.context.Asks
-            .Where(a => a.IsDeleted == false)
-            .Include(e => e.Tags)
-            .Include(e => e.Comments)
-            .Include(e => e.Deliveries)
-            .Include(e => e.Deliveries).ThenInclude(e => e.Images)
-            .Include(e => e.Deliveries).ThenInclude(e => e.Tags);
+            .Where(a => a.IsDeleted == false);
     }
 
     /// <inheritdoc/>
     public async Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken)
     {
         Ask? ask = await this.context.Asks
+            .Where(a => a.IsDeleted == false)
             .Include(a => a.Comments)
             .Include(a => a.Deliveries)
             .Include(a => a.Images)
