@@ -2,6 +2,8 @@ version: "3.4"
 services:
   api:
     image: inklio.azurecr.io/docker/inklio.api:latest
+    env_file:
+      - .env
     ports:
       - "8765:80"
       - "8766:443"

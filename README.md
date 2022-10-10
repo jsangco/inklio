@@ -25,7 +25,8 @@ Here is an example.
 ```
   "env": {
       "ASPNETCORE_ENVIRONMENT": "Development",
-      "SQLAZURECONNSTR_InklioSqlConnectionString":"<MyConnectionString>"
+      "SQLAZURECONNSTR_InklioSqlConnectionString":"<MySqlConnectionString>",
+      "CONNECTIONSTRINGS__InklioStorageConnectionString"="<MyStorageConnectionString>"
   },
 ```
 
@@ -45,14 +46,21 @@ The following steps can be used to run Docker for a single service
 4. `docker run -it --rm -p 8765:80 -p 8001:443 myservice:latest`
 5. `curl http://localhost:8765`
 
-> NOTE: the `-p` tag must become before the container name or things don't work
+> NOTE: The `-p` tag must become before the container name or things don't work.
+> NOTE: Additional build steps may be described in a [README.md](./inklio.api/../README.md) located in the tareget service's directory.
 
 ### Running all services with Docker compose
 
 The following steps can be used to run all services in docker 
 
-1. Build and tag every docker image
-2. From the `docker-compose.yml` file director run: `docker compose up`
-3. `curl http://localhost:8765`
+1. Build and tag every docker image (see previous steps)
+2. From the `docker-compose.yml` file directory, create a `.env` file and add the following values:
+```
+  SQLAZURECONNSTR_InklioSqlConnectionString=<sql connection string here>
+  CONNECTIONSTRINGS__InklioStorageConnectionString=<azure storage connection string here>
+```
+> NOTE: The connection strings should not be surrounded by quotes
+3. From the `docker-compose.yml` file directory run: `docker compose up`
+4. `curl http://localhost:8765`
 
-> NOTE: The HTTPS connection does not work because there is no local SSL cert
+> NOTE: The HTTPS connection does not work because there is no local SSL cert; use HTTP.

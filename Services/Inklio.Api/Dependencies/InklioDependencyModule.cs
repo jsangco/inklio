@@ -36,7 +36,6 @@ public class InklioDependencyModule : Autofac.Module
             builder.Register<DbContextOptions<InklioContext>>((context) =>
             {
                 var optionBuilder = new DbContextOptionsBuilder<InklioContext>()
-                    .LogTo(Console.WriteLine)
                     .UseSnakeCaseNamingConvention()
                     .UseSqlServer(sqlConnectionString, sqlServerOptions =>
                     {
