@@ -18,7 +18,7 @@ CREATE TABLE [inklio].[delivery]
     CONSTRAINT [fk_delivery_edited_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,
   [flag_count] INT NOT NULL DEFAULT 0,
   [is_deleted] BIT NOT NULL DEFAULT 0,
-  [is_delivery_accepted] BIT DEFAULT 0,
+  [is_delivery_accepted] BIT NOT NULL DEFAULT 0,
   [is_locked] BIT NOT NULL DEFAULT 0,
   [is_nsfw] BIT NOT NULL DEFAULT 0,
   [is_nsfl] BIT NOT NULL DEFAULT 0,

@@ -145,12 +145,12 @@ public class Ask : Entity, IAggregateRoot
     /// <summary>
     /// Gets a flag indicating whether or not the ask has at least one delivery.
     /// </summary>
-    public bool IsDelivered => DeliveryCount > 0;
+    public bool IsDelivered { get; private set; }
 
     /// <summary>
     /// Gets a flag indicating whether or not the ask has an accepted delivery.
     /// </summary>
-    public bool IsDeliveryAccepted => DeliveryAcceptedCount > 0;
+    public bool IsDeliveryAccepted { get; private set; }
 
     /// <summary>
     /// Gets a flag indicating whether or not the ask has been locked.
@@ -270,6 +270,7 @@ public class Ask : Entity, IAggregateRoot
         Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not accept delivery. Delivery id {deliveryId} was not found.");
         delivery.Accept();
         this.DeliveryAcceptedCount += 1;
+        this.IsDeliveryAccepted = this.DeliveryAcceptedCount > 0;
     }
 
     /// <summary>
@@ -282,6 +283,7 @@ public class Ask : Entity, IAggregateRoot
         Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
         delivery.AcceptUndo();
         this.DeliveryAcceptedCount -= 1;
+        this.IsDeliveryAccepted = this.DeliveryAcceptedCount > 0;
     }
 
     /// <summary>
@@ -321,6 +323,7 @@ public class Ask : Entity, IAggregateRoot
 
         var delivery = new Delivery(this, body, createdBy, isNsfl, isNsfw, title);
         this.deliveries.Add(delivery);
+        this.IsDelivered = this.deliveries.Count > 0;
         return delivery;
     }
 
