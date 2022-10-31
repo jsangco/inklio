@@ -2,4 +2,5 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.2
 WORKDIR /app
 COPY ["bin/Release/net6.0/", "."]
+ENV ASPNETCORE_URLS http://+.:5000
 ENTRYPOINT ["dotnet", "Inklio.Api.dll"]

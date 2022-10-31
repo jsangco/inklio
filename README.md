@@ -1,66 +1,39 @@
 # Introduction
 Code Repo for the Inklio project
 
-## Recommended Development Tools
+## Running locally
+
+All services can be run together using docker compose. The configuration steps are provided below.
+
+### 1. Install development Tools
 
 * [VSCode](https://code.visualstudio.com/) - IDE
   * [SQL Server (mssql) Extension](https://github.com/microsoft/vscode-mssql)
 * [.Net 6+ SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) - For building C# projects
 * [Docker](https://docs.docker.com/get-docker/) - For building and running containers
 
-## SQL Database connection
+### 2. SQL Database connection
 
-1. Grant your IP address access to the SQL DB in the Azure Portal
+1. [Grant your IP address access](https://learn.microsoft.com/en-us/azure/azure-sql/database/network-access-controls-overview?view=azuresql#allow-azure-services) to the SQL DB in the Azure Portal
 2. Retrieve the connection string from the Azure Portal
-3. In the SQL Server Extension add a connection to the DB
+3. In the VS Code SQL Server Extension add a connection to the DB 
 
-## Local App configuration
+### 3. Configure environment secrets
 
-To run te API on your local machine, you must set all Secrets and Connection Strings in the `appsettings.json`. These secrets should **not** be set in the `appsettings.json`, but should instead be set as environment variables.
-
-The environment variables only need to be set when the application is running, so the easiest way to set them is by configuring the `env` values in the `.vscode/launch.json` that is automatically created by VSCode when trying to run/debug the app locally.
-
-Here is an example.
-
-```
-  "env": {
-      "ASPNETCORE_ENVIRONMENT": "Development",
-      "SQLAZURECONNSTR_InklioSqlConnectionString":"<MySqlConnectionString>",
-      "CONNECTIONSTRINGS__InklioStorageConnectionString"="<MyStorageConnectionString>"
-  },
-```
-
-These values are obviously secret, so please find the values in the azure portal or contact the application owner.
-
-## Docker
-
-Docker can be used to run a local environment of the Inklio services.
-
-### Running Docker on a single image
-
-The following steps can be used to run Docker for a single service
-
-1. `cd myServiceDirectory`
-2. `dotnet publish myservices.csproj -c Release`
-3. `docker build . -t myservice:latest`
-4. `docker run -it --rm -p 8765:80 -p 8001:443 myservice:latest`
-5. `curl http://localhost:8765`
-
-> NOTE: The `-p` tag must become before the container name or things don't work.
-> NOTE: Additional build steps may be described in a [README.md](./inklio.api/../README.md) located in the tareget service's directory.
-
-### Running all services with Docker compose
-
-The following steps can be used to run all services in docker 
-
-1. Build and tag every docker image (see previous steps)
-2. From the `docker-compose.yml` file directory, create a `.env` file and add the following values:
+After receiving the application secrets from an administrator, from the `docker-compose.yml` file directory, create a `.env` file and add the following values:
 ```
   SQLAZURECONNSTR_InklioSqlConnectionString=<sql connection string here>
   CONNECTIONSTRINGS__InklioStorageConnectionString=<azure storage connection string here>
 ```
-> NOTE: The connection strings should not be surrounded by quotes
-3. From the `docker-compose.yml` file directory run: `docker compose up`
-4. `curl http://localhost:8765`
+> **NOTE:** The connection strings should not be surrounded by quotes
 
-> NOTE: The HTTPS connection does not work because there is no local SSL cert; use HTTP.
+### 4. Build Docker containers
+
+A docker container must be built and tagged for every application. The docker build steps are provided in the application's README file:
+1. [Inklio.Api](services/Inklio.Api/README.md)
+
+### Running all services with Docker compose
+
+After building and tagging every application run `docker compose up` from the `docker-compose.yml` file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
+
+> **NOTE:** The HTTPS connection does not work because there is no local SSL cert; use HTTP.

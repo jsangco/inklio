@@ -51,11 +51,22 @@ steps:
     publishWebProjects: false
 
 - task: Docker@2
-  displayName: Build and push worker image to container registry
+  displayName: Docker build and push Inklio.Api
   inputs:
     DockerFile: Services/Inklio.Api/Dockerfile
     containerRegistry: inklio.azurecr.io
     repository: 'docker/inklio.api'
+    command: buildAndPush
+    tags: |
+      $(Build.SourceVersion)
+      latest
+
+- task: Docker@2
+  displayName: Docker build and push Reverse Proxy
+  inputs:
+    DockerFile: ReverseProxy/Dockerfile
+    containerRegistry: inklio.azurecr.io
+    repository: 'docker/reverseproxy'
     command: buildAndPush
     tags: |
       $(Build.SourceVersion)

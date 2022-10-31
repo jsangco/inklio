@@ -1,9 +1,17 @@
 version: "3.4"
 services:
+  reverseproxy:
+    image: inklio.azurecr.io/docker/reverseproxy:latest
+    ports:
+      - 80:80
   api:
+    depends_on:
+      - reverseproxy
     image: inklio.azurecr.io/docker/inklio.api:latest
     env_file:
       - .env
-    ports:
-      - "8765:80"
-      - "8766:443"
+  nginx:
+    depends_on:
+      - reverseproxy
+    image: nginx:alpine
+    restart: always

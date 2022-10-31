@@ -36,6 +36,7 @@ appBuilder.Services.AddControllers(options =>
         jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
     });
 appBuilder.Services.AddEndpointsApiExplorer();
+
 appBuilder.Services.AddSwaggerGen( c =>
 {
     c.ResolveConflictingActions(api => api.First());
@@ -55,8 +56,9 @@ var app = appBuilder.Build();
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/", new HealthCheckOptions
 {
