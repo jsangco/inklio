@@ -51,6 +51,17 @@ steps:
     publishWebProjects: false
 
 - task: Docker@2
+  displayName: Docker build and Inklio.Web
+  inputs:
+    DockerFile: Web/inklio/Dockerfile
+    containerRegistry: inklio.azurecr.io
+    repository: 'docker/inklio.web'
+    command: buildAndPush
+    tags: |
+      $(Build.SourceVersion)
+      latest
+
+- task: Docker@2
   displayName: Docker build and push Inklio.Api
   inputs:
     DockerFile: Services/Inklio.Api/Dockerfile

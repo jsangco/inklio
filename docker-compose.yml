@@ -10,8 +10,8 @@ services:
     image: inklio.azurecr.io/docker/inklio.api:latest
     env_file:
       - .env
-  nginx:
+  web:
     depends_on:
       - reverseproxy
-    image: nginx:alpine
+    image: inklio.azurecr.io/docker/inklio.web:latest
     restart: always
