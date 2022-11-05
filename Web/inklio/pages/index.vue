@@ -12,12 +12,12 @@ const login = await todoStore.login();
 <template>
     <div>
         <h1>index</h1>
-        <p>{{todoStore.count}}</p>
+        <p>base url: {{todoStore.test}}</p>
         <!-- <p>External api: {{ ext }}</p> -->
         <p>BASIC localhost/auth: {{authBasic}}</p>
         <p>localhost/auth: {{auth}}</p>
         <p>localhost/api/v1/asks: {{asks}}</p>
-        <p>localhost/auth/accounts/login: {{login}}</p>
+        <!-- <p>localhost/auth/accounts/login: {{login}}</p> -->
     </div>
 </template>
 

@@ -14,7 +14,7 @@ export interface TodoState {
 
 const state = () => ({
   count: 1234,
-  test: process.env.test,
+  test: process.env.baseUrl,
   items: [],
 });
 
