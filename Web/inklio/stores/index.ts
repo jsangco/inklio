@@ -30,6 +30,9 @@ const getters = {
         username: 'jace',
         password: 'Aoeuaoeu1'
         },
+        headers: {
+          'Content-Type': 'application/json'
+        }
     });
   },
   getAsks: () => async () => {
