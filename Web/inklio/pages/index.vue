@@ -6,7 +6,7 @@ const todoStore = useTodoStore();
 const auth = await todoStore.getAuth();
 const authBasic = await todoStore.getAuthBasic();
 const asks = await todoStore.getAsks();
-const login = await todoStore.login();
+// const login = await todoStore.login();
 </script>
 
 <template>
