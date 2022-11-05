@@ -2,7 +2,7 @@
 const fetchOnServer = false;
 const todoStore = useTodoStore();
 
-const ext = await todoStore.getExt();
+// const ext = await todoStore.getExt();
 const auth = await todoStore.getAuth();
 const authBasic = await todoStore.getAuthBasic();
 const asks = await todoStore.getAsks();
@@ -13,9 +13,9 @@ const login = await todoStore.login();
     <div>
         <h1>index</h1>
         <p>{{todoStore.count}}</p>
-        <p>External api: {{ ext }}</p>
-        <p>localhost/auth: {{auth}}</p>
+        <!-- <p>External api: {{ ext }}</p> -->
         <p>BASIC localhost/auth: {{authBasic}}</p>
+        <p>localhost/auth: {{auth}}</p>
         <p>localhost/api/v1/asks: {{asks}}</p>
         <p>localhost/auth/accounts/login: {{login}}</p>
     </div>
