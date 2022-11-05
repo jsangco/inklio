@@ -41,7 +41,7 @@ steps:
     arguments: '--nologo'
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
+  displayName: 'dotnet publish Inklio.Api'
   inputs:
     command: publish
     configuration: $(configuration)
@@ -51,7 +51,7 @@ steps:
     publishWebProjects: false
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet publish'
+  displayName: 'dotnet publish Inklio.Auth'
   inputs:
     command: publish
     configuration: $(configuration)
@@ -61,7 +61,7 @@ steps:
     publishWebProjects: false
 
 - task: Docker@2
-  displayName: Docker build and Inklio.Web
+  displayName: Docker Inklio.Web
   inputs:
     DockerFile: Web/inklio/Dockerfile
     containerRegistry: inklio.azurecr.io
@@ -72,7 +72,7 @@ steps:
       latest
 
 - task: Docker@2
-  displayName: Docker build and push Inklio.Api
+  displayName: Docker Inklio.Api
   inputs:
     DockerFile: Services/Inklio.Api/Dockerfile
     containerRegistry: inklio.azurecr.io
@@ -83,7 +83,7 @@ steps:
       latest
 
 - task: Docker@2
-  displayName: Docker build and push Inklio.Auth
+  displayName: Docker Inklio.Auth
   inputs:
     DockerFile: Services/Inklio.Auth/Dockerfile
     containerRegistry: inklio.azurecr.io
@@ -94,7 +94,7 @@ steps:
       latest
 
 - task: Docker@2
-  displayName: Docker build and push Reverse Proxy
+  displayName: Docker Reverse Proxy
   inputs:
     DockerFile: ReverseProxy/Dockerfile
     containerRegistry: inklio.azurecr.io
