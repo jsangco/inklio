@@ -9,5 +9,9 @@
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.12"
+  },
+  "dependencies": {
+    "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
+    "@pinia/nuxt": "^0.4.3"
   }
 }

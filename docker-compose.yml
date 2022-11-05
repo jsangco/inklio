@@ -10,6 +10,11 @@ services:
     image: inklio.azurecr.io/docker/inklio.api:latest
     env_file:
       - .env
+  auth:
+    depends_on:
+      - reverseproxy
+    image: inklio.azurecr.io/docker/inklio.auth:latest
+    restart: always
   web:
     depends_on:
       - reverseproxy

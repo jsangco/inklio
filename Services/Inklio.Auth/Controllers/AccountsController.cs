@@ -39,6 +39,12 @@ public class AccountsController : ControllerBase
         this.emailStore = GetEmailStore();
     }
 
+    [HttpPost("test")]
+    public async Task<IActionResult> Test(dynamic stuff, CancellationToken cancellationToken)
+    {
+        return this.Ok(new { hello = "world2" });
+    }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]AccountLogin accountLogin, CancellationToken cancellationToken)
     {
@@ -63,7 +69,8 @@ public class AccountsController : ControllerBase
 
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-            return this.SignIn(new ClaimsPrincipal(claimsIdentity));
+            // return this.SignIn(new ClaimsPrincipal(claimsIdentity));
+            return this.Ok(new { signedIn = true });
         }
         else if (signInResult.IsLockedOut)
         {
