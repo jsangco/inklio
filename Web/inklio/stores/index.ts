@@ -40,7 +40,7 @@ const getters = {
   },
   getExt: () => async () => {
     console.log('fetching testData');
-    return await $fetch('http://jsonplaceholder.typicode.com/todos/1', {
+    return await $fetch('https://jsonplaceholder.typicode.com/todos/1', {
       mode: 'no-cors',
     });
   },
