@@ -25,7 +25,6 @@ const getters = {
     return await $fetch(
       'https://inklio.azurewebsites.net/auth/accounts/login', {
       method: 'POST',
-      mode: 'no-cors',
       body: {
         username: 'jace',
         password: 'Aoeuaoeu1'
@@ -37,20 +36,17 @@ const getters = {
   },
   getAsks: () => async () => {
     console.log('fetching asks1');
-    return await $fetch('https://inklio.azurewebsites.net/api/v1/asks/', {
-      mode: 'no-cors',
-    });
+    return await fetch('https://inklio.azurewebsites.net/api/v1/asks/').then(response => response.json());
   },
   getExt: () => async () => {
     console.log('fetching testData');
     return await $fetch('https://jsonplaceholder.typicode.com/todos/1', {
-      mode: 'no-cors',
+      parseResponse: JSON.parse,
     });
   },
   getAuth: () => async () => {
     console.log('fetching auth');
     return await useFetch('/auth/', {
-      mode: 'no-cors',
       baseURL: 'https://inklio.azurewebsites.net/',
     });
   },
