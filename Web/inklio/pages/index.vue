@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { config } from 'process';
+
 const todoStore = useTodoStore();
 
+const runtimeConfig = useRuntimeConfig();
+const baseurl = runtimeConfig.public.baseUrl;
 const ext = await todoStore.getExt();
-const auth = await useFetch('/auth/', {
-    baseURL: 'https://inklio.azurewebsites.net/',
-});
-const asks = await useFetch('https://inklio.azurewebsites.net/api/v1/asks/');
+const auth = await useFetch(`${runtimeConfig.public.baseUrl}/auth/`);
+const authX = await useFetchX('/auth/');
+const asks = await useFetchX('api/v1/asks/');
 
-const login = await useFetch(
+const login = await useFetchX(
       'https://inklio.azurewebsites.net/auth/accounts/login', {
       method: 'POST',
       body: {
@@ -29,12 +32,13 @@ onBeforeMount( async () => {
 <template>
     <div>
         <h1>index</h1>
-        <p>base url: {{todoStore.test}}</p>
-        <p>localhost/auth: {{auth}}</p>
-        <p>External api: {{ ext }}</p>
-        <p>BASIC localhost/auth: {{authBasic}}</p>
-        <p>localhost/api/v1/asks: {{asks}}</p>
-        <p>localhost/auth/accounts/login: {{login}}</p>
+        <p>baseurl: {{baseurl}}</p>
+        <p><b>javascript-fetch store GET {{baseurl}}/auth:</b> {{authBasic}}</p>
+        <p><b>ext api $fetch:</b> {{ ext }}</p>
+        <p><b>useFetch {{baseurl}}/auth:</b> {{auth}}</p>
+        <p><b>useFetchX {{baseurl}}/auth:</b> {{authX}}</p>
+        <p><b>useFetchX {{baseurl}}/api/v1/asks:</b> {{asks}}</p>
+        <p><b>useFetchX {{baseurl}}/auth/accounts/login:</b> {{login}}</p>
     </div>
 </template>
 

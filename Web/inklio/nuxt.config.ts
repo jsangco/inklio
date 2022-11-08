@@ -4,6 +4,14 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores'],
   },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  },
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.BASE_URL || 'http://localhost/api'
+    }
+  },
   modules: [
     [
       '@pinia/nuxt',
