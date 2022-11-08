@@ -5,11 +5,11 @@ export default defineNuxtConfig({
     dirs: ['stores'],
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.BASE_URL || 'https://inklio.azurewebsites.net',
   },
   runtimeConfig: {
     public: {
-      baseUrl: process.env.BASE_URL || 'http://localhost/api'
+      baseUrl: process.env.BASE_URL || 'https://inklio.azurewebsites.net'
     }
   },
   modules: [
