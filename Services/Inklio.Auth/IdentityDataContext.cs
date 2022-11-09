@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inklio.Auth.Areas.Identity.Data;
+namespace Inklio.Auth;
 
 public class IdentityDataContext : IdentityDbContext<IdentityUser>
 {

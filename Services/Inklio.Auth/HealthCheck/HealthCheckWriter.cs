@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Inklio.Api.HealthCheck;
+namespace Inklio.Auth.HealthCheck;
 
 internal static class HealthCheckWriter
 {

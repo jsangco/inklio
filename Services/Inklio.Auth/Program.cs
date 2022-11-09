@@ -1,9 +1,11 @@
 using Inklio.Auth;
+using Inklio.Auth.HealthCheck;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Inklio.Auth.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
+Console.WriteLine("Starting Auth server");
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>("Database");
 builder.Services.ConfigureApplicationCookie(options =>
     {
         options.Cookie.Name = "Inklio";
@@ -21,7 +25,6 @@ builder.Services.AddDbContext<IdentityDataContext>(options =>
     {
         // Configure the context to use an in-memory store.
         var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection");
-        Console.WriteLine(connectionString);
         options.UseSqlServer(connectionString);
         // .UseInMemoryDatabase(nameof(DbContext));
 
@@ -40,24 +43,26 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
-    .AllowCredentials()); // allow credentials
-// app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment() == false)
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/", new HealthCheckOptions
+{
+    ResponseWriter = HealthCheckWriter.WriteResponse,
+    AllowCachingResponses = false,
+    Predicate = healthCheck => healthCheck.Name == "Database",
+});
 
 app.Run();

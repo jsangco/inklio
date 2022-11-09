@@ -9,21 +9,24 @@ export interface Todo {
 export interface TodoState {
   count: number,
   test: string,
+  auth: string,
   items: Todo[] | undefined[];
 };
 
 const state = () => ({
   count: 1234,
   test: process.env.baseUrl,
+  auth: "--",
   items: [],
 });
 
 const getters = {
 
   login: () => async () => {
-    console.log('fetching login');
+    console.log("store login");
+    const config = useRuntimeConfig();
     return await $fetch(
-      'https://inklio.azurewebsites.net/auth/accounts/login', {
+      `${config.public.baseUrl}/auth/accounts/login`, {
       method: 'POST',
       body: {
         username: 'jace',
@@ -33,6 +36,11 @@ const getters = {
           'Content-Type': 'application/json'
         }
     });
+  },
+  claims: () => async () => {
+    console.log("store claims");
+    const config = useRuntimeConfig();
+    return await $fetch(`${config.public.baseUrl}/auth/claims`);
   },
   getAsks: () => async () => {
     console.log('fetching asks1');
@@ -57,7 +65,13 @@ const getters = {
   getCount: (state: TodoState) => () => { return state.count; },
 };
 
-const actions = { };
+const actions = {
+  async setAuth() {
+    console.log("setAuth");
+    const config = useRuntimeConfig();
+    this.auth = await $fetch(`${config.public.baseUrl}/auth/`);
+  }
+};
 
 export const useTodoStore = defineStore('todoStore', {
   state,
