@@ -23,3 +23,18 @@ onBeforeMount(async () => {
 });
    
 </script>
+
+<style>
+@media (prefers-color-scheme: dark) {
+   :root {
+       --body-bg: #101010;
+       --body-color: #CCCCCC;
+   }
+}
+
+body {
+   background: var(--body-bg);
+   color: var(--body-color);
+   font-family: Arial, Helvetica, sans-serif;
+}
+</style>

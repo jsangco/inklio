@@ -38,8 +38,6 @@ onBeforeMount(async () => {
 </script>
 
 <style>
-
-/* Dark mode */
 @media (prefers-color-scheme: dark) {
    :root {
        --body-bg: #101010;
