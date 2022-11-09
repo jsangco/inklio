@@ -18,7 +18,7 @@ internal static class HealthCheckWriter
         using (var jsonWriter = new Utf8JsonWriter(memoryStream, options))
         {
             jsonWriter.WriteStartObject();
-            jsonWriter.WriteString("app", "Inklio.Auth");
+            jsonWriter.WriteString("app", "Inklio.Api");
             jsonWriter.WriteString("status", healthReport.Status.ToString());
             jsonWriter.WriteString("appVersion", GetAppVersion());
             jsonWriter.WriteStartObject("results");
