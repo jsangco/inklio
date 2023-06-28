@@ -60,46 +60,48 @@ steps:
     arguments: /p:InformationalVersion="1.0.0.$(gitshorthash)"
     publishWebProjects: false
 
-- task: Docker@2
-  displayName: Docker Inklio.Web
-  inputs:
-    DockerFile: Web/inklio/Dockerfile
-    containerRegistry: inklio.azurecr.io
-    repository: 'docker/inklio.web'
-    command: buildAndPush
-    tags: |
-      $(Build.SourceVersion)
-      latest
+## DOCKER DEPLOY IS DISABLED UNTIL WE HAVE AN CONTAINER REGISTERY
 
-- task: Docker@2
-  displayName: Docker Inklio.Api
-  inputs:
-    DockerFile: Services/Inklio.Api/Dockerfile
-    containerRegistry: inklio.azurecr.io
-    repository: 'docker/inklio.api'
-    command: buildAndPush
-    tags: |
-      $(Build.SourceVersion)
-      latest
+# - task: Docker@2
+#   displayName: Docker Inklio.Web
+#   inputs:
+#     DockerFile: Web/inklio/Dockerfile
+#     containerRegistry: inklio.azurecr.io
+#     repository: 'docker/inklio.web'
+#     command: buildAndPush
+#     tags: |
+#       $(Build.SourceVersion)
+#       latest
 
-- task: Docker@2
-  displayName: Docker Inklio.Auth
-  inputs:
-    DockerFile: Services/Inklio.Auth/Dockerfile
-    containerRegistry: inklio.azurecr.io
-    repository: 'docker/inklio.auth'
-    command: buildAndPush
-    tags: |
-      $(Build.SourceVersion)
-      latest
+# - task: Docker@2
+#   displayName: Docker Inklio.Api
+#   inputs:
+#     DockerFile: Services/Inklio.Api/Dockerfile
+#     containerRegistry: inklio.azurecr.io
+#     repository: 'docker/inklio.api'
+#     command: buildAndPush
+#     tags: |
+#       $(Build.SourceVersion)
+#       latest
 
-- task: Docker@2
-  displayName: Docker Reverse Proxy
-  inputs:
-    DockerFile: ReverseProxy/Dockerfile
-    containerRegistry: inklio.azurecr.io
-    repository: 'docker/reverseproxy'
-    command: buildAndPush
-    tags: |
-      $(Build.SourceVersion)
-      latest
+# - task: Docker@2
+#   displayName: Docker Inklio.Auth
+#   inputs:
+#     DockerFile: Services/Inklio.Auth/Dockerfile
+#     containerRegistry: inklio.azurecr.io
+#     repository: 'docker/inklio.auth'
+#     command: buildAndPush
+#     tags: |
+#       $(Build.SourceVersion)
+#       latest
+
+# - task: Docker@2
+#   displayName: Docker Reverse Proxy
+#   inputs:
+#     DockerFile: ReverseProxy/Dockerfile
+#     containerRegistry: inklio.azurecr.io
+#     repository: 'docker/reverseproxy'
+#     command: buildAndPush
+#     tags: |
+#       $(Build.SourceVersion)
+#       latest

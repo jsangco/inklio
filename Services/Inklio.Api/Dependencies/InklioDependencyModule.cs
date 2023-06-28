@@ -54,7 +54,8 @@ public class InklioDependencyModule : Autofac.Module
             }).SingleInstance();
         }
 
-        builder.Register<BlobServiceClient>(ctx => new BlobServiceClient(this.configuration.GetConnectionString("InklioStorageConnectionString"))).SingleInstance();
+        string storageConnectionString = this.configuration.GetConnectionString("InklioStorageConnectionString");
+        builder.Register<BlobServiceClient>(ctx => new BlobServiceClient(storageConnectionString)).SingleInstance();
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
         builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<BlobRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();

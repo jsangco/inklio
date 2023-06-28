@@ -12,7 +12,7 @@ public static class MediatorExtension
             .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
 
         var domainEvents = domainEntities
-            .SelectMany(x => x.Entity.DomainEvents)
+            .SelectMany(x => x?.Entity?.DomainEvents ?? Enumerable.Empty<INotification>())
             .ToList();
 
         domainEntities.ToList()

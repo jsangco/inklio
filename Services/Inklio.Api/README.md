@@ -77,12 +77,31 @@ The following steps can be used to run Docker for a single service
 ## Testing APIs from Powershell
 
 Below is some sample powershell code that can be used to interact with the Inklio.Api endpoints
+
 ```powershell
-$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path c:\src\Inklio\aqua.png)}
+# Create an Ask
+$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
 
-$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path c:\src\Inklio\aqua.png)}
+# Add a Delivery to an Ask
+$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost:7187/v1/asks/1/deliveries
 
-Invoke-WebRequest -Method POST -Body @{"tag"=@{"value"="konosuba"}}  -ContentType "application/json" https://localhost:7187/v1/asks/1/tags
+# Add a Comment to an Ask
+Invoke-WebRequest -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/comments
+
+# Add a Comment to a Delivery
+Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/deliveries/1/comments
+
+# Add a Tag to an Ask and all its child objects (i.e. Deliveries, Comments)
+Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost:7187/v1/asks/1/tags
+
+# Get all Asks
+curl http://localhost:80/api/v1/asks
+
+# Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments
+curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments),comments"
+
+# Get all the Deliveries from the first Ask
+curl http://localhost:80/api/v1/asks/1/deliveries
 ```

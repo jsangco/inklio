@@ -7,6 +7,6 @@ CREATE TABLE [inklio].[user]
   [last_activity_at_utc] DATETIME2 NOT NULL,
   [last_login_at_utc] DATETIME2 NOT NULL,
   [reputation] INT NOT NULL DEFAULT 0,
-  [username] NVARCHAR(32) NOT NULL
-    CONSTRAINT [ix_username] UNIQUE INDEX [username],
+  [username] NVARCHAR(32) NOT NULL,
+  CONSTRAINT [ak_username] UNIQUE(username),
 )

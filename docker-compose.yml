@@ -1,22 +1,37 @@
 version: "3.4"
 services:
   reverseproxy:
-    image: inklio.azurecr.io/docker/reverseproxy:latest
+    build: ./ReverseProxy
     ports:
       - 80:80
   api:
     depends_on:
       - reverseproxy
-    image: inklio.azurecr.io/docker/inklio.api:latest
+      - azure-storage
+      - inkliodb
+    build: ./Services/Inklio.Api
     env_file:
       - .env
   auth:
     depends_on:
       - reverseproxy
-    image: inklio.azurecr.io/docker/inklio.auth:latest
+    build: ./Services/Inklio.Auth
     restart: always
   web:
     depends_on:
       - reverseproxy
-    image: inklio.azurecr.io/docker/inklio.web:latest
+    build: ./Web/inklio
     restart: always
+  azure-storage:
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    image: mcr.microsoft.com/azure-storage/azurite
+  inkliodb:
+    build: ./Services/Inklio.Sql
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Supersecret!1

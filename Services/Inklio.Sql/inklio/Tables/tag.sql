@@ -5,5 +5,5 @@ CREATE TABLE [inklio].[tag]
   [created_by_id] INT NOT NULL,
   [type] NVARCHAR(64) NOT NULL,
   [value] NVARCHAR(64) NOT NULL,
-  CONSTRAINT [ix_tag_type_value] UNIQUE ([type], [value])
+  CONSTRAINT [ak_tag_type_value] UNIQUE ([type], [value])
 )

@@ -159,7 +159,7 @@ public class AsksController : ODataController
     [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
         int askId,
-        AskCommentCreateCommand commentCreateCommand,
+        [FromBody] AskCommentCreateCommand commentCreateCommand,
         CancellationToken cancellationToken)
     {
         commentCreateCommand.AskId = askId;
@@ -172,7 +172,7 @@ public class AsksController : ODataController
     [HttpPost("{askId}/tags")]
     public async Task AddAskTag(
         int askId,
-        AskTagAddCommand tagCommand,
+        [FromBody] AskTagAddCommand tagCommand,
         CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
@@ -206,7 +206,7 @@ public class AsksController : ODataController
     public async Task AddDeliveryComment(
         int askId,
         int deliveryId,
-        DeliveryCommentCreateCommand commentCreateCommand,
+        [FromBody] DeliveryCommentCreateCommand commentCreateCommand,
         CancellationToken cancellationToken)
     {
         commentCreateCommand.AskId = askId;
@@ -221,7 +221,7 @@ public class AsksController : ODataController
     public async Task AddDeliveryTag(
         int askId,
         int deliveryId,
-        DeliveryTagAddCommand tagCommand,
+        [FromBody] DeliveryTagAddCommand tagCommand,
         CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;

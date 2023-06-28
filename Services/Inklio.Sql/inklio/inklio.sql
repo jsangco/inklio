@@ -1,1 +1,1 @@
-CREATE SCHEMA [inklio]
+CREATE SCHEMA [inklio] AUTHORIZATION [dbo]

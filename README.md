@@ -14,26 +14,66 @@ All services can be run together using docker compose. The configuration steps a
 
 ### 2. SQL Database connection
 
+> NOTE: The SQL DB resource is currently deleted. Please use local debugging for now.
+
 1. [Grant your IP address access](https://learn.microsoft.com/en-us/azure/azure-sql/database/network-access-controls-overview?view=azuresql#allow-azure-services) to the SQL DB in the Azure Portal
 2. Retrieve the connection string from the Azure Portal
 3. In the VS Code SQL Server Extension add a connection to the DB 
 
 ### 3. Configure environment secrets
 
-After receiving the application secrets from an administrator, from the `docker-compose.yml` file directory, create a `.env` file and add the following values:
+For execution using local docker images, simply rename the [.env.local](./.env.local) file to `.env`.
+
+The `.env` file can also be modified to use remote resources.
+
 ```
   SQLAZURECONNSTR_InklioSqlConnectionString=<sql connection string here>
   CONNECTIONSTRINGS__InklioStorageConnectionString=<azure storage connection string here>
 ```
+
 > **NOTE:** The connection strings should not be surrounded by quotes
 
-### 4. Build Docker containers
+### 4. Run all Docker containers
 
-A docker container must be built and tagged for every application. The docker build steps are provided in the application's README file:
-1. [Inklio.Api](services/Inklio.Api/README.md)
-
-### Running all services with Docker compose
-
-After building and tagging every application run `docker compose up` from the `docker-compose.yml` file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
+run `docker compose up` from the [docker-compose.yml](./docker-compose.yml) file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
 
 > **NOTE:** The HTTPS connection does not work because there is no local SSL cert; use HTTP.
+
+### 5. Test the API
+
+There is no front-end UI at this time, so the application can be only tested using the REST APIs.
+
+The swagger page for the APIs can be accessed using the following URL [http://localhost:80/api/swagger/](http://localhost:80/api/swagger/)
+
+Various CLI commands are provided below that can be used to test the API from the CLI
+
+Below are some sample powershell commands that can be used to interact with the Inklio.Api endpoints
+
+```powershell
+
+# Create an Ask
+$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
+
+# Add a Delivery to an Ask
+$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost:7187/v1/asks/1/deliveries
+
+# Add a Comment to an Ask
+Invoke-WebRequest -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/comments
+
+# Add a Comment to a Delivery
+Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/deliveries/1/comments
+
+# Add a Tag to an Ask and all its child objects (i.e. Deliveries, Comments)
+Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost:7187/v1/asks/1/tags
+
+# Get all Asks
+curl http://localhost:80/api/v1/asks
+
+# Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments. (This done with OData)
+curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments),comments"
+
+# Get all the Deliveries from the first Ask
+curl http://localhost:80/api/v1/asks/1/deliveries
+```

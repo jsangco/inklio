@@ -29,6 +29,8 @@ public class UserRepository : IUserRepository
             return user;
         }
 
-        throw new InklioDomainException(404, $"The specified User {userId} was not found");
+        // TODO: Require an actual user
+        // throw new InklioDomainException(404, $"The specified User {userId} was not found");
+        return new User("User1");
     }
 }
