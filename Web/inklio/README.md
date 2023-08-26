@@ -1,6 +1,8 @@
-# Nuxt 3 Minimal Starter
+# Inklio Front-End Web
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+Please use the following [naming conventions](naming.md).
 
 ## Setup
 
@@ -10,13 +12,47 @@ Make sure to install the dependencies:
 yarn install
 ```
 
-## Development Server
+## Local Development
 
-Start the development server on `http://localhost:3000`:
+### 1. Run the front end application
 
 ```bash
 yarn dev
 ```
+
+### 2. Configure the reverse proxy
+
+Once the application is running you will be presented with something like the following information:
+``` bash
+  > Local:    http://localhost:3000/
+  > Network:  http://172.20.16.1:3000/
+  > Network:  http://172.30.176.1:3000/
+  > Network:  http://192.168.4.28:3000/
+```
+Take the **Network** IP and PORT (i.e. `http://172.20.16.1:3000/`), and *replace* the existing `proxy_pass` value in the `Web` section of the [ngnix.conf](../../ReverseProxy/nginx.conf).
+
+It should look something like this:
+```
+# Web
+location / {
+  expires $expires;
+
+  proxy_redirect                      off;
+  proxy_set_header X-Forwarded-Proto  $scheme;
+  proxy_read_timeout          1m;
+  proxy_connect_timeout       1m;
+  proxy_pass   http://172.20.16.1:3000/; # <-- Set this
+  # proxy_pass http://inklio-web/;         <-- Remove this
+}
+```
+
+### 3. Build the back-end services and run Docker
+Run `dotnet build -c Release .\Inklio.sln` from the project directory.
+
+Run `docker compose up --build` from the [docker-compose.yml](./docker-compose.yml) file directory. If the application starts correctly you should be able to navigate to [http://localhost](http://localhost) and begin debugging.
+
+> **NOTE:** This weird configuration is necessary to ensure there are no [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) related problems when running in docker compose.
+
 
 ## Production
 
@@ -34,5 +70,4 @@ yarn preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-Please use the following [naming conventions](naming.md)
 

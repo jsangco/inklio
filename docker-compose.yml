@@ -1,12 +1,15 @@
 version: "3.4"
 services:
   reverseproxy:
+    depends_on:
+      - api
+      - auth
+      - web
     build: ./ReverseProxy
     ports:
       - 80:80
   api:
     depends_on:
-      - reverseproxy
       - azure-storage
       - inkliodb
     build: ./Services/Inklio.Api
@@ -14,18 +17,15 @@ services:
       - .env
   auth:
     depends_on:
-      - reverseproxy
       - inkliodb
     build: ./Services/Inklio.Auth
     env_file:
       - .env
   web:
     depends_on:
-      - reverseproxy
       - auth
       - api
     build: ./Web/inklio
-    restart: always
   azure-storage:
     ports:
       - "10000:10000"

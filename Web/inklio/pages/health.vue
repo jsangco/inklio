@@ -32,9 +32,11 @@
 </template>
 
 <script setup>
-const id = ref(1)
-const { data: apiResult, apiPending, apiError } = await useFetchX('/api/health')
-const { data: authResult, authPending, authError } = await useFetchX(`/auth/health`)
+// const { data: apiResult, apiPending, apiError } = await useFetchX('/api/health')
+// const { data: authResult, authPending, authError } = await useFetchX(`/auth/health`)
+const config = useRuntimeConfig();
+const apiResult = await $fetch(`${config.public.baseUrl}/api/health`)
+const authResult = await $fetch(`${config.public.baseUrl}/auth/health`)
 </script>
 
 <style>

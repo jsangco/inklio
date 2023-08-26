@@ -12,7 +12,10 @@ using Inklio.Api.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
+Console.WriteLine("Starting Inklio Api");
 var appBuilder = WebApplication.CreateBuilder(args);
+Console.WriteLine($"Environment: {appBuilder.Environment.EnvironmentName}");
+
 appBuilder.Host
     .UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureAppConfiguration((HostBuilderContext hostContext, IConfigurationBuilder configBuilder) =>

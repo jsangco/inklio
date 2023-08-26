@@ -63,8 +63,8 @@ public class AccountsController : ControllerBase
 
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-            return this.SignIn(new ClaimsPrincipal(claimsIdentity));
-            // return this.Ok(new { signedIn = true });
+            this.SignIn(new ClaimsPrincipal(claimsIdentity));
+            return this.Ok(new { signedIn = true });
         }
         else if (signInResult.IsLockedOut)
         {

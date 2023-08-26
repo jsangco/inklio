@@ -7,9 +7,14 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 Console.WriteLine("Starting Auth server");
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 
 // Add services to the container.
 
+builder.Services.AddHttpLogging((options) =>
+{
+    options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All;
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +50,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<IdentityDataContext>();
 
 var app = builder.Build();
+app.UseHttpLogging();
 
 if (app.Environment.IsDevelopment())
 {
