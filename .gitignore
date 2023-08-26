@@ -5,6 +5,7 @@
 
 # Misc
 .Web
+Services/AuthorizationServer/
 
 # Environment files
 .env
