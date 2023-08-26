@@ -1,40 +1,54 @@
 <template>
-    <div>
-        <p><b>Inklio.Api:</b> {{apiStatus}}</p>
-        <p><b>Inklio.Auth:</b> {{authStatus}}</p>
-    </div>
+  <div>
+    <tr>
+      <td>
+        Configuration
+      </td>
+      <td>
+        {{ useRuntimeConfig() }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+       API Status
+      </td>
+      <td>
+        <p v-if="apiPending">Fetching...</p>
+        <pre v-else-if="apiError">{{ apiError }}</pre>
+        <pre v-else>{{ apiResult ? apiResult.status : "unreachable" }}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+       Auth Status
+      </td>
+      <td>
+        <p v-if="authPending">Fetching...</p>
+        <pre v-else-if="authError">{{ authError }}</pre>
+        <pre v-else>{{ authResult ? authResult.status : "unreachable" }}</pre>
+      </td>
+    </tr>
+  </div>
 </template>
-<script setup lang="ts">
-const config = useRuntimeConfig();
-const apiStatus = ref('checking...'); 
-const authStatus = ref('checking...');
 
-onBeforeMount(async () => {
-    await fetch(`${config.public.baseUrl}/api/`).then(async r => {
-        apiStatus.value = (await r.json()).status;
-    }).catch(e => {
-        apiStatus.value = "Down";
-    });
-    await fetch(`${config.public.baseUrl}/auth/`).then(async r => {
-        authStatus.value = (await r.json()).status;
-    }).catch(e => {
-        authStatus.value = "Down";
-    });
-});
-   
+<script setup>
+const id = ref(1)
+const { data: apiResult, apiPending, apiError } = await useFetchX('/api/health')
+const { data: authResult, authPending, authError } = await useFetchX(`/auth/health`)
 </script>
 
 <style>
-@media (prefers-color-scheme: dark) {
-   :root {
-       --body-bg: #101010;
-       --body-color: #CCCCCC;
-   }
+div {
+  margin: 10px;
 }
-
-body {
-   background: var(--body-bg);
-   color: var(--body-color);
-   font-family: Arial, Helvetica, sans-serif;
+td {
+  font-size: large;
+}
+td {
+  border: 1px solid;
+}
+td {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 </style>

@@ -25,7 +25,7 @@ Here is an example.
 ```
   "env": {
       "ASPNETCORE_ENVIRONMENT": "Development",
-      "SQLAZURECONNSTR_InklioSqlConnectionString":"<MyConnectionString>"
+      "CONNECTIONSTRINGS__IdentityDataContextConnectionString":"<MyConnectionString>"
   },
 ```
 

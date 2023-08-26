@@ -33,11 +33,16 @@ The `.env` file can also be modified to use remote resources.
 
 > **NOTE:** The connection strings should not be surrounded by quotes
 
-### 4. Run all Docker containers
 
-run `docker compose up` from the [docker-compose.yml](./docker-compose.yml) file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
+### 4. Build Release and run Docker Compose
+
+Run `dotnet build -c Release .\Inklio.sln` from the project directory.
+
+Run `docker compose up --build` from the [docker-compose.yml](./docker-compose.yml) file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
 
 > **NOTE:** The HTTPS connection does not work because there is no local SSL cert; use HTTP.
+
+> **NOTE:** If changes are made to a back-end service, you must rebuild the `Release` version of the service and then run `docker compose up --build`. If this is not done, the new changes will not be included.
 
 ### 5. Test the API
 

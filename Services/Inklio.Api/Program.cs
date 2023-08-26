@@ -66,6 +66,12 @@ app.MapHealthChecks("/", new HealthCheckOptions
     AllowCachingResponses = false,
     Predicate = healthCheck => healthCheck.Name == "Database",
 });
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = HealthCheckWriter.WriteResponse,
+    AllowCachingResponses = false,
+    Predicate = healthCheck => healthCheck.Name == "Database",
+});
 
 Console.WriteLine("Starting application. Version: " + HealthCheckWriter.GetAppVersion());
 app.Run();

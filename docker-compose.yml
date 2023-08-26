@@ -15,11 +15,15 @@ services:
   auth:
     depends_on:
       - reverseproxy
+      - inkliodb
     build: ./Services/Inklio.Auth
-    restart: always
+    env_file:
+      - .env
   web:
     depends_on:
       - reverseproxy
+      - auth
+      - api
     build: ./Web/inklio
     restart: always
   azure-storage:
@@ -34,4 +38,4 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Supersecret!1
+      - SA_PASSWORD=SuperSecret-1

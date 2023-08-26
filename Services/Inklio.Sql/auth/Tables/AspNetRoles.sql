@@ -1,16 +1,17 @@
-CREATE TABLE [dbo].[AspNetRoles](
+CREATE TABLE [auth].[AspNetRoles]
+(
 	[Id] [nvarchar](450) NOT NULL,
 	[Name] [nvarchar](256) NULL,
 	[NormalizedName] [nvarchar](256) NULL,
 	[ConcurrencyStamp] [nvarchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[AspNetRoles] ADD  CONSTRAINT [PK_AspNetRoles] PRIMARY KEY CLUSTERED 
+ALTER TABLE [auth].[AspNetRoles] ADD  CONSTRAINT [PK_AspNetRoles] PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[AspNetRoles]
+CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [auth].[AspNetRoles]
 (
 	[NormalizedName] ASC
 )

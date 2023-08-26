@@ -24,10 +24,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddDbContext<IdentityDataContext>(options =>
     {
         // Configure the context to use an in-memory store.
-        var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection");
+        var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnectionString");
         options.UseSqlServer(connectionString);
-        // .UseInMemoryDatabase(nameof(DbContext));
 
+        if (builder.Environment.IsDevelopment())
+        {
+            options.LogTo(Console.WriteLine);
+        }
     });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -64,5 +67,10 @@ app.MapHealthChecks("/", new HealthCheckOptions
     AllowCachingResponses = false,
     Predicate = healthCheck => healthCheck.Name == "Database",
 });
-
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = HealthCheckWriter.WriteResponse,
+    AllowCachingResponses = false,
+    Predicate = healthCheck => healthCheck.Name == "Database",
+});
 app.Run();

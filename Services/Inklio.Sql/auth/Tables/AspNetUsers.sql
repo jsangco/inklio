@@ -1,4 +1,5 @@
-CREATE TABLE [dbo].[AspNetUsers](
+CREATE TABLE [auth].[AspNetUsers]
+(
 	[Id] [nvarchar](450) NOT NULL,
 	[UserName] [nvarchar](256) NULL,
 	[NormalizedUserName] [nvarchar](256) NULL,
@@ -16,17 +17,17 @@ CREATE TABLE [dbo].[AspNetUsers](
 	[AccessFailedCount] [int] NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[AspNetUsers] ADD  CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED 
+ALTER TABLE [auth].[AspNetUsers] ADD  CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-CREATE NONCLUSTERED INDEX [EmailIndex] ON [dbo].[AspNetUsers]
+CREATE NONCLUSTERED INDEX [EmailIndex] ON [auth].[AspNetUsers]
 (
 	[NormalizedEmail] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, DROP_EXISTING = OFF, ONLINE = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers]
+CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [auth].[AspNetUsers]
 (
 	[NormalizedUserName] ASC
 )
