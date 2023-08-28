@@ -39,7 +39,6 @@ appBuilder.Services.AddControllers(options =>
         jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
     });
 appBuilder.Services.AddEndpointsApiExplorer();
-
 appBuilder.Services.AddSwaggerGen( c =>
 {
     c.ResolveConflictingActions(api => api.First());
@@ -48,6 +47,9 @@ appBuilder.Services.AddSwaggerGen( c =>
 });
 appBuilder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
+
+string identitySqlConnectionString = appBuilder.Configuration.GetConnectionString("InklioSqlConnectionString");
+appBuilder.Services.AddInklioIdentity(appBuilder.Environment, identitySqlConnectionString);
 
 var app = appBuilder.Build();
 

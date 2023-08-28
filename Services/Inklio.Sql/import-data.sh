@@ -24,6 +24,7 @@ do
         echo "Creating auth Schemas"
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/auth.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetUsers.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetUserRoles.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetUserClaims.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetRoles.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetRoleClaims.sql

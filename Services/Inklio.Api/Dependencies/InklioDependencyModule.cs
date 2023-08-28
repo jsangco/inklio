@@ -63,5 +63,8 @@ public class InklioDependencyModule : Autofac.Module
         builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterMediatR(typeof(Program).Assembly);
         builder.RegisterModule(new MediatorDependencyModule());
+
+        WebConfiguration webConfiguration = this.configuration.GetSection("Web").Get<WebConfiguration>();
+        builder.Register<WebConfiguration>(ctx => webConfiguration);
     }
 }
