@@ -13,9 +13,7 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
     private readonly ILogger<AccountCreateCommandHandler> logger;
     private readonly UserManager<InklioIdentityUser> userManager;
     private readonly IUserStore<InklioIdentityUser> userStore;
-    private readonly SignInManager<InklioIdentityUser> signInManager;
     private readonly IEmailSender emailSender;
-    private readonly RoleManager<IdentityRole> roleManager;
     private readonly WebConfiguration webConfiguration;
     private readonly IUserEmailStore<InklioIdentityUser> emailStore;
 
@@ -23,14 +21,12 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
         ILogger<AccountCreateCommandHandler> logger,
         UserManager<InklioIdentityUser> userManager,
         IUserStore<InklioIdentityUser> userStore,
-        SignInManager<InklioIdentityUser> signInManager,
         IEmailSender emailSender,
         WebConfiguration webConfiguration)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         this.userStore = userStore ?? throw new ArgumentNullException(nameof(userStore));
-        this.signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         this.emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
         this.webConfiguration = webConfiguration;
         this.emailStore = GetEmailStore();

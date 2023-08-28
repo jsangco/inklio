@@ -3,7 +3,6 @@ services:
   reverseproxy:
     depends_on:
       - api
-      - auth
       - web
     build: ./ReverseProxy
     ports:
@@ -15,15 +14,8 @@ services:
     build: ./Services/Inklio.Api
     env_file:
       - .env
-  auth:
-    depends_on:
-      - inkliodb
-    build: ./Services/Inklio.Auth
-    env_file:
-      - .env
   web:
     depends_on:
-      - auth
       - api
     build: ./Web/inklio
   azure-storage:

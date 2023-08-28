@@ -54,6 +54,18 @@ Various CLI commands are provided below that can be used to test the API from th
 
 Below are some sample powershell commands that can be used to interact with the Inklio.Api endpoints
 
+### Account Creation
+
+``` powershell
+$accountCreate = '{"email":"jsangco@gmail.com","username":"jace","password":"Aoeuaoeu1","confirm_password":"Aoeuaoeu1"}'
+Invoke-WebRequest -Method POST -Body $accountCreate -ContentType "application/json" https://localhost:7232/accounts/register
+
+$accountLogin = '{"username":"jace","password":"Aoeuaoeu1","is_remember_me":false}'
+Invoke-WebRequest -Method POST -Body $accountLogin -ContentType "application/json" https://localhost:7232/accounts/login
+```
+
+### Application
+
 ```powershell
 
 # Create an Ask
