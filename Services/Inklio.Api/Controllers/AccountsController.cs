@@ -14,13 +14,13 @@ namespace Inklio.Api.Controllers;
 public class AccountsController : ControllerBase
 {
     private readonly ILogger<AccountsController> logger;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly SignInManager<InklioIdentityUser> signInManager;
     private readonly IMediator mediator;
 
     public AccountsController(
         ILogger<AccountsController> logger,
-        SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager,
+        SignInManager<InklioIdentityUser> signInManager,
+        UserManager<InklioIdentityUser> userManager,
         IMediator mediator)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -82,7 +82,7 @@ public class AccountsController : ControllerBase
     // [HttpPost("reset")]
     // public async Task<IActionResult> ResetPassword(AccountResetPassword accountResetPassword)
     // {
-    //     IdentityUser user = await userManager.FindByEmailAsync(accountResetPassword.Email);
+    //     InklioIdentityUser user = await userManager.FindByEmailAsync(accountResetPassword.Email);
     //     if (user == null)
     //     {
     //         return this.Accepted(); // Do not reveal user existence

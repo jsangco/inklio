@@ -1,6 +1,6 @@
 CREATE TABLE [auth].[AspNetRoles]
 (
-	[Id] [nvarchar](450) NOT NULL,
+	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](256) NULL,
 	[NormalizedName] [nvarchar](256) NULL,
 	[ConcurrencyStamp] [nvarchar](max) NULL

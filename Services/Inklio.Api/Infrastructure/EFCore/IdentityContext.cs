@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Inklio.Api.Infrastructure.EFCore;
 
-public class IdentityContext : IdentityDbContext<IdentityUser>
+public class IdentityContext : IdentityDbContext<InklioIdentityUser, IdentityRole<Guid>, Guid>
 {
     public static string DbSchema { get; private set; } = "auth";
 

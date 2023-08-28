@@ -11,20 +11,20 @@ using System.Security.Claims;
 public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand, bool>
 {
     private readonly ILogger<AccountCreateCommandHandler> logger;
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly IUserStore<IdentityUser> userStore;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly UserManager<InklioIdentityUser> userManager;
+    private readonly IUserStore<InklioIdentityUser> userStore;
+    private readonly SignInManager<InklioIdentityUser> signInManager;
     private readonly IEmailSender emailSender;
+    private readonly RoleManager<IdentityRole> roleManager;
     private readonly WebConfiguration webConfiguration;
-    private readonly IUserEmailStore<IdentityUser> emailStore;
+    private readonly IUserEmailStore<InklioIdentityUser> emailStore;
 
     public AccountCreateCommandHandler(
         ILogger<AccountCreateCommandHandler> logger,
-        UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager,
+        UserManager<InklioIdentityUser> userManager,
+        IUserStore<InklioIdentityUser> userStore,
+        SignInManager<InklioIdentityUser> signInManager,
         IEmailSender emailSender,
-        RoleManager<IdentityRole> roleManager,
         WebConfiguration webConfiguration)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -38,7 +38,7 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
 
     public async Task<bool> Handle(AccountCreateCommand accountCreate, CancellationToken cancellationToken)
     {
-        var user = new IdentityUser(accountCreate.Username);
+        var user = new InklioIdentityUser(accountCreate.Username);
         await this.userStore.SetUserNameAsync(user, accountCreate.Username, cancellationToken);
         await this.emailStore.SetEmailAsync(user, accountCreate.Email, cancellationToken);
         var userCreateResult = await this.userManager.CreateAsync(user, accountCreate.Password);
@@ -74,12 +74,12 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
         return true;
     }
 
-    private IUserEmailStore<IdentityUser> GetEmailStore()
+    private IUserEmailStore<InklioIdentityUser> GetEmailStore()
     {
         if (!this.userManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
-        return (IUserEmailStore<IdentityUser>)this.userStore;
+        return (IUserEmailStore<InklioIdentityUser>)this.userStore;
     }
 }

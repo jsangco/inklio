@@ -25,7 +25,7 @@ public static class IdentityExtensions
             }
         });
 
-        services.AddDefaultIdentity<IdentityUser>(options =>
+        services.AddDefaultIdentity<InklioIdentityUser>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
             options.Password.RequireNonAlphanumeric = false;
@@ -34,7 +34,7 @@ public static class IdentityExtensions
             options.Password.RequireLowercase = false;
             options.Password.RequireUppercase = false;
         })
-        .AddRoles<IdentityRole>()
+        .AddRoles<IdentityRole<Guid>>()
         .AddEntityFrameworkStores<IdentityContext>();
 
         services.AddIdentityCore<object>(options =>

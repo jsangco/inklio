@@ -1,7 +1,7 @@
 CREATE TABLE [auth].[AspNetUserRoles]
 (
-	[UserId] [nvarchar](450) NOT NULL,
-	[RoleId] [nvarchar](450) NOT NULL
+	[UserId] [uniqueidentifier] NOT NULL,
+	[RoleId] [uniqueidentifier] NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [auth].[AspNetUserRoles] ADD  CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY CLUSTERED

@@ -12,13 +12,13 @@ using Microsoft.IdentityModel.Tokens;
 public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, bool>
 {
     private readonly ILogger<AccountLoginCommandHandler> logger;
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly UserManager<InklioIdentityUser> userManager;
+    private readonly SignInManager<InklioIdentityUser> signInManager;
 
     public AccountLoginCommandHandler(
         ILogger<AccountLoginCommandHandler> logger,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        UserManager<InklioIdentityUser> userManager,
+        SignInManager<InklioIdentityUser> signInManager)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -48,7 +48,7 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, b
         IEnumerable<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         }.Concat(roles);
 
         await this.signInManager.SignInWithClaimsAsync(user, accountLogin.IsRememberMe, claims);
