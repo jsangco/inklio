@@ -1,15 +1,10 @@
-using Inklio.Api.Application.Commands;
-using System.Text;
-using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.OData.ModelBuilder;
 using Inklio.Api.Domain;
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 
-public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, bool>
+namespace Inklio.Api.Application.Commands.Accounts;
+
+public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, Account>
 {
     private readonly ILogger<AccountLoginCommandHandler> logger;
     private readonly UserManager<InklioIdentityUser> userManager;
@@ -25,7 +20,7 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, b
         this.signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
     }
 
-    public async Task<bool> Handle(AccountLoginCommand accountLogin, CancellationToken cancellationToken)
+    public async Task<Account> Handle(AccountLoginCommand accountLogin, CancellationToken cancellationToken)
     {
         var user = await this.userManager.FindByNameAsync(accountLogin.Username);
         if (user is null)
@@ -42,8 +37,8 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, b
         this.logger.LogInformation($"User loggend in as: {accountLogin.Username}");
 
         // Create user claims
-        IEnumerable<Claim> roles = (await this.userManager.GetRolesAsync(user))
-            .Select(r => new Claim(ClaimTypes.Role, r));
+        IEnumerable<string> userRoles = await this.userManager.GetRolesAsync(user);
+        IEnumerable<Claim> roles = userRoles.Select(r => new Claim(ClaimTypes.Role, r));
 
         IEnumerable<Claim> claims = new List<Claim>
         {
@@ -53,6 +48,14 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, b
 
         await this.signInManager.SignInWithClaimsAsync(user, accountLogin.IsRememberMe, claims);
 
-        return true;
+        var account = new Account()
+        {
+            Id = user.Id.ToString(),
+            Username = user.UserName,
+            Roles = userRoles,
+            IsEmailVerified = user.EmailConfirmed,
+        };
+
+        return account;
     }
 }

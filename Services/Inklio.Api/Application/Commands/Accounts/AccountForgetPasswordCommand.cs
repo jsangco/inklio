@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Inklio.Api.Application.Commands;
+namespace Inklio.Api.Application.Commands.Accounts;
 
 /// <summary>
 /// Command sent when a user forgets their password

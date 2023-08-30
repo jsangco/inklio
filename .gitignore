@@ -5,7 +5,9 @@
 
 # Misc
 .Web
-Services/AuthorizationServer/
+Web/nuxt-iam/
+Web/supaAuth-main/
+Services/Inklio.Api/dockerRestartApi.ps1
 
 # Environment files
 .env

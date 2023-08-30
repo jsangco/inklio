@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using Inklio.Api.Application.Commands;
+using Inklio.Api.Application.Commands.Accounts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -28,22 +28,42 @@ public class AccountsController : ControllerBase
         this.signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody]AccountLoginCommand accountLogin, CancellationToken cancellationToken)
+    [HttpGet("admins")]
+    [Authorize(Roles = "Administrator")]
+    public IActionResult Admins()
     {
-        var claimsPrincipal = await this.mediator.Send(accountLogin, cancellationToken);
-        return this.NoContent();
+        return this.Ok("Super Secret Admin Page");
+    }
+
+    [HttpGet("claims")]
+    public IActionResult Claims()
+    {
+        if (this.User != null)
+        {
+            var claims = this.User.Claims.Select(c => $"{c.Type}, {c.Value}").ToArray();
+            var claimsStr = string.Join("\n", claims);
+            return this.Ok(claimsStr);
+        }
+
+        return this.Ok("No Claims");
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] AccountLoginCommand accountLogin, CancellationToken cancellationToken)
+    {
+        Account account = await this.mediator.Send(accountLogin, cancellationToken);
+        return this.Ok(account);
     }
 
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
-        await this.signInManager.SignOutAsync();
+        await this.mediator.Send(new AccountLogoutCommand(), cancellationToken);
         return this.NoContent();
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody]AccountCreateCommand accountCreate, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register([FromBody] AccountCreateCommand accountCreate, CancellationToken cancellationToken)
     {
         await this.mediator.Send(accountCreate, cancellationToken);
 
@@ -53,9 +73,9 @@ public class AccountsController : ControllerBase
             Password = accountCreate.Password,
             Username = accountCreate.Username
         };
-        await this.mediator.Send(accountLogin, cancellationToken);
+        Account account = await this.mediator.Send(accountLogin, cancellationToken);
 
-        return this.NoContent();
+        return this.Ok(account);
     }
 
     // [HttpPost("forget")]

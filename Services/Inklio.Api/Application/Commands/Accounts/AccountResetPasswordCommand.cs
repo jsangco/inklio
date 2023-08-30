@@ -1,14 +1,20 @@
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using System.Text.Json.Serialization;
 
-namespace Inklio.Api.Application.Commands;
+namespace Inklio.Api.Application.Commands.Accounts;
 
 /// <summary>
-/// Command used to register a new account
+/// Command sent when a user resets their password.
 /// </summary>
-public class AccountCreateCommand : IRequest<bool>
+public class AccountResetPasswordCommand : IRequest<bool>
 {
+    /// <summary>
+    /// Gets or sets the code used to reset the account password
+    /// </summary>
+    [Required]
+    [JsonPropertyName("code")]
+    public string Code { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets or sets the email to use when registering.
     /// </summary>
@@ -33,12 +39,4 @@ public class AccountCreateCommand : IRequest<bool>
     [JsonPropertyName("confirm_password")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the username to use when registering.
-    /// </summary>
-    [Required]
-    [Username]
-    [JsonPropertyName("username")]
-    public string Username { get; set; } = string.Empty;
 }

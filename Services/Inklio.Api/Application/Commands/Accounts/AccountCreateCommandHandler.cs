@@ -8,6 +8,8 @@ using Microsoft.OData.ModelBuilder;
 using Inklio.Api.Domain;
 using System.Security.Claims;
 
+namespace Inklio.Api.Application.Commands.Accounts;
+
 public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand, bool>
 {
     private readonly ILogger<AccountCreateCommandHandler> logger;

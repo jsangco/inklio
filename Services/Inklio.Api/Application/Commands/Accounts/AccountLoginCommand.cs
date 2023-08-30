@@ -2,12 +2,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 
-namespace Inklio.Api.Application.Commands;
+namespace Inklio.Api.Application.Commands.Accounts;
 
 /// <summary>
 /// Command sent when a user logs in
 /// </summary>
-public class AccountLoginCommand : IRequest<bool>
+public class AccountLoginCommand : IRequest<Account>
 {
     /// <summary>
     /// Gets or sets the username or email used to login.
