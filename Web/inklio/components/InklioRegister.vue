@@ -1,17 +1,24 @@
-<!-- TODO: placeholder code -->
 <template>
   <div>
     <h1>Register</h1>
-    <form @submit.prevent="loginUser">
+    <form @submit.prevent="registerUser">
       <div>
         <label for="username">Username</label>
         <input v-model="username" type="text" id="username" />
       </div>
       <div>
+        <label for="email">Email</label>
+        <input v-model="email" type="text" id="email" />
+      </div>
+      <div>
         <label for="password">Password</label>
         <input v-model="password" type="password" id="password" />
       </div>
-      <button type="submit">Login</button>
+      <div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input v-model="confirmPassword" type="password" id="confirmPassword" />
+      </div>
+      <button type="submit">Register</button>
     </form>
   </div>
   <div>
@@ -20,13 +27,18 @@
   <div>
     <p>password: {{ password }}</p>
   </div>
+  <div>
+    <p>confirmPassword matches: {{ confirmPassword == password}}</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {useUserStore} from '@/stores/user';
+import { useUserStore } from '@/stores/user';
 
 const username = ref('')
+const email = ref('')
 const password = ref('')
+const confirmPassword = ref('')
 const user = useUserStore();
 
 watchEffect(async () => {
@@ -35,7 +47,7 @@ watchEffect(async () => {
   }
 });
 
-const loginUser = async () => {
-  const response = await user.login(username.value, password.value, true);
+const registerUser = async () => {
+  const response = await user.register(username.value, email.value, password.value, confirmPassword.value);
 }
 </script>
