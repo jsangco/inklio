@@ -1,7 +1,7 @@
 <!-- TODO: placeholder code -->
 <template>
   <div>
-    <h1>Login</h1>
+    <h1>Register</h1>
     <form @submit.prevent="loginUser">
       <div>
         <label for="username">Username</label>
@@ -11,7 +11,6 @@
         <label for="password">Password</label>
         <input v-model="password" type="password" id="password" />
       </div>
-
       <button type="submit">Login</button>
     </form>
   </div>
@@ -24,19 +23,19 @@
 </template>
 
 <script setup lang="ts">
+import {useUserStore} from '@/stores/user';
+
 const username = ref('')
 const password = ref('')
-const inklioUser = useInklioUser();
+const user = useUserStore();
 
 watchEffect(async () => {
-  if (inklioUser.value) {
+  if (user.isLoggedIn) {
     await navigateTo('/');
   }
 });
 
-
-const { login } = useIdentity();
 const loginUser = async () => {
-  const response = await login(username.value, password.value, true);
+  const response = await user.login(username.value, password.value, true);
 }
 </script>

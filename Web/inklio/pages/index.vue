@@ -1,15 +1,15 @@
 <template>
   <div>
     pages/index
-    <div v-if="user">
+    <div v-if="user.isLoggedIn">
       <p> Hi {{ user.username }}</p>
-      <button @click="logout">Log out</button>
+      <button @click="user.logout">Log out</button>
     </div>
     <div v-else>
       <NuxtLink style="padding: 10px;" to="/login">
         <span>Login</span>
       </NuxtLink>
-      <NuxtLink to="/Register">
+      <NuxtLink to="/register">
         <span>Register</span>
       </NuxtLink>
     </div>
@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-// TODO: Fix hydration mismatch that occurs
-const user = useInklioUser();
-const { logout } = useIdentity();
+import {useUserStore} from '@/stores/user';
+const user = useUserStore();
 </script>
