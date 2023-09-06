@@ -12,6 +12,7 @@ public class AccountLoginCommand : IRequest<Account>
     /// <summary>
     /// Gets or sets the username or email used to login.
     /// </summary>
+    [Required]
     [JsonPropertyName("username")]
     public string Username { get; set; } = string.Empty;
 

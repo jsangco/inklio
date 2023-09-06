@@ -1,5 +1,6 @@
 using Inklio.Api.Domain;
 using Inklio.Api.Infrastructure.ActionResults;
+using Microsoft.VisualBasic;
 
 namespace Inklio.Api.Infrastructure.Filters;
 
@@ -20,35 +21,43 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
             context.Exception,
             context.Exception.Message);
 
-        if (context.Exception.GetType() == typeof(InklioDomainException))
+        if (context.Exception is InklioDomainException exception)
         {
-            var problemDetails = new ValidationProblemDetails()
+            var problemDetails = new ProblemDetails()
             {
+                Title = exception.RecommendedStatusCode is 401 ? "Unauthorized." :
+                    exception.RecommendedStatusCode is 403 ? "Forbidden." :
+                    "Invalid Request.",
                 Instance = context.HttpContext.Request.Path,
-                Status = ((InklioDomainException)context.Exception).RecommendedStatusCode,
-                Detail = "Please refer to the errors property for additional details."
+                Status = exception.RecommendedStatusCode,
+                Detail = exception.Message.ToString(),
             };
 
-            problemDetails.Errors.Add("reasons", new string[] { context.Exception.Message.ToString() });
+            if (exception.Errors is not null)
+            {
+                problemDetails.Extensions.Add("errors", exception.Errors);
+            }
 
-            context.Result = new BadRequestObjectResult(problemDetails);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Result = new ObjectResult(problemDetails) { StatusCode = exception.RecommendedStatusCode };
+            context.HttpContext.Response.StatusCode = exception.RecommendedStatusCode;
         }
         else
         {
-            var json = new JsonErrorResponse
+            var problemDetails = new ProblemDetails()
             {
-                Messages = new[] { "An error occur.Try it again." }
+                Title = "Internal Server Error.",
+                Detail = "An unexpected error occured. Please try again later.",
+                Status = 500,
             };
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsStaging())
             {
-                json.DeveloperMessage = context.Exception.ToString();
+                problemDetails.Extensions.Add("DeveloperMessage", context.Exception.ToString());
             }
 
             // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
             // It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
-            context.Result = new InternalServerErrorObjectResult(json);
+            context.Result = new InternalServerErrorObjectResult(problemDetails);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         }
         context.ExceptionHandled = true;

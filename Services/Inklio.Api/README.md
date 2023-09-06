@@ -76,9 +76,26 @@ The following steps can be used to run Docker for a single service
 
 ## Testing APIs from Powershell
 
-Below is some sample powershell code that can be used to interact with the Inklio.Api endpoints
+The swagger page for the APIs can be accessed using the following URL [http://localhost:80/api/swagger/](http://localhost:80/api/swagger/)
+
+Various CLI commands are provided below that can be used to test the API from the CLI
+
+Below are some sample powershell commands that can be used to interact with the Inklio.Api endpoints
+
+### Account Creation
+
+``` powershell
+$accountCreate = '{"email":"inkliojace@mailinator.com","username":"jace","password":"aoeuaoeu1","confirm_password":"aoeuaoeu1"}'
+Invoke-WebRequest -Method POST -Body $accountCreate -ContentType "application/json" https://localhost:7187/v1/accounts/register
+
+$accountLogin = '{"username":"jace","password":"aoeuaoeu1","is_remember_me":false}'
+Invoke-WebRequest -Method POST -Body $accountLogin -ContentType "application/json" https://localhost:7187/v1/accounts/login
+```
+
+### Application
 
 ```powershell
+
 # Create an Ask
 $askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
@@ -99,7 +116,7 @@ Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo
 # Get all Asks
 curl http://localhost:80/api/v1/asks
 
-# Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments
+# Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments. (This done with OData)
 curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments),comments"
 
 # Get all the Deliveries from the first Ask

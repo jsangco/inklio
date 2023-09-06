@@ -27,17 +27,21 @@ appBuilder.Host
         builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration, hostContext.HostingEnvironment));
     });
 
+appBuilder.Services.PostConfigure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory.Instance;
+});
+
 appBuilder.Services.AddControllers(options =>
-    {
-        options.Filters.Add<HttpGlobalExceptionFilter>();
-        options.Filters.Add<ValidateModelStateFilter>();
-    })
-    .AddApiOData()
-    .AddJsonOptions(jsonOptions =>
-    {
-	    jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
-    });
+{
+    options.Filters.Add<HttpGlobalExceptionFilter>();
+})
+.AddApiOData()
+.AddJsonOptions(jsonOptions =>
+{
+    jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+});
 appBuilder.Services.AddEndpointsApiExplorer();
 appBuilder.Services.AddSwaggerGen( c =>
 {

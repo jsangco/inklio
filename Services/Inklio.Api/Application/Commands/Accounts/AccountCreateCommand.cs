@@ -12,7 +12,7 @@ public class AccountCreateCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets the email to use when registering.
     /// </summary>
-    [Required(ErrorMessage = "An email is required.")]
+    [Required]
     [EmailAddress]
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
@@ -37,7 +37,7 @@ public class AccountCreateCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets the username to use when registering.
     /// </summary>
-    [Required(ErrorMessage = "A username is required.")]
+    [Required]
     [Username]
     [JsonPropertyName("username")]
     public string Username { get; set; } = string.Empty;
