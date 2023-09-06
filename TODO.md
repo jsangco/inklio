@@ -2,7 +2,8 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Add error handling and to register page
+* Add forget password page
+* Add reset password page
 * Create E2E test script to populate database with content using APIs
 
 ## Backlog

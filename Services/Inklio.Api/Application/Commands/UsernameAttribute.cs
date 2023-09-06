@@ -17,12 +17,17 @@ public sealed class UsernameAttribute : ValidationAttribute
             return false;
         }
 
-        var usernameRegx = new Regex("^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
+        var usernameRegx = new Regex("^(?=[a-zA-Z0-9_]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
         if (usernameRegx.IsMatch(username))
         {
             return true;
         }
 
         return false;
+    }
+
+    public override string FormatErrorMessage(string name)
+    {
+        return "The Username must be within 3-20 characters and can only contain characters A-Z, 0-9, and underscores.";
     }
 }

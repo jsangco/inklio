@@ -21,7 +21,7 @@ public class AccountCreateCommand : IRequest<bool>
     /// Gets or sets the password to use when registering.
     /// </summary>
     [Required]
-    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 7)]
     [DataType(DataType.Password)]
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
@@ -31,7 +31,7 @@ public class AccountCreateCommand : IRequest<bool>
     /// </summary>
     [DataType(DataType.Password)]
     [JsonPropertyName("confirm_password")]
-    [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+    [Compare("Password", ErrorMessage = "The Password and the Confirmation Password do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 
     /// <summary>

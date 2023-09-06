@@ -45,7 +45,15 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
         {
             var errors = userCreateResult.Errors.Select(e => $"{e.Code}: {e.Description}");
             this.logger.LogInformation("Could not create account {Errors}", errors);
-            throw new InklioDomainException(400, "Unable to create new account.");
+
+            if (userCreateResult.Errors.Any(e => e.Code == "DuplicateUserName"))
+            {
+                throw new InklioDomainException(400, "The Username is already taken.", ("username", "The Username is already taken."));
+            }
+            else
+            {
+                throw new InklioDomainException(400, "Could not create account.", ("error", "Could not create account."));
+            }
         }
 
         var roleResult = await this.userManager.AddToRoleAsync(user, UserRoles.User);

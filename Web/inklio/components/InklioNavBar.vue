@@ -4,7 +4,6 @@
       <NuxtLink to="/">
         Inklio
       </NuxtLink>
-      <span class="navbar-subheader">Create and share</span>
     </span>
     <span class="user-info">
       <span v-if="user.isLoggedIn">
@@ -29,17 +28,9 @@ const user = useUserStore();
 </script>
 
 <style>
-.navbar-subheader {
-  font-size: small;
-}
-
 .user-info {
   float: right;
   font-size: medium;
   color:#aee6e0;
-}
-
-.user-info button {
-
 }
 </style>

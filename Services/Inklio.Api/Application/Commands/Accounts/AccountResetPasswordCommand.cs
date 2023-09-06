@@ -37,6 +37,6 @@ public class AccountResetPasswordCommand : IRequest<bool>
     /// </summary>
     [DataType(DataType.Password)]
     [JsonPropertyName("confirm_password")]
-    [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+    [Compare("Password", ErrorMessage = "The Password and the Confirmation Password do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }
