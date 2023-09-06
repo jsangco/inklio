@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
+    <InklioNavBar />
     <NuxtPage />
-    global home content
   </NuxtLayout>
 </template>

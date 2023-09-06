@@ -66,6 +66,23 @@ public class InklioDomainException : Exception
     /// </summary>
     /// <param name="recommendedStatusCode">A recommend status code to use. Typically an HTTP status code.</param>
     /// <param name="message">A message that user will see.</param>
+    /// <param name="errorKeyValuePair">An optional error as a key and value.</param>
+    /// <param name="innerException">An inner exception</param>
+    public InklioDomainException(int recommendedStatusCode, string message, (string, string) errorKeyValuePair)
+        : base(message)
+    {
+        this.RecommendedStatusCode = recommendedStatusCode;
+        this.Errors = new Dictionary<string, string[]>()
+        {
+            {errorKeyValuePair.Item1, new string[]{ errorKeyValuePair.Item2} }
+        };
+    }
+
+    /// <summary>
+    /// Initializes an instance of a <see cref="InklioDomainException"/> object.
+    /// </summary>
+    /// <param name="recommendedStatusCode">A recommend status code to use. Typically an HTTP status code.</param>
+    /// <param name="message">A message that user will see.</param>
     /// <param name="errors">An optional collection of errors.</param>
     /// <param name="innerException">An inner exception</param>
     public InklioDomainException(int recommendedStatusCode, string message, IDictionary<string, string[]> errors)

@@ -25,13 +25,15 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, A
         var user = await this.userManager.FindByNameAsync(accountLogin.Username);
         if (user is null)
         {
-            throw new InklioDomainException(401, "Invalid login attempt.");
+            string msg = "Invalid username or password.";
+            throw new InklioDomainException(401, msg, ("credentials", msg));
         }
 
         bool isCorrectPassword = await this.userManager.CheckPasswordAsync(user, accountLogin.Password);
         if (isCorrectPassword == false)
         {
-            throw new InklioDomainException(401, "Invalid login attempt.");
+            string msg = "Invalid username or password.";
+            throw new InklioDomainException(401, msg, ("credentials", msg));
         }
 
         this.logger.LogInformation($"User loggend in as: {accountLogin.Username}");

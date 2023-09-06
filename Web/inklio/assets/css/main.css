@@ -2,8 +2,7 @@
 body {
   background-color: #3a3b3c;
   color: #e4e6eb;
-  margin: 0;
-  padding: 0;
+  padding-top: 44px;
   font-family: Arial, sans-serif;
 }
 
@@ -16,7 +15,13 @@ header {
 
 /* Navigation */
 nav {
-  background-color: #1a1a1a;
+  background-color: #171717;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  min-width: 400px;
+  font-size: x-large;
 }
 
 nav a {
@@ -27,12 +32,12 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #333333;
+  background-color: #545353;
 }
 
 /* Main content */
 main {
-  padding: 20px;
+  padding: 40px;
 }
 
 /* Links */
@@ -42,34 +47,36 @@ a {
 }
 
 a:hover {
-  color: #03dac6;
+  color: #caa5f7;
 }
 
 /* Buttons */
-.button {
-  background-color: #bb86fc;
-  color: #3a3b3c;
+button {
+  background-color: #caa5f7;
+  color: #000000;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.button:hover {
-  background-color: #03dac6;
+button:hover {
+  background-color: #b295d7;
 }
 
 /* Form elements */
 input[type="text"],
+input[type="password"],
 input[type="email"],
 textarea {
-  background-color: #333333;
+  background-color: #4d4d4d;
   color: #e4e6eb;
-  border: 1px solid #555555;
+  border: 1px solid #ffffff;
   padding: 10px;
 }
 
 input[type="text"]:focus,
+input[type="password"]:focus,
 input[type="email"]:focus,
 textarea:focus {
   border-color: #bb86fc;

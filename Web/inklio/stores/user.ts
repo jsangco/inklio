@@ -10,6 +10,12 @@ export type User = {
   isLoggedIn: boolean;
 };
 
+export type JsonResponse = {
+  isSuccess: boolean;
+  data?: any;
+  error?: any;
+};
+
 const emptyUserInfo: User = {
   id: "",
   username: "",
@@ -18,69 +24,96 @@ const emptyUserInfo: User = {
   isLoggedIn: false,
 }
 
-const loginOrRegister = async (url: string, body: any): Promise<any> => {
-  const account = await $fetch(url, {
-    method: "POST",
-    body: decamelizeKeys(body),
-    async onResponse({ response }) {
-      if (response && response._data) {
-        response._data = camelizeKeys(response._data);
+const loginOrRegister = async (state: any, url: string, body: any): Promise<JsonResponse> => {
+  const errorResult = ref()
+  const doRequest = async () => {
+    const account = await $fetch(url, {
+      method: "POST",
+      body: decamelizeKeys(body),
+      async onResponse({ response }) {
+        if (response && response._data) {
+          response._data = camelizeKeys(response._data);
+        }
+      }
+    }).catch(error => {
+      errorResult.value = <JsonResponse>{
+        isSuccess: false,
+        data: null,
+        error: error.data
+      };
+    });
+    if (account) {
+      return <JsonResponse>{
+        isSuccess: true,
+        data: account,
+        error: null,
       }
     }
-  }).catch(a => {
-    return null;
-  });
-  return account;
-};
-
-const setLoggedInState = (state: any, account: any): boolean => {
-  if (account === null) {
-    return false;
+    return errorResult.value;
   }
-  else {
+
+  const loginResult = await doRequest();
+  if (loginResult.isSuccess) {
     // Assign all account props to the state. This must be done for each key otherwise
     // pinia will not properly save the account info to the persisted store.
-    for (const key in account) {
+    for (const key in loginResult.data) {
       if (state.$state.hasOwnProperty(key)) {
-        (state as any)[key] = account[key];
+        state[key] = loginResult.data[key];
       }
     }
 
     state.isLoggedIn = true;
-    return true;
+    return loginResult;
   }
-}
+  else {
+    return loginResult;
+  }
+};
 
 export const useUserStore = defineStore({
   id: 'userStore',
   state: () => emptyUserInfo,
   actions: {
-    async login(username: string, password: string, isRememberMe: boolean) {
-      var account = await loginOrRegister(
+    async login(username: string, password: string, isRememberMe: boolean): Promise<JsonResponse> {
+      return await loginOrRegister(
+        this,
         "api/v1/accounts/login",
         { "username": username, "password": password, "is_remember_me": isRememberMe });
-      return setLoggedInState(this, account);
     },
     async logout() {
-      await $fetch("api/v1/accounts/logout", {
-        method: "POST",
-      }).catch(a => {
-        console.log(`Failed to logout ${a}`);
-        return false;
-      });
+      const doLogout = async (): Promise<JsonResponse> => {
+        const errorResult = ref()
+        const response = await $fetch.raw("api/v1/accounts/logout", {
+          method: "POST",
+        }).catch(error => {
+          errorResult.value = <JsonResponse>{
+            isSuccess: false,
+            error: error.data
+          };
+        });
+        if (response!.ok) {
+          return <JsonResponse>{
+            isSuccess: true,
+          };
+        }
+        return errorResult.value;
+      };
 
+      const logoutResult = await doLogout();
+      if (logoutResult.isSuccess) {
         for (const key in emptyUserInfo) {
           if (this.$state.hasOwnProperty(key)) {
             (this.$state as any)[key] = (emptyUserInfo as any)[key];
           }
         }
-      return true;
+      }
+      return logoutResult;
     },
-    async register(username: string, email: string, password: string, confirmPassword: string) {
-      var account = await loginOrRegister(
+    async register(username: string, email: string, password: string, confirmPassword: string): Promise<JsonResponse> {
+      return await loginOrRegister(
+        this,
         "api/v1/accounts/register",
         { "username": username, "password": password, "confirmPassword": confirmPassword, "email": email });
-      return setLoggedInState(this, account);
     }
   },
   persist: true,

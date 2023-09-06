@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1>Login</h1>
+    <div v-if="loginError" style="background-color: #461b1b;" @click="loginError = null">
+      <p>{{ loginError }}</p>
+    </div>
     <form @submit.prevent="loginUser">
       <div>
         <label for="username">Username</label>
@@ -13,19 +16,14 @@
       <button type="submit">Login</button>
     </form>
   </div>
-  <div>
-    <p>username: {{ username }}</p>
-  </div>
-  <div>
-    <p>password: {{ password }}</p>
-  </div>
 </template>
 
 <script setup lang="ts">
-import {useUserStore} from '@/stores/user';
+import { useUserStore } from '@/stores/user';
 
 const username = ref('')
 const password = ref('')
+const loginError = ref(<string | null>null);
 const user = useUserStore();
 
 watchEffect(async () => {
@@ -35,6 +33,7 @@ watchEffect(async () => {
 });
 
 const loginUser = async () => {
-  const response = await user.login(username.value, password.value, true);
+  const { isSuccess, error } = await user.login(username.value, password.value, true);
+  loginError.value = error.detail;
 }
 </script>
