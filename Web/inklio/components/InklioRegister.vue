@@ -1,18 +1,6 @@
 <template>
   <div>
     <h1>Register</h1>
-    <div v-if="errorUsername" style="background-color: #461b1b;" @click="errorUsername = null">
-      <p>{{ errorUsername }}</p>
-    </div>
-    <div v-if="errorEmail" style="background-color: #461b1b;" @click="errorEmail = null">
-      <p>{{ errorEmail }}</p>
-    </div>
-    <div v-if="errorPassword" style="background-color: #461b1b;" @click="errorPassword = null">
-      <p>{{ errorPassword }}</p>
-    </div>
-    <div v-if="errorConfirmPassword" style="background-color: #461b1b;" @click="errorConfirmPassword = null">
-      <p>{{ errorConfirmPassword }}</p>
-    </div>
     <div v-if="errorError" style="background-color: #461b1b;" @click="errorError = null">
       <p>{{ errorError }}</p>
     </div>
@@ -20,18 +8,30 @@
       <div>
         <label for="username">Username</label>
         <input v-model="username" type="text" id="username" />
+        <span v-if="errorUsername" class="register-error" @click="errorUsername = null">
+          {{ errorUsername }}
+        </span>
       </div>
       <div>
         <label for="email">Email</label>
         <input v-model="email" type="text" id="email" />
+        <span v-if="errorEmail" class="register-error" @click="errorEmail = null">
+          {{ errorEmail }}
+        </span>
       </div>
       <div>
         <label for="password">Password</label>
         <input v-model="password" type="password" id="password" />
+        <span v-if="errorPassword" class="register-error" @click="errorPassword = null">
+          {{ errorPassword }}
+        </span>
       </div>
       <div>
         <label for="confirmPassword">Confirm Password</label>
         <input v-model="confirmPassword" type="password" id="confirmPassword" />
+        <span v-if="errorConfirmPassword" class="register-error" @click="errorConfirmPassword = null">
+          {{ errorConfirmPassword }}
+        </span>
       </div>
       <button type="submit">Register</button>
     </form>
@@ -67,3 +67,18 @@ const registerUser = async () => {
   errorError.value = error.errors.error?.find(() => true);
 }
 </script>
+
+<style>
+label {
+  display: inline-block;
+  width: 150px;
+}
+
+.register-error {
+  background-color: #310a0a;
+  border: 1px solid #b89292;
+  border-radius: 4px;
+  padding: 5px;
+  white-space: nowrap;
+}
+</style>

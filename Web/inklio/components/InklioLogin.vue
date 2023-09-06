@@ -37,3 +37,10 @@ const loginUser = async () => {
   loginError.value = error.detail;
 }
 </script>
+
+<style>
+label {
+  display: inline-block;
+  width: 150px;
+}
+</style>
