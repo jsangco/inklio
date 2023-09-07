@@ -4,6 +4,10 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 Please use the following [naming conventions](naming.md).
 
+## Prerequisites
+ 1. Must have [Node.js](https://nodejs.org/en) installed.
+ 2. Yarn (`npm install -g yarn`)
+
 ## Setup
 
 Make sure to install the dependencies:

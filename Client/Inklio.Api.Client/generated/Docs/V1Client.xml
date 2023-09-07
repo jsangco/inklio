@@ -1,0 +1,1601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <members>
+    <member name="AccountsAdminsGETAsync(RequestContext)">
+<example>
+This sample shows how to call AccountsAdminsGETAsync.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AccountsAdminsGETAsync();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsAdminsGET(RequestContext)">
+<example>
+This sample shows how to call AccountsAdminsGET.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AccountsAdminsGET();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsClaimsGETAsync(RequestContext)">
+<example>
+This sample shows how to call AccountsClaimsGETAsync.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AccountsClaimsGETAsync();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsClaimsGET(RequestContext)">
+<example>
+This sample shows how to call AccountsClaimsGET.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AccountsClaimsGET();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsLoginPostAsync(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsLoginPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    username = "<username>",
+    password = "<password>",
+};
+
+Response response = await client.AccountsLoginPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsLoginPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    username = "<username>",
+    password = "<password>",
+    is_remember_me = true,
+};
+
+Response response = await client.AccountsLoginPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsLoginPost(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsLoginPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    username = "<username>",
+    password = "<password>",
+};
+
+Response response = client.AccountsLoginPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsLoginPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    username = "<username>",
+    password = "<password>",
+    is_remember_me = true,
+};
+
+Response response = client.AccountsLoginPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsLogoutPostAsync(RequestContext)">
+<example>
+This sample shows how to call AccountsLogoutPostAsync.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AccountsLogoutPostAsync();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsLogoutPost(RequestContext)">
+<example>
+This sample shows how to call AccountsLogoutPost.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AccountsLogoutPost();
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsRegisterPostAsync(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsRegisterPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+    password = "<password>",
+    username = "<username>",
+};
+
+Response response = await client.AccountsRegisterPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsRegisterPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+    password = "<password>",
+    confirm_password = "<confirm_password>",
+    username = "<username>",
+};
+
+Response response = await client.AccountsRegisterPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsRegisterPost(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsRegisterPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+    password = "<password>",
+    username = "<username>",
+};
+
+Response response = client.AccountsRegisterPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsRegisterPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+    password = "<password>",
+    confirm_password = "<confirm_password>",
+    username = "<username>",
+};
+
+Response response = client.AccountsRegisterPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsForgetPostAsync(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsForgetPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+};
+
+Response response = await client.AccountsForgetPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsForgetPost(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsForgetPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    email = "<email>",
+};
+
+Response response = client.AccountsForgetPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsResetPostAsync(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsResetPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    code = "<code>",
+    email = "<email>",
+    password = "<password>",
+};
+
+Response response = await client.AccountsResetPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsResetPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    code = "<code>",
+    email = "<email>",
+    password = "<password>",
+    confirm_password = "<confirm_password>",
+};
+
+Response response = await client.AccountsResetPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AccountsResetPost(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AccountsResetPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    code = "<code>",
+    email = "<email>",
+    password = "<password>",
+};
+
+Response response = client.AccountsResetPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AccountsResetPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    code = "<code>",
+    email = "<email>",
+    password = "<password>",
+    confirm_password = "<confirm_password>",
+};
+
+Response response = client.AccountsResetPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksGETAsync(RequestContext)">
+<example>
+This sample shows how to call AsksGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksGETAsync(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_deliver").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksGET(RequestContext)">
+<example>
+This sample shows how to call AsksGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksGET(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_deliver").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksPostAsync(RequestContent,RequestContext)">
+<example>
+This sample shows how to call AsksPostAsync with required request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = "<String>";
+
+Response response = await client.AsksPostAsync(RequestContent.Create(data));
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksPost(RequestContent,RequestContext)">
+<example>
+This sample shows how to call AsksPost with required request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = "<String>";
+
+Response response = client.AsksPost(RequestContent.Create(data));
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksCountGETAsync(RequestContext)">
+<example>
+This sample shows how to call AsksCountGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksCountGETAsync(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_deliver").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksCountGET(RequestContext)">
+<example>
+This sample shows how to call AsksCountGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksCountGET(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_deliver").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdGETAsync(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksAskIdGETAsync(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("can_deliver").ToString());
+Console.WriteLine(result.GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result.GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdGET(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksAskIdGET(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("can_deliver").ToString());
+Console.WriteLine(result.GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("deliveries")[0].GetProperty("view_count").ToString());
+Console.WriteLine(result.GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdCommentsGETAsync(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdCommentsGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksAskIdCommentsGETAsync(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("ask_id").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdCommentsGET(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdCommentsGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksAskIdCommentsGET(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("ask_id").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdCommentsPostAsync(int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdCommentsPostAsync with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = await client.AsksAskIdCommentsPostAsync(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdCommentsPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    body = "<body>",
+};
+
+Response response = await client.AsksAskIdCommentsPostAsync(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdCommentsPost(int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdCommentsPost with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = client.AsksAskIdCommentsPost(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdCommentsPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    body = "<body>",
+};
+
+Response response = client.AsksAskIdCommentsPost(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesGETAsync(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksAskIdDeliveriesGETAsync(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesGET(int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksAskIdDeliveriesGET(1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_comment").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("can_tag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivered").ToString());
+Console.WriteLine(result[0].GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfw").ToString());
+Console.WriteLine(result[0].GetProperty("is_nsfl").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result[0].GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result[0].GetProperty("title").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesPostAsync(int,RequestContent,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = "<String>";
+
+Response response = await client.AsksAskIdDeliveriesPostAsync(1234, RequestContent.Create(data));
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesPost(int,RequestContent,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = "<String>";
+
+Response response = client.AsksAskIdDeliveriesPost(1234, RequestContent.Create(data));
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdGETAsync(int,int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdGETAsync(1234, 1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdGET(int,int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdGET(1234, 1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("can_comment").ToString());
+Console.WriteLine(result.GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("can_tag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("body").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result.GetProperty("comments")[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("created_at_utc").ToString());
+Console.WriteLine(result.GetProperty("created_by_id").ToString());
+Console.WriteLine(result.GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result.GetProperty("edited_by_id").ToString());
+Console.WriteLine(result.GetProperty("flag_count").ToString());
+Console.WriteLine(result.GetProperty("images")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("is_deleted").ToString());
+Console.WriteLine(result.GetProperty("is_delivered").ToString());
+Console.WriteLine(result.GetProperty("is_delivery_accepted").ToString());
+Console.WriteLine(result.GetProperty("is_locked").ToString());
+Console.WriteLine(result.GetProperty("is_nsfw").ToString());
+Console.WriteLine(result.GetProperty("is_nsfl").ToString());
+Console.WriteLine(result.GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result.GetProperty("save_count").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("type").ToString());
+Console.WriteLine(result.GetProperty("tags")[0].GetProperty("value").ToString());
+Console.WriteLine(result.GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("upvote_count").ToString());
+Console.WriteLine(result.GetProperty("view_count").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdCommentsGETAsync(int,int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdCommentsGETAsync(1234, 1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("delivery_id").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdCommentsGET(int,int,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdCommentsGET(1234, 1234, new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result[0].GetProperty("id").ToString());
+Console.WriteLine(result[0].GetProperty("body").ToString());
+Console.WriteLine(result[0].GetProperty("can_edit").ToString());
+Console.WriteLine(result[0].GetProperty("can_flag").ToString());
+Console.WriteLine(result[0].GetProperty("created_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("created_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("edited_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("edited_by_id").ToString());
+Console.WriteLine(result[0].GetProperty("flag_count").ToString());
+Console.WriteLine(result[0].GetProperty("is_deleted").ToString());
+Console.WriteLine(result[0].GetProperty("is_locked").ToString());
+Console.WriteLine(result[0].GetProperty("locked_at_utc").ToString());
+Console.WriteLine(result[0].GetProperty("save_count").ToString());
+Console.WriteLine(result[0].GetProperty("thread_id").ToString());
+Console.WriteLine(result[0].GetProperty("upvote_count").ToString());
+Console.WriteLine(result[0].GetProperty("delivery_id").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdCommentsPostAsync(int,int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsPostAsync with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdCommentsPostAsync(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    body = "<body>",
+};
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdCommentsPostAsync(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdCommentsPost(int,int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsPost with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdCommentsPost(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdCommentsPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    body = "<body>",
+};
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdCommentsPost(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdTagsPostAsync(int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdTagsPostAsync with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = await client.AsksAskIdTagsPostAsync(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdTagsPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    tag = new {
+        type = "<type>",
+        value = "<value>",
+    },
+    tag_deliveries = true,
+};
+
+Response response = await client.AsksAskIdTagsPostAsync(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdTagsPost(int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdTagsPost with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = client.AsksAskIdTagsPost(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdTagsPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    tag = new {
+        type = "<type>",
+        value = "<value>",
+    },
+    tag_deliveries = true,
+};
+
+Response response = client.AsksAskIdTagsPost(1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdTagsPostAsync(int,int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdTagsPostAsync with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdTagsPostAsync(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdTagsPostAsync with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    tag = new {
+        type = "<type>",
+        value = "<value>",
+    },
+    tag_deliveries = true,
+};
+
+Response response = await client.AsksAskIdDeliveriesDeliveryIdTagsPostAsync(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="AsksAskIdDeliveriesDeliveryIdTagsPost(int,int,RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdTagsPost with required parameters.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdTagsPost(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+This sample shows how to call AsksAskIdDeliveriesDeliveryIdTagsPost with all parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {
+    tag = new {
+        type = "<type>",
+        value = "<value>",
+    },
+    tag_deliveries = true,
+};
+
+Response response = client.AsksAskIdDeliveriesDeliveryIdTagsPost(1234, 1234, RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="MetadataGETAsync(RequestContext)">
+<example>
+This sample shows how to call MetadataGETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.MetadataGETAsync(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("qualifier").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("isNullable").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("definition").GetProperty("typeKind").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("appliesTo").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("defaultValue").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("target").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("value").GetProperty("expressionKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("qualifier").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("isNullable").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("definition").GetProperty("typeKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("appliesTo").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("defaultValue").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("target").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("value").GetProperty("expressionKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("declaredNamespaces")[0].ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("directValueAnnotationsManager").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("containerElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("declaredNamespaces")[0].ToString());
+Console.WriteLine(result.GetProperty("directValueAnnotationsManager").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("containerElementKind").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("name").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="MetadataGET(RequestContext)">
+<example>
+This sample shows how to call MetadataGET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.MetadataGET(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("schemaElements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("qualifier").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("isNullable").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("definition").GetProperty("typeKind").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("appliesTo").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("defaultValue").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("target").ToString());
+Console.WriteLine(result.GetProperty("vocabularyAnnotations")[0].GetProperty("value").GetProperty("expressionKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("schemaElements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("qualifier").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("isNullable").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("type").GetProperty("definition").GetProperty("typeKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("appliesTo").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("defaultValue").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("term").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("target").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("vocabularyAnnotations")[0].GetProperty("value").GetProperty("expressionKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("declaredNamespaces")[0].ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("directValueAnnotationsManager").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("containerElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("referencedModels")[0].GetProperty("entityContainer").GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("declaredNamespaces")[0].ToString());
+Console.WriteLine(result.GetProperty("directValueAnnotationsManager").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("containerElementKind").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("elements")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("schemaElementKind").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("namespace").ToString());
+Console.WriteLine(result.GetProperty("entityContainer").GetProperty("name").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="GETAsync(RequestContext)">
+<example>
+This sample shows how to call GETAsync with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = await client.GETAsync(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("title").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="GET(RequestContext)">
+<example>
+This sample shows how to call GET with required parameters and parse the result.
+<code><![CDATA[
+var client = new V1Client();
+
+Response response = client.GET(new RequestContext());
+
+JsonElement result = JsonDocument.Parse(response.ContentStream).RootElement;
+Console.WriteLine(result.GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("entitySets")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("singletons")[0].GetProperty("title").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("typeAnnotation").GetProperty("typeName").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("url").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("name").ToString());
+Console.WriteLine(result.GetProperty("functionImports")[0].GetProperty("title").ToString());
+]]></code>
+</example>
+    </member>
+    <member name="TestPostAsync(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call TestPostAsync with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = await client.TestPostAsync(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+    <member name="TestPost(RequestContent,ContentType,RequestContext)">
+<example>
+This sample shows how to call TestPost with required parameters and request content.
+<code><![CDATA[
+var client = new V1Client();
+
+var data = new {};
+
+Response response = client.TestPost(RequestContent.Create(data), ContentType.ApplicationOctetStream);
+Console.WriteLine(response.Status);
+]]></code>
+</example>
+    </member>
+  </members>
+</doc>

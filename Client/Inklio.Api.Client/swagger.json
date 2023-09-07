@@ -10,6 +10,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_admins_GET",
         "responses": {
           "200": {
             "description": "Success"
@@ -22,6 +23,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_claims_GET",
         "responses": {
           "200": {
             "description": "Success"
@@ -34,6 +36,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_login_POST",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -130,6 +133,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_logout_POST",
         "responses": {
           "200": {
             "description": "Success"
@@ -142,6 +146,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_register_POST",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -238,6 +243,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_forget_POST",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -334,6 +340,7 @@
         "tags": [
           "Accounts"
         ],
+        "operationId": "v1_accounts_reset_POST",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -430,6 +437,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_GET",
         "responses": {
           "200": {
             "description": "Success",
@@ -570,6 +578,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_POST",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -635,7 +644,7 @@
         "tags": [
           "Asks"
         ],
-        "operationId": "v1/asks/$count",
+        "operationId": "v1_asks__count_GET",
         "responses": {
           "200": {
             "description": "Success",
@@ -778,6 +787,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_GET",
         "parameters": [
           {
             "name": "askId",
@@ -883,6 +893,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_comments_GET",
         "parameters": [
           {
             "name": "askId",
@@ -1034,6 +1045,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_comments_POST",
         "parameters": [
           {
             "name": "askId",
@@ -1141,6 +1153,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_GET",
         "parameters": [
           {
             "name": "askId",
@@ -1292,6 +1305,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_POST",
         "parameters": [
           {
             "name": "askId",
@@ -1368,6 +1382,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_{deliveryId}_GET",
         "parameters": [
           {
             "name": "askId",
@@ -1482,6 +1497,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_{deliveryId}_comments_GET",
         "parameters": [
           {
             "name": "askId",
@@ -1642,6 +1658,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_{deliveryId}_comments_POST",
         "parameters": [
           {
             "name": "askId",
@@ -1758,6 +1775,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_tags_POST",
         "parameters": [
           {
             "name": "askId",
@@ -1865,6 +1883,7 @@
         "tags": [
           "Asks"
         ],
+        "operationId": "v1_asks_{askId}_deliveries_{deliveryId}_tags_POST",
         "parameters": [
           {
             "name": "askId",
@@ -1981,7 +2000,7 @@
         "tags": [
           "Metadata"
         ],
-        "operationId": "v1/$metadata",
+        "operationId": "v1__metadata_GET",
         "responses": {
           "200": {
             "description": "Success",
@@ -2076,7 +2095,7 @@
         "tags": [
           "Metadata"
         ],
-        "operationId": "v1/",
+        "operationId": "v1_GET",
         "responses": {
           "200": {
             "description": "Success",
@@ -2171,6 +2190,7 @@
         "tags": [
           "Test"
         ],
+        "operationId": "v1_test_POST",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -2235,6 +2255,7 @@
         "tags": [
           "Users"
         ],
+        "operationId": "Users_GET",
         "responses": {
           "200": {
             "description": "Success",

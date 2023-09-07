@@ -48,6 +48,7 @@ appBuilder.Services.AddSwaggerGen( c =>
     c.ResolveConflictingActions(api => api.First());
     c.IgnoreObsoleteActions();
     c.IgnoreObsoleteProperties();
+    c.CustomOperationIds(e => $"{e.RelativePath?.Replace("/","_").Replace("$","_")}_{e.HttpMethod}");
 });
 appBuilder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
