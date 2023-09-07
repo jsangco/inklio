@@ -5,8 +5,8 @@
 
 # Misc
 .Web
-Web/nuxt-iam/
-Web/supaAuth-main/
+Client/Web/nuxt-iam/
+Client/Web/supaAuth-main/
 Services/Inklio.Api/dockerRestartApi.ps1
 
 # Environment files
