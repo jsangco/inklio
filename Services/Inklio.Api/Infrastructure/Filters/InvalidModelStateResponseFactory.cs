@@ -15,10 +15,12 @@ public static class InvalidModelStateResponseFactory
             Detail = detail,
         };
 
-        var errors = context.ModelState.Select(i =>
-            new KeyValuePair<string, string[]>(
-                i.Key,
-                i.Value?.Errors?.Select(e => e.ErrorMessage)?.ToArray() ?? new string[] { $"{i.Key} was invalid." }));
+        var errors = context.ModelState
+            .Select(i =>
+                new KeyValuePair<string, string[]>(
+                    string.IsNullOrEmpty(i.Key) ? "errors" : i.Key,
+                    i.Value?.Errors?.Select(e => e.ErrorMessage)?.ToArray() ?? new string[] { $"{i.Key} was invalid." }))
+            .DistinctBy(i => i.Key);
         foreach (var e in errors)
         {
             problemDetails.Errors.Add(e);

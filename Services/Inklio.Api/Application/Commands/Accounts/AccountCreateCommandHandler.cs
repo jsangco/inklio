@@ -52,7 +52,7 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
             }
             else
             {
-                throw new InklioDomainException(400, "Could not create account.", ("error", "Could not create account."));
+                throw new InklioDomainException(400, "Could not create account.", ("errors", "Could not create account."));
             }
         }
 

@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Register</h1>
-    <div v-if="errorError" style="background-color: #461b1b;" @click="errorError = null">
-      <p>{{ errorError }}</p>
+    <div v-if="errorErrors" style="background-color: #461b1b;" @click="errorErrors = null">
+      <p>{{ errorErrors }}</p>
     </div>
     <form @submit.prevent="registerUser">
       <div>
@@ -49,7 +49,7 @@ const errorUsername = ref(<string | null>null);
 const errorEmail = ref(<string | null>null);
 const errorPassword = ref(<string | null>null);
 const errorConfirmPassword = ref(<string | null>null);
-const errorError = ref(<string | null>null);
+const errorErrors = ref(<string | null>null);
 const user = useUserStore();
 
 watchEffect(async () => {
@@ -64,7 +64,7 @@ const registerUser = async () => {
   errorEmail.value = error.errors.email?.find(() => true);
   errorPassword.value = error.errors.password?.find(() => true);
   errorConfirmPassword.value = error.errors.confirmPassword?.find(() => true);
-  errorError.value = error.errors.error?.find(() => true);
+  errorErrors.value = error.errors.errors?.find(() => true);
 }
 </script>
 

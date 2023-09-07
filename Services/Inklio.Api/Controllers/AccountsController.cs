@@ -38,14 +38,11 @@ public class AccountsController : ControllerBase
     [HttpGet("claims")]
     public IActionResult Claims()
     {
-        if (this.User != null)
-        {
-            var claims = this.User.Claims.Select(c => $"{c.Type}, {c.Value}").ToArray();
-            var claimsStr = string.Join("\n", claims);
-            return this.Ok(claimsStr);
-        }
-
-        return this.Ok("No Claims");
+        string claims = this.User == null ? "No Claims" :
+            string.Join(
+                "\n",
+                this.User.Claims.Select(c => $"{c.Type}, {c.Value}").ToArray());
+        return this.Ok(claims);
     }
 
     [HttpPost("login")]
@@ -78,43 +75,17 @@ public class AccountsController : ControllerBase
         return this.Ok(account);
     }
 
-    // [HttpPost("forget")]
-    // public async Task<IActionResult> ForgetPassword(AccountForgetPassword accountForgetPassword)
-    // {
-    //     var user = await userManager.FindByEmailAsync(accountForgetPassword.Email);
-    //     if (user == null)
-    //     {
-    //         return this.Accepted();
-    //     }
+    [HttpPost("forget")]
+    public async Task<IActionResult> ForgetPassword([FromBody]AccountForgetPasswordCommand accountForgetPassword, CancellationToken cancellationToken)
+    {
+        await this.mediator.Send(accountForgetPassword, cancellationToken);
+        return this.Accepted();
+    }
 
-    //     var code = await this.userManager.GeneratePasswordResetTokenAsync(user);
-    //     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-    //     var callbackUri = new Uri($"https://{this.Request.Host}/account/reset?token={code}");
-
-    //     await this.emailSender.SendEmailAsync(
-    //         accountForgetPassword.Email,
-    //         "Inklio - Reset Password",
-    //         $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUri.ToString())}'>clicking here</a>.");
-
-    //     return this.Accepted();
-    // }
-
-    // [HttpPost("reset")]
-    // public async Task<IActionResult> ResetPassword(AccountResetPassword accountResetPassword)
-    // {
-    //     InklioIdentityUser user = await userManager.FindByEmailAsync(accountResetPassword.Email);
-    //     if (user == null)
-    //     {
-    //         return this.Accepted(); // Do not reveal user existence
-    //     }
-
-    //     IdentityResult resetResult = await userManager.ResetPasswordAsync(user, accountResetPassword.Code, accountResetPassword.Password);
-    //     if (resetResult.Succeeded == false)
-    //     {
-    //         var errors = resetResult.Errors.Select(e => $"{e.Code}: {e.Description}");
-    //         return this.BadRequest(errors);
-    //     }
-
-    //     return this.Accepted();
-    // }
+    [HttpPost("reset")]
+    public async Task<IActionResult> ResetPassword(AccountResetPasswordCommand accountResetPassword, CancellationToken cancellationToken)
+    {
+        await this.mediator.Send(accountResetPassword, cancellationToken);
+        return this.Accepted();
+    }
 }
