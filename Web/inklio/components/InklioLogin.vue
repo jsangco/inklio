@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Login</h1>
-    <div v-if="loginError" style="background-color: #461b1b;" @click="loginError = null">
+    <div v-if="loginError" class="form-error" @click="loginError = null">
       <p>{{ loginError }}</p>
     </div>
     <form @submit.prevent="loginUser">
@@ -15,6 +15,9 @@
       </div>
       <button type="submit">Login</button>
     </form>
+    <div style="font-size: small;padding: 10px;">
+      Forget your <NuxtLink to="/password-forget">password</NuxtLink>?
+    </div>
   </div>
 </template>
 
@@ -34,7 +37,7 @@ watchEffect(async () => {
 
 const loginUser = async () => {
   const { isSuccess, error } = await user.login(username.value, password.value, true);
-  loginError.value = error.detail;
+  loginError.value = error?.detail;
 }
 </script>
 

@@ -10,13 +10,13 @@ using System.Security.Claims;
 
 namespace Inklio.Api.Application.Commands.Accounts;
 
-public class AccountResetPasswordCommandHandler : IRequestHandler<AccountResetPasswordCommand, bool>
+public class AccountPasswordResetCommandHandler : IRequestHandler<AccountPasswordResetCommand, bool>
 {
-    private readonly ILogger<AccountResetPasswordCommandHandler> logger;
+    private readonly ILogger<AccountPasswordResetCommandHandler> logger;
     private readonly UserManager<InklioIdentityUser> userManager;
 
-    public AccountResetPasswordCommandHandler(
-        ILogger<AccountResetPasswordCommandHandler> logger,
+    public AccountPasswordResetCommandHandler(
+        ILogger<AccountPasswordResetCommandHandler> logger,
         UserManager<InklioIdentityUser> userManager,
         IEmailSender emailSender,
         WebConfiguration webConfiguration)
@@ -25,7 +25,7 @@ public class AccountResetPasswordCommandHandler : IRequestHandler<AccountResetPa
         this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     }
 
-    public async Task<bool> Handle(AccountResetPasswordCommand accountResetPassword, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AccountPasswordResetCommand accountResetPassword, CancellationToken cancellationToken)
     {
         InklioIdentityUser user = await userManager.FindByEmailAsync(accountResetPassword.Email);
         if (user == null)

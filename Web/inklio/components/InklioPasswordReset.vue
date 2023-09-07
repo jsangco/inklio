@@ -1,17 +1,13 @@
 <template>
   <div>
-    <h1>Register</h1>
+    <h1>Password Reset</h1>
     <div v-if="errorErrors" class="form-error" @click="errorErrors = null">
       <p>{{ errorErrors }}</p>
     </div>
+    <div v-if="successMessage" style="background-color: #1b4625;">
+      <p>{{ successMessage }}</p>
+    </div>
     <form @submit.prevent="registerUser">
-      <div>
-        <label for="username">Username</label>
-        <input v-model="username" type="text" id="username" />
-        <span v-if="errorUsername" class="form-error" @click="errorUsername = null">
-          {{ errorUsername }}
-        </span>
-      </div>
       <div>
         <label for="email">Email</label>
         <input v-model="email" type="text" id="email" />
@@ -41,30 +37,28 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
 
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const errorUsername = ref(<string | null>null);
+const route = useRoute();
+const code = route.query.code?.toString() ?? "";
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const successMessage = ref('');
 const errorEmail = ref(<string | null>null);
 const errorPassword = ref(<string | null>null);
 const errorConfirmPassword = ref(<string | null>null);
 const errorErrors = ref(<string | null>null);
 const user = useUserStore();
 
-watchEffect(async () => {
-  if (user.isLoggedIn) {
-    await navigateTo('/');
-  }
-});
-
 const registerUser = async () => {
-  const { isSuccess, error } = await user.register(username.value, email.value, password.value, confirmPassword.value);
-  errorUsername.value = error?.errors?.username?.find(() => true);
+  const { isSuccess, error } = await user.passwordReset(email.value, password.value, confirmPassword.value, code);
   errorEmail.value = error?.errors?.email?.find(() => true);
   errorPassword.value = error?.errors?.password?.find(() => true);
   errorConfirmPassword.value = error?.errors?.confirmPassword?.find(() => true);
-  errorErrors.value = error?.errors?.errors?.find(() => true);
+  errorErrors.value = errorEmail.value || errorPassword.value || errorConfirmPassword.value ? null : error?.detail;
+
+  if (isSuccess) {
+    successMessage.value = "Your password has been reset."
+  }
 }
 </script>
 

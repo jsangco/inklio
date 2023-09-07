@@ -24,35 +24,35 @@ const emptyUserInfo: User = {
   isLoggedIn: false,
 }
 
-const loginOrRegister = async (state: any, url: string, body: any): Promise<JsonResponse> => {
-  const errorResult = ref()
-  const doRequest = async () => {
-    const account = await $fetch(url, {
-      method: "POST",
-      body: decamelizeKeys(body),
-      async onResponse({ response }) {
-        if (response && response._data) {
-          response._data = camelizeKeys(response._data);
-        }
-      }
-    }).catch(error => {
-      errorResult.value = <JsonResponse>{
-        isSuccess: false,
-        data: null,
-        error: error.data
-      };
-    });
-    if (account) {
-      return <JsonResponse>{
-        isSuccess: true,
-        data: account,
-        error: null,
+const accountsRequest = async (url: string, body: any): Promise<JsonResponse> => {
+  const errorResult = ref();
+  const response = await $fetch(url, {
+    method: "POST",
+    body: decamelizeKeys(body),
+    async onResponse({ response }) {
+      if (response && response._data) {
+        response._data = camelizeKeys(response._data);
       }
     }
-    return errorResult.value;
+  }).catch(error => {
+    errorResult.value = <JsonResponse>{
+      isSuccess: false,
+      data: null,
+      error: error.data
+    };
+  });
+  if (response != undefined) {
+    return <JsonResponse>{
+      isSuccess: true,
+      data: response,
+      error: null,
+    }
   }
+  return errorResult.value;
+}
 
-  const loginResult = await doRequest();
+const loginOrRegister = async (state: any, url: string, body: any): Promise<JsonResponse> => {
+  const loginResult = await accountsRequest(url, body);
   if (loginResult.isSuccess) {
     // Assign all account props to the state. This must be done for each key otherwise
     // pinia will not properly save the account info to the persisted store.
@@ -113,7 +113,17 @@ export const useUserStore = defineStore({
       return await loginOrRegister(
         this,
         "api/v1/accounts/register",
-        { "username": username, "password": password, "confirmPassword": confirmPassword, "email": email });
+        { "username": username, "password": password, "confirm_password": confirmPassword, "email": email });
+    },
+    async passwordForget(email: string): Promise<JsonResponse> {
+      return await accountsRequest(
+        "api/v1/accounts/forget",
+        { "email": email });
+    },
+    async passwordReset(email: string, password: string, confirmPassword: string, code: string): Promise<JsonResponse> {
+      return await accountsRequest(
+        "api/v1/accounts/reset",
+        { "email": email, "password": password, "confirm_password": confirmPassword, "code": code });
     }
   },
   persist: true,

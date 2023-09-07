@@ -6,7 +6,7 @@ namespace Inklio.Api.Application.Commands.Accounts;
 /// <summary>
 /// Command sent when a user forgets their password
 /// </summary>
-public class AccountForgetPasswordCommand : IRequest<bool>
+public class AccountPasswordForgetCommand : IRequest<bool>
 {
     /// <summary>
     /// Gets or sets the email.

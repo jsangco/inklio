@@ -76,14 +76,14 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("forget")]
-    public async Task<IActionResult> ForgetPassword([FromBody]AccountForgetPasswordCommand accountForgetPassword, CancellationToken cancellationToken)
+    public async Task<IActionResult> ForgetPassword([FromBody]AccountPasswordForgetCommand accountForgetPassword, CancellationToken cancellationToken)
     {
         await this.mediator.Send(accountForgetPassword, cancellationToken);
         return this.Accepted();
     }
 
     [HttpPost("reset")]
-    public async Task<IActionResult> ResetPassword(AccountResetPasswordCommand accountResetPassword, CancellationToken cancellationToken)
+    public async Task<IActionResult> ResetPassword(AccountPasswordResetCommand accountResetPassword, CancellationToken cancellationToken)
     {
         await this.mediator.Send(accountResetPassword, cancellationToken);
         return this.Accepted();

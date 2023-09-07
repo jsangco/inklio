@@ -91,14 +91,12 @@ footer {
   padding: 10px;
 }
 
-/* Dark mode toggle */
-.dark-mode-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  z-index: 9999;
-  color: #e4e6eb;
+.form-error {
+  background-color: #310a0a;
+  border: 1px solid #b89292;
+  border-radius: 4px;
+  padding: 5px;
+  white-space: nowrap;
 }
 
 /* Media queries for responsiveness */

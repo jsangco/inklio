@@ -10,15 +10,15 @@ using System.Security.Claims;
 
 namespace Inklio.Api.Application.Commands.Accounts;
 
-public class AccountForgetPasswordCommandHandler : IRequestHandler<AccountForgetPasswordCommand, bool>
+public class AccountPasswordForgetCommandHandler : IRequestHandler<AccountPasswordForgetCommand, bool>
 {
-    private readonly ILogger<AccountForgetPasswordCommandHandler> logger;
+    private readonly ILogger<AccountPasswordForgetCommandHandler> logger;
     private readonly UserManager<InklioIdentityUser> userManager;
     private readonly IEmailSender emailSender;
     private readonly WebConfiguration webConfiguration;
 
-    public AccountForgetPasswordCommandHandler(
-        ILogger<AccountForgetPasswordCommandHandler> logger,
+    public AccountPasswordForgetCommandHandler(
+        ILogger<AccountPasswordForgetCommandHandler> logger,
         UserManager<InklioIdentityUser> userManager,
         IUserStore<InklioIdentityUser> userStore,
         IEmailSender emailSender,
@@ -30,7 +30,7 @@ public class AccountForgetPasswordCommandHandler : IRequestHandler<AccountForget
         this.webConfiguration = webConfiguration;
     }
 
-    public async Task<bool> Handle(AccountForgetPasswordCommand accountForgetPassword, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AccountPasswordForgetCommand accountForgetPassword, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByEmailAsync(accountForgetPassword.Email);
         if (user == null)
@@ -42,7 +42,7 @@ public class AccountForgetPasswordCommandHandler : IRequestHandler<AccountForget
         var code = await this.userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         Uri baseUrl = new Uri(this.webConfiguration.BaseUrl);
-        var callbackUri = new Uri(baseUrl, $"/accounts/reset?token={code}");
+        var callbackUri = new Uri(baseUrl, $"/password-reset?code={code}");
 
         await this.emailSender.SendEmailAsync(
             accountForgetPassword.Email,

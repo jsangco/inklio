@@ -6,7 +6,7 @@ namespace Inklio.Api.Application.Commands.Accounts;
 /// <summary>
 /// Command sent when a user resets their password.
 /// </summary>
-public class AccountResetPasswordCommand : IRequest<bool>
+public class AccountPasswordResetCommand : IRequest<bool>
 {
     /// <summary>
     /// Gets or sets the code used to reset the account password
@@ -27,7 +27,7 @@ public class AccountResetPasswordCommand : IRequest<bool>
     /// Gets or sets the password to use when registering.
     /// </summary>
     [Required]
-    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 7)]
     [DataType(DataType.Password)]
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
