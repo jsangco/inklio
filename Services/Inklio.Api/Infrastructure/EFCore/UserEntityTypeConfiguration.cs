@@ -14,6 +14,7 @@ class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();
+        builder.HasIndex(e => e.UserId).IsUnique();
         builder.HasIndex(e => e.Username).IsUnique();
 
         builder.Ignore(b => b.DomainEvents);

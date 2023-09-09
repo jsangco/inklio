@@ -20,17 +20,34 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc/>
-    public async Task<User> GetByIdAsync(int userId, CancellationToken cancellationToken)
+    public async Task<User> GetByUserIdAsync(UserId userId, CancellationToken cancellationToken)
     {
-        User? user = await this.context.Users.FirstOrDefaultAsync(a => a.Id == userId, cancellationToken);
+        User? user = await this.context.Users.FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);
 
         if (user is not null)
         {
             return user;
         }
 
-        // TODO: Require an actual user
-        // throw new InklioDomainException(404, $"The specified User {userId} was not found");
-        return new User("User1");
+        throw new InklioDomainException(404, $"The specified User {userId} was not found");
+    }
+
+    /// <inheritdoc/>
+    public async Task AddUserAsync(UserId userId, string username, CancellationToken cancellationToken)
+    {
+        User? userById = await this.context.Users.FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);
+        if (userById is not null)
+        {
+            throw new InvalidOperationException($"Cannot add user. User {userId} already exists.");
+        }
+
+        User? userByName = await this.context.Users.FirstOrDefaultAsync(a => a.Username == username, cancellationToken);
+        if (userByName is not null)
+        {
+            throw new InvalidOperationException($"Cannot add user. User {username} already exists.");
+        }
+
+        var userToAdd = new User(userId, username);
+        await this.context.Users.AddAsync(userToAdd, cancellationToken);
     }
 }

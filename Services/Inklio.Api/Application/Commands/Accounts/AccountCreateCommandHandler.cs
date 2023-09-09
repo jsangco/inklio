@@ -1,12 +1,9 @@
-using Inklio.Api.Application.Commands;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.OData.ModelBuilder;
 using Inklio.Api.Domain;
-using System.Security.Claims;
 
 namespace Inklio.Api.Application.Commands.Accounts;
 
@@ -17,6 +14,7 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
     private readonly IUserStore<InklioIdentityUser> userStore;
     private readonly IEmailSender emailSender;
     private readonly WebConfiguration webConfiguration;
+    private readonly IUserRepository inklioUserRepository;
     private readonly IUserEmailStore<InklioIdentityUser> emailStore;
 
     public AccountCreateCommandHandler(
@@ -24,13 +22,15 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
         UserManager<InklioIdentityUser> userManager,
         IUserStore<InklioIdentityUser> userStore,
         IEmailSender emailSender,
-        WebConfiguration webConfiguration)
+        WebConfiguration webConfiguration,
+        IUserRepository inklioUserRepository)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         this.userStore = userStore ?? throw new ArgumentNullException(nameof(userStore));
         this.emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
         this.webConfiguration = webConfiguration;
+        this.inklioUserRepository = inklioUserRepository;
         this.emailStore = GetEmailStore();
     }
 
@@ -66,6 +66,11 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
 
         this.logger.LogInformation($"Created new user: {user.UserName}");
 
+        // FIXME: Both email sending and registration in the Inklio
+        // DB should be handled by an external event handler in order
+        // to ensure resiliency of the service.
+        // This should be handled by a DomainEvent
+
         // Send Email conformation to new user.
         string userId = await userManager.GetUserIdAsync(user);
         string code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -76,6 +81,10 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
             accountCreate.Email,
             "Inklio - Email Confirmation",
             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUri.ToString())}'>clicking here</a>.");
+
+        // Add User to Inklio DB
+        await this.inklioUserRepository.AddUserAsync(user.Id, user.UserName, cancellationToken);
+        await this.inklioUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return true;
     }

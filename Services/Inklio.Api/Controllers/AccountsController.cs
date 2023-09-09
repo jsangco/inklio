@@ -38,7 +38,7 @@ public class AccountsController : ControllerBase
     [HttpGet("claims")]
     public IActionResult Claims()
     {
-        string claims = this.User == null ? "No Claims" :
+        string claims = this.User == null || this.User.Claims.Any() == false ? "No Claims" :
             string.Join(
                 "\n",
                 this.User.Claims.Select(c => $"{c.Type}, {c.Value}").ToArray());

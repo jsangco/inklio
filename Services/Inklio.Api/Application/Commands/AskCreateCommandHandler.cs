@@ -1,11 +1,6 @@
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 using MediatR;
-using CommandAsk = Inklio.Api.Application.Commands.Ask;
-using CommandTag = Inklio.Api.Application.Commands.Tag;
-using DomainAsk = Inklio.Api.Domain.Ask;
-using DomainAskImage = Inklio.Api.Domain.AskImage;
-using DomainTag = Inklio.Api.Domain.Tag;
 
 public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
 {
@@ -43,10 +38,13 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     public async Task<bool> Handle(AskCreateCommand request, CancellationToken cancellationToken)
     {
         // Get the user creating the tag
-        User user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
+        User user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
+
+        user.AdjustAskReputation(1);
+        user.SetAskCount(user.AskCount + 1);
 
         // Create the ask
-        DomainAsk ask = DomainAsk.Create(request.Body, user, request.IsNsfl, request.IsNswf, request.Title);
+        DomainAsk ask = DomainAsk.Create(request.Body, user, request.IsNsfl, request.IsNsfw, request.IsSpoiler, request.Title);
 
         // Get and add tags to the new Ask
         IEnumerable<DomainTag> tags = this.GetOrCreateTags(request.Tags, user);

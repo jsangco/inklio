@@ -1,11 +1,5 @@
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
-using CommandTag = Inklio.Api.Application.Commands.Tag;
-using DomainAsk = Inklio.Api.Domain.Ask;
-using DomainDelivery = Inklio.Api.Domain.Delivery;
-using DomainDeliveryImage = Inklio.Api.Domain.DeliveryImage;
-using DomainTag = Inklio.Api.Domain.Tag;
-using DomainUser = Inklio.Api.Domain.User;
 
 /// <summary>
 /// Command to create a <see cref="DomainDelivery"/>
@@ -39,10 +33,10 @@ public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateComman
     /// <inheritdoc/>
     public async Task<bool> Handle(DeliveryCreateCommand request, CancellationToken cancellationToken)
     {
-        var user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
-        DomainDelivery delivery = ask.AddDelivery(request.Body, user, request.IsNsfl, request.IsNswf, request.Title);
+        DomainDelivery delivery = ask.AddDelivery(request.Body, user, request.IsNsfl, request.IsNsfw, request.IsSpoiler, request.Title);
 
         // Get and add tags to the new Ask
         IEnumerable<DomainTag> tags = request.IncludeAskTags ?

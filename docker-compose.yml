@@ -17,7 +17,7 @@ services:
   web:
     depends_on:
       - api
-    build: ./Web/inklio
+    build: ./Client/Web/inklio
   azure-storage:
     ports:
       - "10000:10000"

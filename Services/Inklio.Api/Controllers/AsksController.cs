@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Text;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Inklio.Api.Application.Commands;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inklio.Api.Controllers;
+
 
 [Route("v1/asks")]
 public class AsksController : ODataController
@@ -45,8 +47,8 @@ public class AsksController : ODataController
         cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
-        cfg.CreateMap<Inklio.Api.Application.Commands.AskCreateForm, Inklio.Api.Application.Commands.AskCreateCommand>()
-            .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
+        cfg.CreateMap<Inklio.Api.Application.Commands.AskCreateForm, Inklio.Api.Application.Commands.AskCreateCommand>();
+        //     .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
         cfg.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
     }).CreateMapper();
 
@@ -143,12 +145,13 @@ public class AsksController : ODataController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> AddAsk(
         [FromForm] AskCreateForm askCreateForm,
         CancellationToken cancellationToken)
     {
         var askCreateCommand = this.mapper.Map<AskCreateCommand>(askCreateForm);
-        askCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        askCreateCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", askCreateCommand.GetGenericTypeName());
         await this.mediator.Send(askCreateCommand, cancellationToken);
@@ -156,6 +159,7 @@ public class AsksController : ODataController
         return this.Accepted();
     }
 
+    [Authorize]
     [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
         int askId,
@@ -163,12 +167,13 @@ public class AsksController : ODataController
         CancellationToken cancellationToken)
     {
         commentCreateCommand.AskId = askId;
-        commentCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        commentCreateCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", commentCreateCommand.GetGenericTypeName());
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
+    [Authorize]
     [HttpPost("{askId}/tags")]
     public async Task AddAskTag(
         int askId,
@@ -176,12 +181,13 @@ public class AsksController : ODataController
         CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
-        tagCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        tagCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", tagCommand.GetGenericTypeName());
         await this.mediator.Send(tagCommand, cancellationToken);
     }
 
+    [Authorize]
     [HttpPost("{askId}/deliveries")]
     public async Task<IActionResult> AddDelivery(
         int askId,
@@ -190,7 +196,7 @@ public class AsksController : ODataController
     {
         var deliveryCreateCommand = this.mapper.Map<DeliveryCreateCommand>(deliveryCreateForm);
         deliveryCreateCommand.AskId = askId;
-        deliveryCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        deliveryCreateCommand.UserId = this.User.UserId();
 
         if (deliveryCreateForm.Images == null)
         {
@@ -202,6 +208,7 @@ public class AsksController : ODataController
         return this.Accepted();
     }
 
+    [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/comments")]
     public async Task AddDeliveryComment(
         int askId,
@@ -211,12 +218,13 @@ public class AsksController : ODataController
     {
         commentCreateCommand.AskId = askId;
         commentCreateCommand.DeliveryId = deliveryId;
-        commentCreateCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        commentCreateCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", commentCreateCommand.GetGenericTypeName());
         await this.mediator.Send(commentCreateCommand, cancellationToken);
     }
 
+    [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/tags")]
     public async Task AddDeliveryTag(
         int askId,
@@ -226,7 +234,7 @@ public class AsksController : ODataController
     {
         tagCommand.AskId = askId;
         tagCommand.DeliveryId = deliveryId;
-        tagCommand.UserId = Inklio.Api.Domain.User.TemporaryGlobalUserId;
+        tagCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", tagCommand.GetGenericTypeName());
         await this.mediator.Send(tagCommand, cancellationToken);

@@ -37,18 +37,25 @@ public class DeliveryCreateCommand : IRequest<bool>
     public IEnumerable<IFormFile>? Images { get; set; } = null;
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery is NSFW.
-    /// </summary>
-    [DataMember(Name = "is_nsfw")]
-    [JsonPropertyName("is_nsfw")]
-    public bool IsNswf { get; set; }
-
-    /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery NSFL.
     /// </summary>
     [DataMember(Name = "is_nsfl")]
     [JsonPropertyName("is_nsfl")]
     public bool IsNsfl { get; set; }
+
+    /// <summary>
+    /// Gets or sets a flag indicating whether or not the delivery is NSFW.
+    /// </summary>
+    [DataMember(Name = "is_nsfw")]
+    [JsonPropertyName("is_nsfw")]
+    public bool IsNsfw { get; set; }
+
+    /// <summary>
+    /// Gets or sets a flag indicating whether or not the delivery contains a spoiler.
+    /// </summary>
+    [DataMember(Name = "is_spoiler")]
+    [JsonPropertyName("is_spoiler")]
+    public bool IsSpoiler { get; set; }
 
     /// <summary>
     /// Gets or sets the Title of the Delivery.
@@ -69,5 +76,5 @@ public class DeliveryCreateCommand : IRequest<bool>
     /// </summary>
     [IgnoreDataMember]
     [JsonIgnore]
-    public int UserId { get; set; }
+    public UserId UserId { get; set; }
 }

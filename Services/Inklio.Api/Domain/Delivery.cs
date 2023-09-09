@@ -143,14 +143,19 @@ public class Delivery : Entity, IAggregateRoot
     public bool IsLocked { get; private set; }
 
     /// <summary>
+    /// Gets or sets a flag indicating whether or not the delivery NSFL.
+    /// </summary>
+    public bool IsNsfl { get; private set; }
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is NSFW.
     /// </summary>
     public bool IsNsfw { get; private set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery NSFL.
+    /// Gets a flag indicating whether or not the delivery contains a spoiler.
     /// </summary>
-    public bool IsNsfl { get; private set; }
+    public bool IsSpoiler { get; private set; } = false;
 
     /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.
@@ -211,11 +216,12 @@ public class Delivery : Entity, IAggregateRoot
     /// </summary>
     /// <param name="ask">The parent <see cref="Ask"/> object.</param>
     /// <param name="body">The body of the <see cref="Delivery"/></param>
-    /// <param name="createdBy">The creator of the <see cref="Delivery"/></param>
-    /// <param name="isNsfl">A flag indicating the <see cref="Delivery"/> is NSFL</param>
-    /// <param name="isNsfw">A flag indicating the <see cref="Delivery"/> is NSFW</param>
-    /// <param name="title">The title for the <see cref="Delivery"/></param>
-    public Delivery(Ask ask, string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    /// <param name="createdBy">The creator of the <see cref="Delivery"/> object.</param>
+    /// <param name="isNsfl">A flag indicating the <see cref="Delivery"/> is NSFL.</param>
+    /// <param name="isNsfw">A flag indicating the <see cref="Delivery"/> is NSFW.</param>
+    /// <param name="isSpoiler">A flag indicating the <see cref="Delivery"/> contains a spoiler.</param>
+    /// <param name="title">The title for the <see cref="Delivery"/> object.</param>
+    public Delivery(Ask ask, string body, User createdBy, bool isNsfl, bool isNsfw, bool isSpoiler, string title)
     {
         this.AskId = ask.Id;
         this.Ask = ask;
@@ -224,6 +230,7 @@ public class Delivery : Entity, IAggregateRoot
         this.CreatedAtUtc = DateTime.UtcNow;
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
+        this.IsSpoiler = isSpoiler;
         this.Title = title;
     }
 

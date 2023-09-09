@@ -5,14 +5,19 @@ namespace Inklio.Api.Domain;
 public class User : Entity, IAggregateRoot
 {
     /// <summary>
-    /// The temporary ID used for all users until registration has been completed. 
+    /// Gets the number of asks created by the user.
     /// </summary>
-    public const int TemporaryGlobalUserId = 1;
+    public int AskCount { get; private set; }
 
     /// <summary>
     /// Gets the asks created by the user.
     /// </summary>
     public IReadOnlyCollection<Ask> Asks { get; private set; } = new List<Ask>();
+
+    /// <summary>
+    /// Gets the reputation earned by the user from asks.
+    /// </summary>
+    public int AskReputation { get; set; }
 
     /// <summary>
     /// Gets the ask tags created by the user.
@@ -80,6 +85,11 @@ public class User : Entity, IAggregateRoot
     public int Reputation { get; private set; }
 
     /// <summary>
+    /// Gets the UserId of the user.
+    /// </summary>
+    public UserId UserId { get; private set; }
+
+    /// <summary>
     /// Gets the name of the user. 
     /// </summary>
     public string Username { get; private set; }
@@ -97,7 +107,7 @@ public class User : Entity, IAggregateRoot
     /// Initializes a new <see cref="User"/> object. 
     /// </summary>
     /// <param name="username">The username</param>
-    public User(string username)
+    public User(UserId userId, string username)
     {
         if (string.IsNullOrWhiteSpace(username) || username.Length < 3 || username.Length > 32)
         {
@@ -105,6 +115,7 @@ public class User : Entity, IAggregateRoot
         }
 
         this.Username = username;
+        this.UserId = userId;
         this.DeliveryCount = 0;
         this.Reputation = 0;
         this.CreatedAtUtc = DateTime.UtcNow;
@@ -113,18 +124,33 @@ public class User : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Adjust the user's ask reputation and total reputation by a specified amount.
+    /// </summary>
+    /// <param name="adjustmentValue">The value to adjust by</param>
+    public void AdjustDeliveryReputation(int adjustmentValue)
+    {
+        this.AskReputation += adjustmentValue;
+        this.Reputation += adjustmentValue;
+    }
+
+    /// <summary>
     /// Adjust the user's reputation by a specified amount.
     /// </summary>
     /// <param name="adjustmentValue">The value to adjust by</param>
-    /// <param name="isDeliveryReputation">If the adjustment is related to a delivery.</param>
-    public void AdjustReputation(int adjustmentValue, bool isDeliveryReputation)
+    public void AdjustAskReputation(int adjustmentValue)
     {
         this.Reputation += adjustmentValue;
+        this.DeliveryReputation += adjustmentValue;
+    }
 
-        if (isDeliveryReputation)
-        {
-            this.DeliveryReputation += adjustmentValue;
-        }
+    /// <summary>
+    /// Sets the number of asks a user has made.
+    /// </summary>
+    /// <param name="askCount">The new ask count</param>
+    public void SetAskCount(int askCount)
+    {
+        this.AskCount = askCount;
+        this.LastActivityAtUtc = DateTime.UtcNow;
     }
 
     /// <summary>

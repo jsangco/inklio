@@ -26,7 +26,7 @@ public class DeliveryCreateForm
     /// Gets or sets a flag indicating whether or not the ask is NSFW.
     /// </summary>
     [FromForm(Name = "is_nsfw")]
-    public bool IsNswf { get; set; }
+    public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask NSFL.

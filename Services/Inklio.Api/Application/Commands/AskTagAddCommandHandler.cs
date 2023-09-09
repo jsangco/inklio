@@ -1,7 +1,5 @@
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
-using CommandTag = Inklio.Api.Application.Commands.Tag;
-using DomainTag = Inklio.Api.Domain.Tag;
 
 /// <summary>
 /// A handler that adds a Tag to an Ask. 
@@ -31,7 +29,7 @@ public class AskTagAddCommandHandler : IRequestHandler<AskTagAddCommand, bool>
     /// <returns>A flag indicating whether the tag addition was a success.</returns>
     public async Task<bool> Handle(AskTagAddCommand request, CancellationToken cancellationToken)
     {
-        var user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         DomainTag tag = this.GetOrCreateTag(request.Tag, user);

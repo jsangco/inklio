@@ -39,5 +39,5 @@ public class DeliveryTagAddCommand : IRequest<bool>
     /// </summary>
     [IgnoreDataMember]
     [JsonIgnore]
-    public int UserId { get; set; }
+    public UserId UserId { get; set; }
 }

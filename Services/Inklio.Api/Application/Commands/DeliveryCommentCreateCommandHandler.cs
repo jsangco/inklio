@@ -1,9 +1,6 @@
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 using MediatR;
-using CommandComment = Inklio.Api.Application.Commands.Comment;
-using DomainComment = Inklio.Api.Domain.Comment;
-using DomainTag = Inklio.Api.Domain.Tag;
 
 public class DeliveryCommentCreateCommandHandler : IRequestHandler<DeliveryCommentCreateCommand, bool>
 {
@@ -20,7 +17,7 @@ public class DeliveryCommentCreateCommandHandler : IRequestHandler<DeliveryComme
 
     public async Task<bool> Handle(DeliveryCommentCreateCommand request, CancellationToken cancellationToken)
     {
-        var user = await this.userRepository.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         var delivery = ask.Deliveries.FirstOrDefault(d => d.Id == request.DeliveryId);

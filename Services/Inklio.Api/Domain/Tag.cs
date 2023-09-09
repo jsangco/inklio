@@ -62,7 +62,7 @@ public class Tag : Entity, IAggregateRoot
     /// </summary>
     private Tag()
     {
-        this.CreatedBy = new User("empty username");
+        this.CreatedBy = new User(Guid.Empty, "empty username");
         this.Value = "empty tag";
         this.Type = "general tag";
     }

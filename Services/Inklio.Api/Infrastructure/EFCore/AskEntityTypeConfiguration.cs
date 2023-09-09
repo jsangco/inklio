@@ -18,6 +18,9 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder.Ignore(b => b.DomainEvents);
 
         builder
+            .HasOne(e => e.CreatedBy);
+
+        builder
             .HasMany(e => e.Comments)
             .WithOne();
 

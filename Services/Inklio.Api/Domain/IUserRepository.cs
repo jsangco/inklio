@@ -13,5 +13,14 @@ public interface IUserRepository : IRepository<User>
     /// <param name="userId">The id of the user to get.</param>
     /// <param name="cancellationToken">A cancellation token</param>
     /// <returns>The user.</returns>
-    Task<User> GetByIdAsync(int userId, CancellationToken cancellationToken);
+    Task<User> GetByUserIdAsync(UserId userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Adds a user to the repository.
+    /// </summary>
+    /// <param name="userId">The <see cref="UserId"/> of the new user.</param>
+    /// <param name="username">Th unique name of the user.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A Task.</returns>
+    Task AddUserAsync(UserId userId, string username, CancellationToken cancellationToken);
 }

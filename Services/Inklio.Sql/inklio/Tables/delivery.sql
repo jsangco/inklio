@@ -22,6 +22,7 @@ CREATE TABLE [inklio].[delivery]
   [is_locked] BIT NOT NULL DEFAULT 0,
   [is_nsfw] BIT NOT NULL DEFAULT 0,
   [is_nsfl] BIT NOT NULL DEFAULT 0,
+  [is_spoiler] BIT NOT NULL DEFAULT 0,
   [locked_at_utc] DATETIME2 NULL,
   [save_count] INT NOT NULL DEFAULT 0,
   [title] NVARCHAR(256) NOT NULL,

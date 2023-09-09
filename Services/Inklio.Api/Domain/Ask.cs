@@ -158,14 +158,19 @@ public class Ask : Entity, IAggregateRoot
     public bool IsLocked { get; private set; }
 
     /// <summary>
+    /// Gets a flag indicating whether or not the ask NSFL.
+    /// </summary>
+    public bool IsNsfl { get; private set; } = false;
+
+    /// <summary>
     /// Gets a flag indicating whether or not the ask is NSFW.
     /// </summary>
     public bool IsNsfw { get; private set; } = false;
 
     /// <summary>
-    /// Gets a flag indicating whether or not the ask NSFL.
+    /// Gets a flag indicating whether or not the ask contains a spoiler.
     /// </summary>
-    public bool IsNsfl { get; private set; } = false;
+    public bool IsSpoiler { get; private set; } = false;
 
     /// <summary>
     /// Gets the UTC time that the ask was locked.
@@ -219,7 +224,7 @@ public class Ask : Entity, IAggregateRoot
     {
         this.Body = string.Empty;
         this.Title = string.Empty;
-        this.CreatedBy = new User("empty username");
+        this.CreatedBy = new User(Guid.Empty, "empty username");
     }
 
     /// <summary>
@@ -229,14 +234,16 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="createdBy">The creator of the <see cref="Ask"/> object.</param>
     /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
     /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
+    /// <param name="isSpoiler">A flag indicating whether the <see cref="Ask"/> is contains a spoiler</param>
     /// <param name="title">The title of the <see cref="Ask"/> object.</param>
-    protected Ask(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    protected Ask(string body, User createdBy, bool isNsfl, bool isNsfw, bool isSpoiler, string title)
     {
         this.Body = body;
         this.CreatedBy = createdBy;
         this.CreatedAtUtc = DateTime.UtcNow;
         this.IsNsfl = isNsfl;
         this.IsNsfw = isNsfw;
+        this.IsSpoiler = isSpoiler;
         this.Title = title;
     }
     
@@ -245,10 +252,11 @@ public class Ask : Entity, IAggregateRoot
     /// </summary>
     /// <param name="body">The body of the <see cref="Ask"/> object.</param>
     /// <param name="createdBy">The creator of the <see cref="Ask"/> object.</param>
-    /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL</param>
-    /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW</param>
+    /// <param name="isNsfl">A flag indicating whether the <see cref="Ask"/> is NSFL.</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> is NSFW.</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Ask"/> contains a spoiler.</param>
     /// <param name="title">The title of the <see cref="Ask"/> object.</param>
-    public static Ask Create(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    public static Ask Create(string body, User createdBy, bool isNsfl, bool isNsfw, bool isSpoiler, string title)
     {
         // TODO - Future Validation
         // 1. User has not created any asks within the last X hours
@@ -256,7 +264,7 @@ public class Ask : Entity, IAggregateRoot
         // 3. Validate user can create the specified tag
         // 4. Validate the user can use the specified tag
 
-        var ask = new Ask(body, createdBy, isNsfl, isNsfw, title);
+        var ask = new Ask(body, createdBy, isNsfl, isNsfw, isSpoiler, title);
         return ask;
     }
 
@@ -311,17 +319,17 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="createdBy">The user creating the <see cref="Delivery"/>.</param>
     /// <param name="isNsfl">A flag indicating whether the <see cref="Delivery"/> is NSFL.</param>
     /// <param name="isNsfw">A flag indicating whether the <see cref="Delivery"/> is NSFW.</param>
+    /// <param name="isNsfw">A flag indicating whether the <see cref="Delivery"/> contains a spoiler.</param>
     /// <param name="title">The title of the Delivery.</param>
     /// <returns>The newly created <see cref="Delivery"/> object.</returns>
-    public Delivery AddDelivery(string body, User createdBy, bool isNsfl, bool isNsfw, string title)
+    public Delivery AddDelivery(string body, User createdBy, bool isNsfl, bool isNsfw, bool isSpoiler, string title)
     {
         if (createdBy.Id == this.CreatedBy.Id)
         {
-            // TODO: Enable this exception once testing is over.
-            // throw new AskDomainException($"A delivery cannot be submitted by the original asker. User Id {createdById}");
+            throw new InklioDomainException(400, $"A delivery cannot be submitted by the original asker. User {createdBy.Username}");
         }
 
-        var delivery = new Delivery(this, body, createdBy, isNsfl, isNsfw, title);
+        var delivery = new Delivery(this, body, createdBy, isNsfl, isNsfw, isSpoiler, title);
         this.deliveries.Add(delivery);
         this.IsDelivered = this.deliveries.Count > 0;
         return delivery;
@@ -440,23 +448,23 @@ public class Ask : Entity, IAggregateRoot
     /// Edits the <see cref="Ask"/> message body.
     /// </summary>
     /// <param name="bodyEdit">The new message body.</param>
-    /// <param name="userId">The Id of the user editting the body</param>
-    public void EditBody(string bodyEdit, int userId)
+    /// <param name="editor">The user making the edit.</param>
+    public void EditBody(string bodyEdit, User editor)
     {
         this.Body = bodyEdit;
         this.EditedAtUtc = DateTime.UtcNow;
-        this.EditedById = userId;
+        this.EditedById = editor.Id;
     }
 
     /// <summary>
     /// Marks an Ask as deleted. NOTE: It does not actually delete the Ask.
     /// </summary>
-    /// <param name="userId">The Id of the user deleting Ask</param>
-    public void Delete(int userId)
+    /// <param name="editor">The user deleting the Ask.</param>
+    public void Delete(User editor)
     {
         this.IsDeleted = true;
         this.EditedAtUtc = DateTime.UtcNow;
-        this.EditedById = userId;
+        this.EditedById = editor.Id;
     }
 
     /// <summary>
