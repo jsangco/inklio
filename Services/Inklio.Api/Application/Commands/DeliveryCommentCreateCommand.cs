@@ -30,6 +30,7 @@ public class DeliveryCommentCreateCommand : IRequest<bool>
     /// </summary>
     [DataMember(Name = "body")]
     [JsonPropertyName("body")]
+    [Required, MinLength(1), MaxLength(20000)]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>

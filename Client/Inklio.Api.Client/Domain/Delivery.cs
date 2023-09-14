@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Inklio.Api.Application.Commands;
+namespace Inklio.Api.Client;
 
 [DataContract]
 public class Delivery
@@ -11,7 +11,7 @@ public class Delivery
     /// </summary>
     [DataMember(Name = "id")]
     public int Id { get; set; }
-    
+
     /// <summary>
     /// Gets or sets the Body of the delivery.
     /// </summary>
@@ -77,7 +77,7 @@ public class Delivery
 
     /// <summary>
     /// Gets or sets the id of the user that edited the delivery.
-    /// </summary>    
+    /// </summary>
     [DataMember(Name = "edited_by_id")]
     [JsonPropertyName("edited_by_id")]
     public int? EditedById { get; set; }
@@ -94,7 +94,7 @@ public class Delivery
     /// </summary>
     [DataMember(Name = "images")]
     [JsonPropertyName("images")]
-    public IEnumerable<DeliveryImage> Images { get; set; } = Array.Empty<DeliveryImage>();
+    public IEnumerable<Image> Images { get; set; } = Array.Empty<Image>();
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery is ai generated.

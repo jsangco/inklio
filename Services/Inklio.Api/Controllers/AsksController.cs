@@ -1,15 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using EFCore.NamingConventions.Internal;
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.VisualBasic;
 
 namespace Inklio.Api.Controllers;
 
@@ -39,16 +45,12 @@ public class AsksController : ODataController
     {
         cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
         cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
-        cfg.CreateMap<Inklio.Api.Application.Commands.DeliveryCreateForm, Inklio.Api.Application.Commands.DeliveryCreateCommand>()
-            .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
         cfg.CreateMap<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
         cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
         cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
-        cfg.CreateMap<Inklio.Api.Application.Commands.AskCreateForm, Inklio.Api.Application.Commands.AskCreateCommand>();
-        //     .ForMember(x => x.Images, x => x.MapFrom(x => x.Images == null? null : new IFormFile[]{x.Images}));
         cfg.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
     }).CreateMapper();
 
@@ -150,7 +152,12 @@ public class AsksController : ODataController
         [FromForm] AskCreateForm askCreateForm,
         CancellationToken cancellationToken)
     {
-        var askCreateCommand = this.mapper.Map<AskCreateCommand>(askCreateForm);
+        (var askCreateCommand, var problemDetails) = this.DeserializeAskCreate(askCreateForm);
+        if (problemDetails is not null)
+        {
+            return this.BadRequest(problemDetails);
+        }
+
         askCreateCommand.UserId = this.User.UserId();
 
         this.logger.LogInformation("----- Sending command: {CommandName}", askCreateCommand.GetGenericTypeName());
@@ -194,14 +201,14 @@ public class AsksController : ODataController
         [FromForm] DeliveryCreateForm deliveryCreateForm,
         CancellationToken cancellationToken)
     {
-        var deliveryCreateCommand = this.mapper.Map<DeliveryCreateCommand>(deliveryCreateForm);
+        (var deliveryCreateCommand, var problemDetails) = this.DeserializeDeliveryCreate(deliveryCreateForm);
+        if (problemDetails is not null)
+        {
+            return this.BadRequest(problemDetails);
+        }
+
         deliveryCreateCommand.AskId = askId;
         deliveryCreateCommand.UserId = this.User.UserId();
-
-        if (deliveryCreateForm.Images == null)
-        {
-            return this.BadRequest("Deliveries must contain a delivery image");
-        }
 
         this.logger.LogInformation("----- Sending command: {CommandName}", deliveryCreateCommand.GetGenericTypeName());
         await this.mediator.Send(deliveryCreateCommand, cancellationToken);
@@ -238,5 +245,159 @@ public class AsksController : ODataController
 
         this.logger.LogInformation("----- Sending command: {CommandName}", tagCommand.GetGenericTypeName());
         await this.mediator.Send(tagCommand, cancellationToken);
+    }
+
+    /// <summary>
+    /// Deserialize the Ask form data into a AskCreateCommand.
+    /// </summary>
+    /// <param name="askCreateForm">The ask create form</param>
+    /// <returns>An AskCreate command and a problem details collection if the request was invalid.</returns>
+    private (AskCreateCommand, ValidationProblemDetails?) DeserializeAskCreate(AskCreateForm askCreateForm)
+    {
+        // FIXME: This code dulicates the below DeliveryDeliveryCreate function and does a bunch of awkward manual validation.
+        try
+        {
+            var ask = JsonSerializer.Deserialize<AskCreateCommand>(askCreateForm.Ask);
+            if (string.IsNullOrWhiteSpace(askCreateForm.Ask) || ask is null)
+            {
+                var problemDetails = new ValidationProblemDetails()
+                {
+                    Instance = this.Request.Path,
+                    Status = 400,
+                    Detail = "Invalid Ask.",
+                };
+                problemDetails.Errors.Add(new KeyValuePair<string, string[]>("ask", new string[] { "Missing or invalid Ask." }));
+                return (new AskCreateCommand(), problemDetails);
+            }
+
+            // Validate the Ask
+            var validationContext = new ValidationContext(ask);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(ask, validationContext, validationResults);
+            bool tagsValid = ask.Tags.Aggregate(true, (acc, t) =>
+            {
+                var vc = new ValidationContext(t);
+                return acc && Validator.TryValidateObject(t, vc, null);
+            });
+            if (isValid && tagsValid)
+            {
+                if (askCreateForm.Images is not null)
+                {
+                    ask.Images = askCreateForm.Images;
+                }
+                return (ask, null);
+            }
+            else
+            {
+                var problemDetails = new ValidationProblemDetails()
+                {
+                    Instance = this.Request.Path,
+                    Status = 400,
+                    Detail = "Invalid Ask.",
+                };
+                SnakeCaseNameRewriter snakeCase = new SnakeCaseNameRewriter(CultureInfo.InvariantCulture);
+                var errors = validationResults.Select(i =>
+                    new KeyValuePair<string, string[]>(
+                        snakeCase.RewriteName(i.MemberNames.FirstOrDefault() ?? "property"),
+                        new string[] { i?.ErrorMessage ?? "Error" }));
+                foreach (var error in errors)
+                {
+                    problemDetails.Errors.Add(error);
+                }
+                if (tagsValid == false)
+                {
+                    problemDetails.Errors.Add(new KeyValuePair<string, string[]>("tags", new string[] { "Invalid tag." }));
+                }
+
+                return (new AskCreateCommand(), problemDetails);
+            }
+        }
+        catch (JsonException)
+        {
+            var problemDetails = new ValidationProblemDetails()
+            {
+                Instance = this.Request.Path,
+                Status = 400,
+                Detail = "Invalid Ask.",
+            };
+            problemDetails.Errors.Add(new KeyValuePair<string, string[]>("ask", new string[] { "Missing or invalid Ask." }));
+            return (new AskCreateCommand(), problemDetails);
+        }
+    }
+
+    /// <summary>
+    /// Deserialize the Ask form data into a AskCreateCommand.
+    /// </summary>
+    /// <param name="askCreateForm">The ask create form</param>
+    /// <returns>An AskCreate command and a problem details collection if the request was invalid.</returns>
+    private (DeliveryCreateCommand, ValidationProblemDetails?) DeserializeDeliveryCreate(DeliveryCreateForm deliveryCreateForm)
+    {
+        // FIXME: This code dulicates the above DeliveryAskCreate function and does a bunch of awkward manual validation.
+
+        try
+        {
+            var delivery = JsonSerializer.Deserialize<DeliveryCreateCommand>(deliveryCreateForm.Delivery);
+            if (string.IsNullOrWhiteSpace(deliveryCreateForm.Delivery) || delivery is null)
+            {
+                var problemDetails = new ValidationProblemDetails()
+                {
+                    Instance = this.Request.Path,
+                    Status = 400,
+                    Detail = "Invalid Delivery.",
+                };
+                problemDetails.Errors.Add(new KeyValuePair<string, string[]>("delivery", new string[] { "Missing or invalid Delivery." }));
+                return (new DeliveryCreateCommand(), problemDetails);
+            }
+            delivery.Images = deliveryCreateForm.Images;
+
+            // Validate the Delivery
+            var validationContext = new ValidationContext(delivery);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(delivery, validationContext, validationResults);
+            bool tagsValid = delivery.Tags.Aggregate(true, (acc, t) =>
+            {
+                var vc = new ValidationContext(t);
+                return acc && Validator.TryValidateObject(t, vc, null);
+            });
+            if (isValid && tagsValid)
+            {
+                return (delivery, null);
+            }
+            else
+            {
+                var problemDetails = new ValidationProblemDetails()
+                {
+                    Instance = this.Request.Path,
+                    Status = 400,
+                    Detail = "Invalid Delivery.",
+                };
+                SnakeCaseNameRewriter snakeCase = new SnakeCaseNameRewriter(CultureInfo.InvariantCulture);
+                var errors = validationResults.Select(i =>
+                    new KeyValuePair<string, string[]>(
+                        snakeCase.RewriteName(i.MemberNames.FirstOrDefault() ?? "property"),
+                        new string[] { i?.ErrorMessage ?? "Error" }));
+                foreach (var error in errors)
+                {
+                    problemDetails.Errors.Add(error);
+                }
+                if (tagsValid == false)
+                {
+                    problemDetails.Errors.Add(new KeyValuePair<string, string[]>("tags", new string[] { "Invalid tag." }));
+                }
+
+                return (new DeliveryCreateCommand(), problemDetails);
+            }
+        }
+        catch (JsonException)
+        {
+            var problemDetails = new ValidationProblemDetails()
+            {
+                Instance = this.Request.Path,
+                Status = 400,
+                Detail = "Invalid Delivery.",
+            };
+            problemDetails.Errors.Add(new KeyValuePair<string, string[]>("delivery", new string[] { "Missing or invalid Delivery." }));
+            return (new DeliveryCreateCommand(), problemDetails);
+        }
     }
 }

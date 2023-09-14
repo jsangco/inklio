@@ -14,4 +14,5 @@ This is the auto-generated cilent for the Inklio APIs.
 
 1. Build and run the Inklio API server locally.
 2. From the [Inklio.Api.Client](.) directory, run `curl https://localhost:7187/swagger/v1/swagger.json` to update the [swagger.json](swagger.json) file.
-2. Run `autorest --csharp --input-file=.\swagger.json --namespace="Inklio.Api.Client"`
+3. Run `autorest --csharp --input-file=.\swagger.json --namespace="Inklio.Api.Client"`
+4. Update the [Inklio.Api.Client.csproj](Inklio.Api.Client.csproj) by changing the `TargetFramework` property to net6.0 and specify the version of `Azure.Core` (e.g. `Version="1.35.0"`).

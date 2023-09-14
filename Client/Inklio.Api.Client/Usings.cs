@@ -1,0 +1,10 @@
+global using System.IO;
+global using System.Linq;
+global using System.Net;
+global using System.Reflection;
+global using System.Runtime.Serialization;
+global using System.Threading.Tasks;
+global using System.Threading;
+global using System;
+global using UserId = System.Guid;
+global using Microsoft.Extensions.Logging;

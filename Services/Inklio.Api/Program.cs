@@ -11,6 +11,7 @@ using Inklio.Api.Infrastructure.Filters;
 using Inklio.Api.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Inklio.Api.Domain;
 
 Console.WriteLine("Starting Inklio Api");
 var appBuilder = WebApplication.CreateBuilder(args);
@@ -85,3 +86,5 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 
 Console.WriteLine("Starting application. Version: " + HealthCheckWriter.GetAppVersion());
 app.Run();
+var a = new LoggerFactory();
+a.CreateLogger<User>();

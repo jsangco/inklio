@@ -11,38 +11,15 @@ namespace Inklio.Api.Application.Commands;
 public class AskCreateForm
 {
     /// <summary>
-    /// Gets or sets the Body of the Ask.
+    /// Gets or sets a JSON string containing the Ask data. The string should be deserializable into
+    /// a <see cref="AskCreateCommand"/> object.
     /// </summary>
-    [FromForm(Name = "body")]
-    public string Body { get; set; } = string.Empty;
+    [FromForm(Name = "ask")]
+    public string Ask { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets any images assoiated with the ask.
     /// </summary>
     [FromForm(Name = "images")]
-    public IFormFile? Images { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is NSFW.
-    /// </summary>
-    [FromForm(Name = "is_nsfw")]
-    public bool IsNsfw { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
-    /// </summary>
-    [FromForm(Name = "is_nsfl")]
-    public bool IsNsfl { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Title of the Ask.
-    /// </summary>
-    [FromForm(Name = "title")]
-    public string Title { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or set the tags associated with the Ask
-    /// </summary>
-    [FromForm(Name = "tags")]
-    public IEnumerable<Tag> Tags { get; set; } = new Tag[] { };
+    public IEnumerable<IFormFile>? Images { get; set; }
 }

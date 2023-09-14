@@ -1,50 +1,59 @@
-﻿using Autofac;
-using IdentityModel.Client;
-using Inklio.Api.Dependencies;
-using Inklio.Api.Domain;
-using Inklio.Api.Infrastructure.EFCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using Inklio.Api.Client;
 
 Console.WriteLine("Starting program");
 
-// InklioDomainTest.DoStuff();
+User.DefaultBaseUri = new Uri("https://localhost:7187");
 
-var client = new HttpClient();
-var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7187");
-if (disco.IsError)
+var user = new User("jace5");
+await user.CreateOrLoginAsync();
+
+var getOrCreateAsksAsync = async () =>
 {
-    Console.WriteLine(disco.Error);
+    var askCreator = new User("jace4");
+    IEnumerable<Ask> asks = await askCreator.GetAsksAsync();
+    if (asks.Any() == false)
+    {
+        await askCreator.AddAskAsync(new AskCreate()
+        {
+            Body = "My Ask Body",
+            Title = "My Ask Title",
+            IsNsfl = true,
+            IsNsfw = false,
+            Images = new byte[][] { File.ReadAllBytes("C:\\src\\Inklio\\aqua.png"), File.ReadAllBytes("C:\\src\\Inklio\\aqua.png") },
+            Tags = new Tag[] { new Tag("aqua") }
+        });
+    }
+    return await askCreator.GetAsksAsync();
+};
+
+var asks = await getOrCreateAsksAsync();
+if (asks.First().Deliveries.Any() == false)
+{
+    await user.AddDeliveryAsync(new DeliveryCreate()
+        {
+            Body = "My Delivery Body",
+            Title = "My Delivery Title",
+            IsNsfl = true,
+            IsNsfw = false,
+            IsSpoiler = true,
+            Images = new byte[][] { File.ReadAllBytes("C:\\src\\Inklio\\aqua.png"), File.ReadAllBytes("C:\\src\\Inklio\\aqua.png") },
+            Tags = new Tag[] { new Tag("aqua") }
+
+        },
+        asks.First().Id);
 }
 
-var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+if (asks.First().Comments.Any() == false)
 {
-    Address = disco.TokenEndpoint,
-
-    ClientId = "client",
-    ClientSecret = "secret",
-    Scope = "api1"
-});
-
-if (tokenResponse.IsError)
-{
-    Console.WriteLine(tokenResponse.Error);
-    return;
+    await user.AddCommentAsync("My Ask Comment", asks.First().Id);
 }
 
-Console.WriteLine(tokenResponse.Json);
-
-var apiClient = new HttpClient();
-apiClient.SetBearerToken(tokenResponse.AccessToken);
-
-var response = await apiClient.GetAsync("https://localhost:7187/identity");
-if (!response.IsSuccessStatusCode)
+if (asks.First().Deliveries.First().Comments.Any() == false)
 {
-    Console.WriteLine(response.StatusCode);
+    await user.AddCommentAsync("My Delivery Comment", asks.First().Id, asks.First().Deliveries.First().Id);
 }
-else
-{
-    var content = await response.Content.ReadAsStringAsync();
-    Console.WriteLine(JArray.Parse(content));
-}
+
+var finalResults = await user.GetAsksAsync();
+string json = JsonSerializer.Serialize(finalResults);
+Console.WriteLine(json);

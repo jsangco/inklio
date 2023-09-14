@@ -16,6 +16,7 @@ public class AskCreateCommand : IRequest<bool>
     /// </summary>
     [DataMember(Name = "body")]
     [JsonPropertyName("body")]
+    [Required, MaxLength(40000)]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
@@ -51,6 +52,7 @@ public class AskCreateCommand : IRequest<bool>
     /// </summary>
     [DataMember(Name = "title")]
     [JsonPropertyName("title")]
+    [Required, MaxLength(200)]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>

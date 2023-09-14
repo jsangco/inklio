@@ -1,15 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using MediatR;
 
-namespace Inklio.Api.Application.Commands;
+namespace Inklio.Api.Client;
 
 /// <summary>
 /// An request body to create a new comment
 /// </summary>
 [DataContract]
-public class AskCommentCreateCommand : IRequest<bool>
+public class AskCommentCreate
 {
     /// <summary>
     /// Gets or sets the ID of the ask to add the comment to
@@ -23,7 +22,6 @@ public class AskCommentCreateCommand : IRequest<bool>
     /// </summary>
     [DataMember(Name = "body")]
     [JsonPropertyName("body")]
-    [Required, MinLength(1), MaxLength(20000)]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>

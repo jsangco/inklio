@@ -12,7 +12,7 @@ CREATE TABLE [inklio].[user]
   [last_login_at_utc] DATETIME2 NOT NULL,
   [reputation] INT NOT NULL DEFAULT 0,
   [user_id] UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT [ak_user_id] UNIQUE(user_id),
   [username] NVARCHAR(32) NOT NULL,
-  CONSTRAINT [ak_username] UNIQUE(username),
-  CONSTRAINT [ak_user_id] UNIQUE(user_id),
+    CONSTRAINT [ak_username] UNIQUE(username),
 )

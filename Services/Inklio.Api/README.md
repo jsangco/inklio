@@ -120,11 +120,11 @@ Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo
 Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost:7187/v1/asks/1/tags
 
 # Get all Asks
-curl http://localhost:80/api/v1/asks
+curl https://localhost:7187/v1/asks
 
 # Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments. (This done with OData)
-curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments),comments"
+curl "https://localhost:7187/v1/asks?expand=images,deliveries(expand=comments),comments"
 
 # Get all the Deliveries from the first Ask
-curl http://localhost:80/api/v1/asks/1/deliveries
+curl https://localhost:7187/v1/asks/1/deliveries
 ```

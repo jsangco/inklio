@@ -75,7 +75,7 @@ Invoke-WebRequest http://localhost/api/v1/accounts/reset -Method POST -ContentTy
 ```powershell
 
 # Create an Ask
-$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+$askCreateCommand = @{"ask"="{'body':'my body'}"; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
 
 # Add a Delivery to an Ask
@@ -95,7 +95,7 @@ Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo
 curl http://localhost:80/api/v1/asks
 
 # Get all Asks but include their Deliveries, Delivery Comments, and Ask Comments. (This done with OData)
-curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments),comments"
+curl "http://localhost:80/api/v1/asks?expand=deliveries(expand=comments,images),comments,images"
 
 # Get all the Deliveries from the first Ask
 curl http://localhost:80/api/v1/asks/1/deliveries

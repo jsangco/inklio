@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Inklio.Api.SeedWork;
 
@@ -28,6 +29,7 @@ public class Tag
     /// </summary>
     [DataMember(Name = "value")]
     [JsonPropertyName("value")]
+    [Required(AllowEmptyStrings = false)]
     public string Value { get; set; } = string.Empty;
 
     /// <summary>

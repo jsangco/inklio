@@ -7,8 +7,8 @@ namespace Inklio.Api.Infrastructure.Repositories;
 
 public class BlobRepository : IBlobRepository
 {
-    private const string AskBlobBlobContainerName = "ask";
-    private const string DeliveryBlobBlobContainerName = "delivery";
+    private const string AskBlobBlobContainerName = "asks";
+    private const string DeliveryBlobBlobContainerName = "deliveries";
     private readonly BlobServiceClient blobServiceClient;
     private BlobContainerClient askContainer;
     private BlobContainerClient deliveryContainer;

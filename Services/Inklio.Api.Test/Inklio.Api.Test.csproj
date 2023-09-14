@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Inklio.Api\Inklio.Api.csproj" />
+    <ProjectReference Include="..\..\Client\Inklio.Api.Client\Inklio.Api.Client.csproj" />
   </ItemGroup>
 
 </Project>
