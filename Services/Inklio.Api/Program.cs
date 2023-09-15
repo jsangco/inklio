@@ -9,6 +9,7 @@ using Inklio.Api.Startup;
 using Inklio.Api.Dependencies;
 using Inklio.Api.Infrastructure.Filters;
 using Inklio.Api.Domain;
+using Microsoft.AspNetCore.OData.Formatter;
 
 Console.WriteLine("Starting Inklio Api");
 var appBuilder = WebApplication.CreateBuilder(args);
@@ -62,11 +63,14 @@ var app = appBuilder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRequestBaseUrlRewriter(appBuilder.Configuration.GetSection("Web").Get<WebConfiguration>());
 app.MapControllers();
 app.MapHealthChecks("/", new HealthCheckOptions
 {

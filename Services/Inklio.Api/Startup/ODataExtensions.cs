@@ -1,4 +1,5 @@
 // using Inklio.Api.Domain;
+using System.Runtime.CompilerServices;
 using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData;
@@ -9,6 +10,39 @@ namespace Inklio.Api.Startup;
 
 public static class ODataExtensions
 {
+    /// <summary>
+    /// A middleware that changes the base of the Request URL for every incoming request to to the ApiUrl in a <see cref="WebConfiguration"/>.
+    /// </summary>
+    /// <remarks>
+    /// This is needed to unsure OData URLs work correctly when the application is executing behind a reverse
+    /// proxy (e.g. running in docker compose).
+    /// 
+    /// An example change to the Request URL is: https://localhost:1234/v1/asks -> http://localhost/api/v1/asks
+    /// </remarks>
+    /// <param name="app">The <see cref="IApplicationBuilder"/>.</param>
+    /// <param name="webConfiguration">The configuration object containing the API url to map to.</param>
+    /// <returns>An <see cref="IApplicationBuilder"/>.</returns>
+    public static IApplicationBuilder UseRequestBaseUrlRewriter(this IApplicationBuilder app, WebConfiguration webConfiguration)
+    {
+        app.Use(async (context, next) =>
+        {
+            if (string.IsNullOrWhiteSpace(webConfiguration.ApiUrl) == false)
+            {
+                var apiUri = new Uri(webConfiguration.ApiUrl);
+                context.Request.PathBase = new PathString(apiUri.LocalPath);
+                context.Request.Host = new HostString(apiUri.Host);
+                context.Request.Scheme = apiUri.Scheme;
+            }
+            await next.Invoke();
+        });
+        return app;
+    }
+
+    /// <summary>
+    /// Adds OData configuration to the Inklio API.
+    /// </summary>
+    /// <param name="mvcBuilder">The <see cref="IMvcBuilder"/>.</param>
+    /// <returns>An <see cref="IMvcBuilder"/>.</returns>
     public static IMvcBuilder AddApiOData(this IMvcBuilder mvcBuilder)
     {
         mvcBuilder.AddOData(options => 
@@ -28,6 +62,10 @@ public static class ODataExtensions
         return mvcBuilder;
     }
     
+    /// <summary>
+    /// Creates the EDM model used to route OData queries.
+    /// </summary>
+    /// <returns>The EDM model used to route OData queries.</returns>
     private static IEdmModel CreateEdmModel()
     {
         var builder = new ODataConventionModelBuilder();

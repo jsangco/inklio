@@ -2,7 +2,6 @@
 
 Any task or thing that needs to get done can be added here.
 
-* fix nextLink in OData results by changing baseaddress of the odata config depending on env.
 * Add UI for main functionality
   * Create front page
   * Create new ask form

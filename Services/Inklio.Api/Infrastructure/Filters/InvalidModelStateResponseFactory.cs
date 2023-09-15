@@ -1,3 +1,5 @@
+namespace Inklio.Api.Infrastructure.Filters;
+
 public static class InvalidModelStateResponseFactory
 {
     /// <summary>
