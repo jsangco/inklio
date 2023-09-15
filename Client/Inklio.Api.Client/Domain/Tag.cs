@@ -30,6 +30,7 @@ public class Tag
     [DataMember(Name = "value")]
     [JsonPropertyName("value")]
     public string Value { get; set; } = string.Empty;
+
     /// <summary>
     /// Initiliazes a new instance of a <see cref="Tag"/> object.
     /// </summary>

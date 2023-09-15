@@ -62,7 +62,7 @@ public class Tag : Entity, IAggregateRoot
     /// </summary>
     private Tag()
     {
-        this.CreatedBy = new User(Guid.Empty, "empty username");
+        this.CreatedBy = new User(Guid.Empty, "");
         this.Value = "empty tag";
         this.Type = "general tag";
     }
@@ -77,8 +77,8 @@ public class Tag : Entity, IAggregateRoot
     protected Tag(User createdBy, string type, string value)
     {
         this.CreatedBy = createdBy;
-        this.Type = type;
-        this.Value = value;
+        this.Type = type.ToLowerInvariant();
+        this.Value = value.ToLowerInvariant();
         this.CreatedAtUtc = DateTime.UtcNow;
     }
 
@@ -103,7 +103,7 @@ public class Tag : Entity, IAggregateRoot
             throw new InklioDomainException(400, $"Invalid tag. A tag must have a value and cannot be longer than {Tag.MaxTagLength} characters");
         }
 
-        string tagType = string.IsNullOrWhiteSpace(type) ? Tag.DefaultTagType : type;
+        string tagType = string.IsNullOrWhiteSpace(type) ? Tag.DefaultTagType : type.ToLowerInvariant();
         string tagValue = value.ToLowerInvariant();
         return new Tag(createdBy, tagType, tagValue);
     }

@@ -17,6 +17,9 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
 
         builder.Ignore(b => b.DomainEvents);
 
+        builder.HasOne(e => e.CreatedBy);
+        builder.Navigation(e => e.CreatedBy).AutoInclude();
+
         builder
             .HasOne(e => e.Ask)
             .WithMany(e => e.Deliveries);

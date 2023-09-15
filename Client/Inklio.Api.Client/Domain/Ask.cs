@@ -74,11 +74,11 @@ public class Ask
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the ID of the user that created the ask.
+    /// Gets or sets the username who created the ask.
     /// </summary>
-    [DataMember(Name = "created_by_id")]
-    [JsonPropertyName("created_by_id")]
-    public int CreatedById { get; set; }
+    [DataMember(Name = "created_by")]
+    [JsonPropertyName("created_by")]
+    public string CreatedBy { get; set; } = "";
 
     /// <summary>
     /// Gets or sets the deliveries for the ask.

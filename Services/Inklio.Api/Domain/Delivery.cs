@@ -78,6 +78,11 @@ public class Delivery : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
+    /// Gets username of the user that created the delivery.
+    /// </summary>
+    public string CreatedByUsername => this.CreatedBy.Username;
+
+    /// <summary>
     /// Gets or sets the ID of the user that created the delivery.
     /// </summary>
     public int CreatedById { get; private set; }
@@ -214,6 +219,7 @@ public class Delivery : Entity, IAggregateRoot
     private Delivery()
 #pragma warning restore CS8618
     {
+        this.CreatedBy = new User(Guid.Empty, "");
     }
 
     /// <summary>

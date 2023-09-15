@@ -44,9 +44,9 @@ public class AskRepository : IAskRepository
         Ask? ask = await this.context.Asks
             .Where(a => a.IsDeleted == false)
             .Include(a => a.Comments)
-            .Include(a => a.Deliveries)
             .Include(a => a.Images)
             .Include(a => a.Tags)
+            .Include(a => a.Deliveries)
             .Include(a => a.Deliveries).ThenInclude(d => d.Comments)
             .Include(a => a.Deliveries).ThenInclude(d => d.Images)
             .Include(e => e.Deliveries).ThenInclude(e => e.Tags)

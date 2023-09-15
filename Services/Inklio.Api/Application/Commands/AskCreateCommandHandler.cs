@@ -106,7 +106,7 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
         }
         
         // Create any tags that don't exist
-        var newTags = tags.Select(t => t.ToString()).Except(existingTags.Select(t => t.ToString()));
+        var newTags = tags.Select(t => t.ToString().ToLowerInvariant()).Except(existingTags.Select(t => t.ToString()));
         foreach (var newTag in newTags)
         {
             var tagSplit = newTag.Split(':');

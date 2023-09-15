@@ -11,7 +11,7 @@ public class Image
     /// <summary>
     /// Gets or sets the ID of the image.
     /// </summary>
-    [DataMember(Name = "id")]
+    [IgnoreDataMember]
     [JsonIgnore]
     public int Id { get; set; }
 

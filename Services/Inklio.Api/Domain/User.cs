@@ -109,11 +109,6 @@ public class User : Entity, IAggregateRoot
     /// <param name="username">The username</param>
     public User(UserId userId, string username)
     {
-        if (string.IsNullOrWhiteSpace(username) || username.Length < 3 || username.Length > 32)
-        {
-            throw new ArgumentException($"'{nameof(username)}' must be at least 3 characters and less than 32 characters.", nameof(username));
-        }
-
         this.Username = username;
         this.UserId = userId;
         this.DeliveryCount = 0;

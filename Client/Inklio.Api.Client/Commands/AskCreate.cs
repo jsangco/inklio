@@ -39,6 +39,13 @@ public class AskCreate
     public bool IsNsfl { get; set; }
 
     /// <summary>
+    /// Gets or sets a flag indicating whether or not the ask is a spoiler.
+    /// </summary>
+    [DataMember(Name = "is_spoiler")]
+    [JsonPropertyName("is_spoiler")]
+    public bool IsSpoiler { get; set; }
+
+    /// <summary>
     /// Gets or sets the Title of the Ask.
     /// </summary>
     [DataMember(Name = "title")]
@@ -52,6 +59,26 @@ public class AskCreate
     [JsonPropertyName("tags")]
     [Required, MinLength(1)]
     public IEnumerable<Tag> Tags { get; set; } = new Tag[] { };
+
+    /// <summary>
+    /// Initializes an instance of an <see cref="AskCreate"/> object.
+    /// </summary>
+    public AskCreate()
+    {
+    }
+
+    /// <summary>
+    /// Initializes an instance of an <see cref="AskCreate"/> object.
+    /// </summary>
+    /// <param name="title">The title of the ask.</param>
+    /// <param name="body">The body of the ask.</param>
+    /// <param name="tags">The tags for the ask.</param>
+    public AskCreate(string title, string body, params Tag[] tags)
+    {
+        this.Body = body;
+        this.Title = title;
+        this.Tags = tags;
+    }
 
     /// <summary>
     /// Converts the object into a <see cref="MultipartFormDataContent"/> object that

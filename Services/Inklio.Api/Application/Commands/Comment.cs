@@ -41,13 +41,6 @@ public class Comment
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the ID of the user that created the comment.
-    /// </summary>
-    [DataMember(Name = "created_by_id")]
-    [JsonPropertyName("created_by_id")]
-    public int CreatedById { get; set; }
-
-    /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
     [DataMember(Name = "edited_at_utc")]

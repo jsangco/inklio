@@ -30,11 +30,13 @@ public class AsksController : ODataController
     private readonly IWebHostEnvironment hostEnvironment;
     private readonly IMapper projector = new MapperConfiguration(cfg =>
     {
-        cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
+        cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
         cfg.CreateProjection<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
         cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
-        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
+        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateProjection<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateProjection<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateProjection<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
@@ -43,11 +45,13 @@ public class AsksController : ODataController
 
     private readonly IMapper mapper = new MapperConfiguration(cfg =>
     {
-        cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>();
+        cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
         cfg.CreateMap<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
         cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
-        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>();
+        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
         cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
@@ -68,7 +72,7 @@ public class AsksController : ODataController
         this.hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
-    [EnableQuery]
+    [EnableQuery(PageSize = 20)]
     [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {

@@ -78,9 +78,14 @@ public class Ask : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
-    /// Gets or sets the ID of the user that created the delivery.
+    /// Gets or sets the ID of the user that created the ask.
     /// </summary>
     public int CreatedById { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the username of the user that created the ask.
+    /// </summary>
+    public string CreatedByUsername => this.CreatedBy.Username;
 
     /// <summary>
     /// The deliveries for the ask.
@@ -224,7 +229,7 @@ public class Ask : Entity, IAggregateRoot
     {
         this.Body = string.Empty;
         this.Title = string.Empty;
-        this.CreatedBy = new User(Guid.Empty, "empty username");
+        this.CreatedBy = new User(Guid.Empty, "");
     }
 
     /// <summary>
