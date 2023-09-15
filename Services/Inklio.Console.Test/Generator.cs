@@ -11,7 +11,7 @@ public static class Generator
         var getOrCreateAsksAsync = async () =>
         {
             var askCreator = new User("jace4");
-            IEnumerable<Ask> asks = await askCreator.GetAsksAsync();
+            IEnumerable<Ask> asks = (await askCreator.GetAsksAsync()).Value;
             if (asks.Any() == false)
             {
                 await askCreator.AddAskAsync(new AskCreate()
@@ -24,7 +24,8 @@ public static class Generator
                     Tags = new Tag[] { new Tag("aqua") }
                 });
             }
-            return await askCreator.GetAsksAsync();
+            var newAsks = await askCreator.GetAsksAsync();
+            return newAsks.Value;
         };
 
         var asks = await getOrCreateAsksAsync();
@@ -41,7 +42,7 @@ public static class Generator
                 Tags = new Tag[] { new Tag("aqua") }
 
             },
-                asks.First().Id);
+            asks.First().Id);
         }
 
         if (asks.First().Comments.Any() == false)

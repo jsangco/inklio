@@ -9,8 +9,11 @@ public class User : IDisposable
 {
     /// <summary>
     /// Gets or sets the default Base URI for the Inklio website.
+    /// WARNING: The HttpClient.BaseAddress property pays extra special
+    ///          attention to leading and trailing '/' characters:
+    ///          https://stackoverflow.com/a/23438417/200363
     /// </summary>
-    public static Uri DefaultBaseUri { get; set; } = new Uri("http://localhost/api");
+    public static Uri DefaultBaseUri { get; set; } = new Uri("http://localhost/api/");
 
     /// <summary>
     /// Gets or sets the default user password word to use if no password is specified.
@@ -120,7 +123,7 @@ public class User : IDisposable
         {
             this.logger.LogInformation("Logging in user. {Username} | {Email} | {Url}", this.Username, this.Email, this.httpClient?.BaseAddress?.ToString());
             var loginCommand = new AccountLogin() { Username = this.Username, Password = this.Password, IsRememberMe = true };
-            var loginResponse = await this.httpClient!.PostAsJsonAsync("/v1/accounts/login", loginCommand, cancellationToken);
+            var loginResponse = await this.httpClient!.PostAsJsonAsync("v1/accounts/login", loginCommand, cancellationToken);
 
             if (loginResponse.IsSuccessStatusCode == false)
             {
@@ -136,7 +139,7 @@ public class User : IDisposable
                     ConfirmPassword = this.Password,
                     Email = this.Email,
                 };
-                return await this.httpClient!.PostAsJsonAsync("/v1/accounts/register", createCommand, cancellationToken);
+                return await this.httpClient!.PostAsJsonAsync("v1/accounts/register", createCommand, cancellationToken);
             }
             return loginResponse;
         };
@@ -167,7 +170,7 @@ public class User : IDisposable
     {
         await CreateOrLoginAsync(cancellationToken);
         this.logger.LogInformation("Creating new Ask. {Username} | {Url}", this.Username, this.httpClient?.BaseAddress?.ToString());
-        var createResponse = await this.httpClient!.PostAsync("/v1/asks", askCreate.ToMultipartFormDataContent());
+        var createResponse = await this.httpClient!.PostAsync("v1/asks", askCreate.ToMultipartFormDataContent());
         try
         {
             createResponse.EnsureSuccessStatusCode();
@@ -190,7 +193,7 @@ public class User : IDisposable
     {
         await CreateOrLoginAsync(cancellationToken);
         this.logger.LogInformation("Creating new Delivery. {Username} | {Url}", this.Username, this.httpClient?.BaseAddress?.ToString());
-        var createResponse = await this.httpClient!.PostAsync($"/v1/asks/{askId}/deliveries", deliveryCreate.ToMultipartFormDataContent());
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/deliveries", deliveryCreate.ToMultipartFormDataContent());
         try
         {
             createResponse.EnsureSuccessStatusCode();
@@ -215,7 +218,7 @@ public class User : IDisposable
     {
         await CreateOrLoginAsync(cancellationToken);
         this.logger.LogInformation("Adding comment to ask. {Username} | {Url}", this.Username, this.httpClient?.BaseAddress?.ToString());
-        var createResponse = await this.httpClient!.PostAsync($"/v1/asks/{askId}/comments", commentCreate.ToHttpContent());
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/comments", commentCreate.ToHttpContent());
         try
         {
             createResponse.EnsureSuccessStatusCode();
@@ -240,7 +243,7 @@ public class User : IDisposable
     {
         await CreateOrLoginAsync(cancellationToken);
         this.logger.LogInformation("Adding comment to delivery. {Username} | {Url}", this.Username, this.httpClient?.BaseAddress?.ToString());
-        var createResponse = await this.httpClient!.PostAsync($"/v1/asks/{askId}/deliveries/{deliveryId}/comments", commentCreate.ToHttpContent());
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/deliveries/{deliveryId}/comments", commentCreate.ToHttpContent());
         try
         {
             createResponse.EnsureSuccessStatusCode();
@@ -285,11 +288,12 @@ public class User : IDisposable
     /// </summary>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>The asks.</returns>
-    public async Task<IEnumerable<Ask>> GetAsksAsync(string? filter = null, CancellationToken cancellationToken = default)
+    public async Task<ODataResponse<Ask>> GetAsksAsync(string? filter = null, CancellationToken cancellationToken = default)
     {
-        string url = filter == null ?  "v1/asks?expand=deliveries(expand=comments,images,tags),comments,images,tags"
-            : string.IsNullOrWhiteSpace(filter) ?"v1/asks/"
-            : $"v1/asks?{filter}";
+        var query = filter?.Replace(httpClient.BaseAddress!.ToString() + "v1/asks?", "");
+        string url = query == null ?  "v1/asks?expand=deliveries(expand=comments,images,tags),comments,images,tags"
+            : string.IsNullOrWhiteSpace(query) ?"v1/asks/"
+            : $"v1/asks?{query}";
         this.logger.LogInformation("Fetching asks. {Username} | {Url}", this.Username, this.httpClient!.BaseAddress?.ToString() + $"{url}");
         try
         {
@@ -300,7 +304,7 @@ public class User : IDisposable
                 throw new InklioClientException($"Unable to fetch Asks");
             }
 
-            return asks.Value;
+            return asks;
         }
         catch (Exception e)
         {

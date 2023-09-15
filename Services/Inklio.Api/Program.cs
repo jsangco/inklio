@@ -83,5 +83,3 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 
 Console.WriteLine("Starting application. Version: " + HealthCheckWriter.GetAppVersion());
 app.Run();
-var a = new LoggerFactory();
-a.CreateLogger<User>();

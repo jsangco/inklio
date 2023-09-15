@@ -13,12 +13,12 @@ using Inklio.Api.Infrastructure.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.OData.Extensions;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.VisualBasic;
 
 namespace Inklio.Api.Controllers;
-
 
 [Route("v1/asks")]
 public class AsksController : ODataController
@@ -150,8 +150,8 @@ public class AsksController : ODataController
         return comments;
     }
 
-    [HttpPost]
     [Authorize]
+    [HttpPost]
     public async Task<IActionResult> AddAsk(
         [FromForm] AskCreateForm askCreateForm,
         CancellationToken cancellationToken)

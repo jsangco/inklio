@@ -314,7 +314,6 @@ public static class SampleAsks
         "Parade",
     };
 
-
     public static IEnumerable<AskCreate> AskCreates => AskTitles
         .Zip(AskBodies, (title, body) => (title, body))
         .Zip(AskTags, (titleBody, tag) => new AskCreate()

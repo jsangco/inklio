@@ -33,6 +33,9 @@ The `.env` file can also be modified to use remote resources.
 
 > **NOTE:** The connection strings should not be surrounded by quotes
 
+> **WARNING:** The DNS name in the **azure storage connection string**'s URL *must* be configured to match the environment the application is running in. If the application is running within docker compose, the URL should be "http://**azure-storage**/:10000/devstoreaccount1" if the application is running outside of docker on the local machine, the URL should be "http://**127.0.0.1**:10000/devstoreaccount1;" This is because of the way [docker networking](https://docs.docker.com/compose/networking/) works.
+>
+> When running docker compose, use the values from [.env.local](./.env.local).
 
 ### 4. Build Release and run Docker Compose
 

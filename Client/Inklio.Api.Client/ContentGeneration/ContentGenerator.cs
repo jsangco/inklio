@@ -95,6 +95,15 @@ public class ContentGenerator
         this.users = usernames.Select(u => new User(u)).ToList();
     }
 
+    public async Task SeedContent(string sampleImagePath, CancellationToken cancellationToken = default)
+    {
+        await this.LoginAllUsersAsync();
+        await this.CreateAsksAsync();
+        await this.CreateDeliveriesAsync(sampleImagePath);
+        await this.CreateAskComments();
+        await this.CreateDeliveryComments();
+    }
+
     public Task LoginAllUsersAsync(CancellationToken cancellationToken = default)
     {
         var logins = this.users.Select(u => u.CreateOrLoginAsync(cancellationToken)).ToArray();
@@ -117,7 +126,7 @@ public class ContentGenerator
         byte[] imageBytes = await File.ReadAllBytesAsync(sampleImagePath, cancellationToken);
 
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).ToArray();
+        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
         var createDeliveries = SampleDeliveries.DeliveryCreates.Select(delivery =>
         {
             delivery.Images = new byte[][] { imageBytes };
@@ -135,7 +144,7 @@ public class ContentGenerator
     public async Task CreateAskComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).ToArray();
+        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
         var createDeliveries = SampleComments.AskCommentCreate.Select(comment =>
         {
             var ask = asks[rand.Next(asks.Length)];
@@ -149,7 +158,7 @@ public class ContentGenerator
     public async Task CreateDeliveryComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).ToArray();
+        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
         var createDeliveries = SampleComments.AskCommentCreate.Select(comment =>
         {
             var ask = asks[rand.Next(asks.Length)];

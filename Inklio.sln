@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inklio.Api.Test", "Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inklio.Console.Test", "Services\Inklio.Console.Test\Inklio.Console.Test.csproj", "{92F909AB-E065-4A91-BAB4-747CFB2AAC3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{38891B95-8D30-4898-A8F4-444574991DA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inklio.Api.Client", "Client\Inklio.Api.Client\Inklio.Api.Client.csproj", "{509A40A3-269D-42C2-A4B9-6E953A3FC7AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,15 @@ Global
 		{92F909AB-E065-4A91-BAB4-747CFB2AAC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F909AB-E065-4A91-BAB4-747CFB2AAC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F909AB-E065-4A91-BAB4-747CFB2AAC3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{509A40A3-269D-42C2-A4B9-6E953A3FC7AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{509A40A3-269D-42C2-A4B9-6E953A3FC7AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{509A40A3-269D-42C2-A4B9-6E953A3FC7AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{509A40A3-269D-42C2-A4B9-6E953A3FC7AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5509D4CB-4A17-4D2B-A033-E14336365304} = {A2422292-AFAD-4A40-870A-35160D3E2011}
 		{73DF21DA-5BF7-4F29-94D5-FA8C42E8C5A0} = {A2422292-AFAD-4A40-870A-35160D3E2011}
 		{92F909AB-E065-4A91-BAB4-747CFB2AAC3E} = {A2422292-AFAD-4A40-870A-35160D3E2011}
+		{509A40A3-269D-42C2-A4B9-6E953A3FC7AF} = {38891B95-8D30-4898-A8F4-444574991DA6}
 	EndGlobalSection
 EndGlobal
