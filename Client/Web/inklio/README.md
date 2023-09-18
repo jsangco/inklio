@@ -21,7 +21,7 @@ yarn install
 ### 1. Run the front end application
 
 ```bash
-yarn dev
+yarn dev --host
 ```
 
 ### 2. Configure the reverse proxy
@@ -33,7 +33,7 @@ Once the application is running you will be presented with something like the fo
   > Network:  http://172.30.176.1:3000/
   > Network:  http://192.168.4.28:3000/
 ```
-Take the **Network** IP and PORT (i.e. `http://172.20.16.1:3000/`), and *replace* the existing `proxy_pass` value in the `Web` section of the [ngnix.conf](../../ReverseProxy/nginx.conf).
+Take the **Network** IP and PORT (i.e. `http://172.20.16.1:3000/`), and *replace* the existing `proxy_pass` value in the `Web` section of the [ngnix.conf](../../ReverseProxy/nginx.conf). If you do not see the `Network` option, double check that `--host` was properly appended to the `yarn dev` command.
 
 It should look something like this:
 ```

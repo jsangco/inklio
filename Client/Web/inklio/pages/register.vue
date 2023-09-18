@@ -1,5 +1,5 @@
 <template>
   <div>
-    <InklioRegister/>
+    <Register/>
   </div>
 </template>

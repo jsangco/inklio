@@ -1,5 +1,5 @@
 <template>
   <div>
-    <InklioLogin/>
+    <Login/>
   </div>
 </template>
