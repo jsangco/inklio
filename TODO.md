@@ -2,8 +2,10 @@
 
 Any task or thing that needs to get done can be added here.
 
+* Create front page
+  * Create component for ask
+  * Investigate infinite scroll
 * Add UI for main functionality
-  * Create front page
   * Create new ask form
   * Create new delivery form
   * Create new comment form
