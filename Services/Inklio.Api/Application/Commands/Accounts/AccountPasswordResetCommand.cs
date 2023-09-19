@@ -36,7 +36,7 @@ public class AccountPasswordResetCommand : IRequest<bool>
     /// Gets or sets the password confirmation password to use when registering.
     /// </summary>
     [DataType(DataType.Password)]
-    [JsonPropertyName("confirm_password")]
+    [JsonPropertyName("confirmPassword")]
     [Compare("Password", ErrorMessage = "The Password and the Confirmation Password do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }

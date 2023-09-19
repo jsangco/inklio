@@ -27,22 +27,22 @@ public class AskCreate
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask is NSFW.
     /// </summary>
-    [DataMember(Name = "is_nsfw")]
-    [JsonPropertyName("is_nsfw")]
+    [DataMember(Name = "isNsfw")]
+    [JsonPropertyName("isNsfw")]
     public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask NSFL.
     /// </summary>
-    [DataMember(Name = "is_nsfl")]
-    [JsonPropertyName("is_nsfl")]
+    [DataMember(Name = "isNsfl")]
+    [JsonPropertyName("isNsfl")]
     public bool IsNsfl { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask is a spoiler.
     /// </summary>
-    [DataMember(Name = "is_spoiler")]
-    [JsonPropertyName("is_spoiler")]
+    [DataMember(Name = "isSpoiler")]
+    [JsonPropertyName("isSpoiler")]
     public bool IsSpoiler { get; set; }
 
     /// <summary>

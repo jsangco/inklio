@@ -60,16 +60,16 @@ Below are some sample powershell commands that can be used to interact with the 
 ### Account Creation
 
 ``` powershell
-$accountCreate = '{"email":"inkliojace@mailinator.com","username":"jace","password":"aoeuaoeu1","confirm_password":"aoeuaoeu1"}'
+$accountCreate = '{"email":"inkliojace@mailinator.com","username":"jace","password":"aoeuaoeu1","confirmPassword":"aoeuaoeu1"}'
 Invoke-WebRequest http://localhost/api/v1/accounts/register -Method POST -ContentType "application/json" -Body $accountCreate
 
-$accountLogin = '{"username":"jace","password":"aoeuaoeu1","is_remember_me":false}'
+$accountLogin = '{"username":"jace","password":"aoeuaoeu1","isRememberMe":false}'
 Invoke-WebRequest http://localhost/api/v1/accounts/login -Method POST -ContentType "application/json" -Body $accountLogin
 
 $accountForget = '{"email":"inkliojace@mailinator.com"}'
 Invoke-WebRequest http://localhost/api/v1/accounts/forget -Method POST -ContentType "application/json" -Body $accountForget
 
-$accountReset = '{"email":"inkliojace@mailinator.com","password":"aoeuaoeu1","confirm_password":"aoeuaoeu1","code":"REPLACE_RESET_CODE_HERE"}'
+$accountReset = '{"email":"inkliojace@mailinator.com","password":"aoeuaoeu1","confirmPassword":"aoeuaoeu1","code":"REPLACE_RESET_CODE_HERE"}'
 Invoke-WebRequest http://localhost/api/v1/accounts/reset -Method POST -ContentType "application/json" -Body $accountReset
 ```
 
@@ -82,7 +82,7 @@ $askCreateCommand = @{"ask"="{'body':'my body'}"; images=(get-item -path ./aqua.
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
 
 # Add a Delivery to an Ask
-$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"is_nsfw"=$true;"is_nsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost:7187/v1/asks/1/deliveries
 
 # Add a Comment to an Ask

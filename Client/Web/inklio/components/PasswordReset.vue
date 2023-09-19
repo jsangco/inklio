@@ -7,7 +7,7 @@
     <div v-if="successMessage" style="background-color: #1b4625;">
       <p>{{ successMessage }}</p>
     </div>
-    <form @submit.prevent="registerUser">
+    <form @submit.prevent="registerAccount">
       <div>
         <label for="email">Email</label>
         <input v-model="email" type="text" id="email" />
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
+import { useAccountStore } from '@/stores/account';
 
 const route = useRoute();
 const code = route.query.code?.toString() ?? "";
@@ -47,10 +47,10 @@ const errorEmail = ref(<string | null>null);
 const errorPassword = ref(<string | null>null);
 const errorConfirmPassword = ref(<string | null>null);
 const errorErrors = ref(<string | null>null);
-const user = useUserStore();
+const account = useAccountStore();
 
-const registerUser = async () => {
-  const { isSuccess, error } = await user.passwordReset(email.value, password.value, confirmPassword.value, code);
+const registerAccount = async () => {
+  const { isSuccess, error } = await account.passwordReset(email.value, password.value, confirmPassword.value, code);
   errorEmail.value = error?.errors?.email?.find(() => true);
   errorPassword.value = error?.errors?.password?.find(() => true);
   errorConfirmPassword.value = error?.errors?.confirmPassword?.find(() => true);

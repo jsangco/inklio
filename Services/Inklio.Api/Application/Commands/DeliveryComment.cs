@@ -9,7 +9,7 @@ public class DeliveryComment : Comment
     /// <summary>
     /// Gets or sets the ID of the comment.
     /// </summary>
-    [DataMember(Name = "delivery_id")]
-    [JsonPropertyName("delivery_id")]
+    [DataMember(Name = "deliveryId")]
+    [JsonPropertyName("deliveryId")]
     public int DeliveryId { get; set; }
 }

@@ -2,8 +2,6 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Rename user store to account store
-* switch from snake_case to camelCase
 * Create front page
   * Create component for ask
 * Add UI for main functionality
@@ -15,6 +13,7 @@ Any task or thing that needs to get done can be added here.
 
 ## Backlog
 
+* Update ValidationProblemDetails to use camelCase properties in the errors.
 * Add front page "Hot" query.
 * Add proper log reporting
 * Add TraceId to requests and responses

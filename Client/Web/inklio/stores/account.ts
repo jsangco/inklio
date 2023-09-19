@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { camelizeKeys, decamelizeKeys } from "humps";
+import { camelizeKeys } from "humps";
 
 export type Role = "ADMINISTRATOR" | "USER" | "MODERATOR";
 export type Account = {
@@ -28,7 +28,7 @@ const accountsRequest = async (url: string, body: any): Promise<JsonResponse> =>
   const errorResult = ref();
   const response = await $fetch(url, {
     method: "POST",
-    body: decamelizeKeys(body),
+    body: body,
     async onResponse({ response }) {
       if (response && response._data) {
         response._data = camelizeKeys(response._data);
@@ -113,7 +113,7 @@ export const useAccountStore = defineStore({
       return await loginOrRegister(
         this,
         "api/v1/accounts/register",
-        { "username": username, "password": password, "confirm_password": confirmPassword, "email": email });
+        { "username": username, "password": password, "confirmPassword": confirmPassword, "email": email });
     },
     async passwordForget(email: string): Promise<JsonResponse> {
       return await accountsRequest(
@@ -123,7 +123,7 @@ export const useAccountStore = defineStore({
     async passwordReset(email: string, password: string, confirmPassword: string, code: string): Promise<JsonResponse> {
       return await accountsRequest(
         "api/v1/accounts/reset",
-        { "email": email, "password": password, "confirm_password": confirmPassword, "code": code });
+        { "email": email, "password": password, "confirmPassword": confirmPassword, "code": code });
     }
   },
   persist: true,

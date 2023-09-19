@@ -23,8 +23,8 @@ public class AskTagAddCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets a flag indicating whether child deliveries should also be tagged.
     /// </summary>
-    [DataMember(Name = "tag_deliveries")]
-    [JsonPropertyName("tag_deliveries")]
+    [DataMember(Name = "tagDeliveries")]
+    [JsonPropertyName("tagDeliveries")]
     public bool TagDeliveries { get; set; } = true;
 
     /// <summary>

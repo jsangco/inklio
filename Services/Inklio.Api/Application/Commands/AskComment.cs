@@ -9,7 +9,7 @@ public class AskComment : Comment
     /// <summary>
     /// Gets or sets the ID of the comment.
     /// </summary>
-    [DataMember(Name = "ask_id")]
-    [JsonPropertyName("ask_id")]
+    [DataMember(Name = "askId")]
+    [JsonPropertyName("askId")]
     public int AskId { get; set; }
 }

@@ -28,6 +28,6 @@ public class AccountLoginCommand : IRequest<Account>
     /// Gets or sets a flag indictaing whether to remember login status.
     /// </summary>
     [Display(Name = "Remember me?")]
-    [JsonPropertyName("is_remember_me")]
+    [JsonPropertyName("isRememberMe")]
     public bool IsRememberMe { get; set; }
 }

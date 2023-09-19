@@ -31,7 +31,7 @@ public class Account
     /// <summary>
     /// Gets or sets a flag indicating whether the user has confirmed their email.
     /// </summary>
-    [DataMember(Name = "is_email_verified")]
-    [JsonPropertyName("is_email_verified")]
+    [DataMember(Name = "isEmailVerified")]
+    [JsonPropertyName("isEmailVerified")]
     public bool IsEmailVerified { get; set; } = false;
 }
