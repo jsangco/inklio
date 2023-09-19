@@ -104,13 +104,13 @@ public class ContentGenerator
         await this.CreateDeliveryComments();
     }
 
-    public Task LoginAllUsersAsync(CancellationToken cancellationToken = default)
+    private Task LoginAllUsersAsync(CancellationToken cancellationToken = default)
     {
         var logins = this.users.Select(u => u.CreateOrLoginAsync(cancellationToken)).ToArray();
         return Task.WhenAll(logins);
     }
 
-    public async Task CreateAsksAsync(CancellationToken cancellationToken = default)
+    private async Task CreateAsksAsync(CancellationToken cancellationToken = default)
     {
         var askCreates = this.users
             .Zip(SampleAsks.AskCreates, (u, a) => (u, a))
@@ -121,17 +121,29 @@ public class ContentGenerator
         }
     }
 
-    public async Task CreateDeliveriesAsync(string sampleImagePath, CancellationToken cancellationToken = default)
+    private async Task CreateDeliveriesAsync(string sampleImagePath, CancellationToken cancellationToken = default)
     {
         byte[] imageBytes = await File.ReadAllBytesAsync(sampleImagePath, cancellationToken);
 
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
+        var user = this.users.First();
+        var askRequest = await user.GetAsksAsync(null, cancellationToken);
+        List<Ask> asks = new List<Ask>(100);
+        while (askRequest.NextLink != null)
+        {
+            asks.AddRange(askRequest.Value);
+            askRequest = await user.GetAsksAsync(askRequest.NextLink.ToString(), cancellationToken);
+        }
         var createDeliveries = SampleDeliveries.DeliveryCreates.Select(delivery =>
         {
             delivery.Images = new byte[][] { imageBytes };
-            var ask = asks[rand.Next(asks.Length)];
+            var ask = asks[rand.Next(asks.Count)];
             var user = this.users[rand.Next(this.users.Count)];
+            if (string.Equals(ask.CreatedBy, user.Username, StringComparison.OrdinalIgnoreCase))
+            {
+                return Task.CompletedTask; // Skip over deliveries for an ask created by the same user.
+            }
+
             return user.AddDeliveryAsync(delivery, ask.Id, cancellationToken);
         });
 
@@ -141,7 +153,7 @@ public class ContentGenerator
         }
     }
 
-    public async Task CreateAskComments(CancellationToken cancellationToken = default)
+    private async Task CreateAskComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
         Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
@@ -155,7 +167,7 @@ public class ContentGenerator
         await Task.WhenAll(createDeliveries);
     }
 
-    public async Task CreateDeliveryComments(CancellationToken cancellationToken = default)
+    private async Task CreateDeliveryComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
         Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
