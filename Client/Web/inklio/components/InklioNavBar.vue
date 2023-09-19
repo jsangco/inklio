@@ -5,10 +5,10 @@
         Inklio
       </NuxtLink>
     </span>
-    <span class="user-info">
-      <span v-if="user.isLoggedIn">
-        {{ user.username }}
-        <button @click="user.logout">Log out</button>
+    <span class="account-info">
+      <span v-if="account.isLoggedIn">
+        {{ account.username }}
+        <button @click="account.logout">Log out</button>
       </span>
       <span v-else>
         <NuxtLink to="/login">
@@ -23,12 +23,12 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user';
-const user = useUserStore();
+import { useAccountStore } from '@/stores/account';
+const account = useAccountStore();
 </script>
 
 <style>
-.user-info {
+.account-info {
   float: right;
   font-size: medium;
   color:#aee6e0;

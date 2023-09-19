@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { camelizeKeys, decamelizeKeys } from "humps";
 
 export type Role = "ADMINISTRATOR" | "USER" | "MODERATOR";
-export type User = {
+export type Account = {
   id: string;
   username: string;
   roles: Role[];
@@ -16,7 +16,7 @@ export type JsonResponse = {
   error?: any;
 };
 
-const emptyUserInfo: User = {
+const emptyAccountState: Account = {
   id: "",
   username: "",
   roles: [],
@@ -70,9 +70,9 @@ const loginOrRegister = async (state: any, url: string, body: any): Promise<Json
   }
 };
 
-export const useUserStore = defineStore({
-  id: 'userStore',
-  state: () => emptyUserInfo,
+export const useAccountStore = defineStore({
+  id: 'accountStore',
+  state: () => emptyAccountState,
   actions: {
     async login(username: string, password: string, isRememberMe: boolean): Promise<JsonResponse> {
       return await loginOrRegister(
@@ -101,9 +101,9 @@ export const useUserStore = defineStore({
 
       const logoutResult = await doLogout();
       if (logoutResult.isSuccess) {
-        for (const key in emptyUserInfo) {
+        for (const key in emptyAccountState) {
           if (this.$state.hasOwnProperty(key)) {
-            (this.$state as any)[key] = (emptyUserInfo as any)[key];
+            (this.$state as any)[key] = (emptyAccountState as any)[key];
           }
         }
       }
