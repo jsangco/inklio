@@ -2,9 +2,10 @@
 
 Any task or thing that needs to get done can be added here.
 
+* Rename user store to account store
+* switch from snake_case to camelCase
 * Create front page
   * Create component for ask
-  * Investigate infinite scroll
 * Add UI for main functionality
   * Create new ask form
   * Create new delivery form

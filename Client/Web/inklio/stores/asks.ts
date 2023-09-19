@@ -26,27 +26,57 @@ function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataRespon
 }
 
 export type Ask = {
+  id: number;
   title: string;
   body: string;
 }
 
 export type AskManager = {
-  asks : Ask[]
+  asks: Ask[];
+  nextLink: string | null,
+  error: any | null,
 }
 
 const emptyAskManager: AskManager = {
-  asks: []
+  asks: [],
+  nextLink: null,
+  error: null,
 }
 
 export const useAsksStore = defineStore({
   id: 'asksStore',
   state: () => emptyAskManager,
-  getters: {},
+  getters: {
+    getAsks: (state) => state.asks,
+  },
   actions: {
-    async downloadAsks(url:string) {
-      const askFetch = url ? await useFetchX(url) : await useFetchX("api/v1/asks") ;
+    async initialize() {
+      const askFetch = await useFetchX("api/v1/asks?orderby=id%20desc") ;
       const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
-      return odataResponse;
-    }
+      if (odataResponse.error) {
+        this.error = odataResponse.error;
+      }
+      this.asks = odataResponse.value;
+      this.nextLink = odataResponse.nextLink;
+    },
+    async next() {
+      if (this.nextLink === null) {
+        return;
+      }
+
+      // Prevent multiple simultaneous calls to this function from creating multiple
+      // asynchronous requests
+      const url = this.nextLink;
+      this.nextLink = null;
+
+      // Fetch the next collection of asks.
+      const askFetch = await useFetchX(url);
+      const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
+      if (odataResponse.error) {
+        this.error = odataResponse.error;
+      }
+      this.asks = this.asks.concat(odataResponse.value);
+      this.nextLink = odataResponse.nextLink;
+    },
   },
 });
