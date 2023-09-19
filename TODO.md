@@ -3,11 +3,8 @@
 Any task or thing that needs to get done can be added here.
 
 * Create front page
-  * Define basic Delivery type
-  * Define basic Comment type
-  * Define basic Tag type
-  * Define Ask type
   * Render 1st delivery in AskCard
+* Create Ask view page
 * Add UI for main functionality
   * Create new ask form
     * Add upvote, add delivery, add comment button, add flag, to AskCard

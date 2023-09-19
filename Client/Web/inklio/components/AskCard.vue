@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>Ask</div>
-    <span>{{ ask?.id }}. {{ ask?.title }}</span> - <span>{{ ask?.body }}</span>
+    <span>{{ ask.id }}. {{ ask.title }}</span> - <span>{{ ask.body }}, {{ ask.createdBy }}</span>
   </div>
 </template>
 

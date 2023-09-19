@@ -32,12 +32,15 @@ public class AsksController : ODataController
     {
         cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
+        cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateProjection<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
-        cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
+        cfg.CreateProjection<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateProjection<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateProjection<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
         cfg.CreateProjection<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
@@ -47,12 +50,15 @@ public class AsksController : ODataController
     {
         cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>();
+        cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateMap<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
-        cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>();
+        cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>();
+        cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>()
+            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
         cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
         cfg.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();

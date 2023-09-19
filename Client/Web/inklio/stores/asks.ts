@@ -42,7 +42,7 @@ export const useAsksStore = defineStore({
   },
   actions: {
     async initialize() {
-      const askFetch = await useFetchX("api/v1/asks?orderby=id%20desc") ;
+      const askFetch = await useFetchX("api/v1/asks?expand=deliveries(expand=images,comments),comments,images&count=true&orderby=id%20desc") ;
       const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
       if (odataResponse.error) {
         this.error = odataResponse.error;

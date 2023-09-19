@@ -17,6 +17,9 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
 
         builder.Ignore(b => b.DomainEvents);
 
+        builder.HasOne(e => e.CreatedBy);
+        builder.Navigation(e => e.CreatedBy).AutoInclude();
+
         // builder.Property(o => o.Id);
             // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 

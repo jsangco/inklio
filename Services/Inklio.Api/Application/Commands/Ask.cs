@@ -64,7 +64,7 @@ public class Ask
     /// </summary>
     [DataMember(Name = "comments")]
     [JsonPropertyName("comments")]
-    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
+    public IEnumerable<AskComment> Comments { get; set; } = Array.Empty<AskComment>();
 
     /// <summary>
     /// Gets or sets the UTC time the ask was created.

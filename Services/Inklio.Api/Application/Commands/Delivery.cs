@@ -52,7 +52,7 @@ public class Delivery
     /// </summary>
     [DataMember(Name = "comments")]
     [JsonPropertyName("comments")]
-    public IEnumerable<Comment> Comments { get; set; } = Array.Empty<Comment>();
+    public IEnumerable<DeliveryComment> Comments { get; set; } = Array.Empty<DeliveryComment>();
 
     /// <summary>
     /// Gets or sets the UTC time the delivery was created.

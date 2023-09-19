@@ -40,6 +40,13 @@ public class Comment
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
+    /// Gets or sets the username of the user that created the comment.
+    /// </summary>
+    [DataMember(Name = "createdBy")]
+    [JsonPropertyName("createdBy")]
+    public string CreatedBy { get; set; } = "";
+
+    /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
     /// </summary>
     [DataMember(Name = "editedAtUtc")]
@@ -47,11 +54,11 @@ public class Comment
     public DateTime? EditedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the id of the user that edited the comment.
+    /// Gets or sets the username of the user that last edited the comment.
     /// </summary>
-    [DataMember(Name = "editedById")]
-    [JsonPropertyName("editedById")]
-    public int? EditedById { get; set; }
+    [DataMember(Name = "editedBy")]
+    [JsonPropertyName("editedBy")]
+    public string EditedBy { get; set; } = "";
 
     /// <summary>
     /// Gets or sets the number of times an account was flagged.
