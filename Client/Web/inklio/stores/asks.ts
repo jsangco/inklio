@@ -1,14 +1,6 @@
 import { defineStore } from "pinia";
-import { camelizeKeys, decamelizeKeys } from "humps";
 import { AsyncData } from "nuxt/app";
-
-export type ODataResponse<T> = {
-  context: string | null;
-  nextLink: string | null;
-  count: number | null;
-  value: T[];
-  error: any;
-}
+import { Ask, ODataResponse } from "@/types/types";
 
 function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataResponse<T> {
   if (response.error.value) {
@@ -17,6 +9,11 @@ function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataRespon
     }) as ODataResponse<T>;
   }
   const obj = response.data.value;
+  if (obj === null) {
+    return ({
+      error: "Failed to fetch data",
+    }) as ODataResponse<T>;
+  }
   return ({
     context: "@odata.context" in obj ? obj["@odata.context"] : null,
     nextLink: "@odata.nextLink" in obj ? obj["@odata.nextLink"] : null,
@@ -25,19 +22,13 @@ function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataRespon
   }) as ODataResponse<T>;
 }
 
-export type Ask = {
-  id: number;
-  title: string;
-  body: string;
-}
-
-export type AskManager = {
+export type AskState = {
   asks: Ask[];
   nextLink: string | null,
   error: any | null,
 }
 
-const emptyAskManager: AskManager = {
+const emptyAskState: AskState = {
   asks: [],
   nextLink: null,
   error: null,
@@ -45,7 +36,7 @@ const emptyAskManager: AskManager = {
 
 export const useAsksStore = defineStore({
   id: 'asksStore',
-  state: () => emptyAskManager,
+  state: () => emptyAskState,
   getters: {
     getAsks: (state) => state.asks,
   },

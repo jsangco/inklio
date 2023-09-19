@@ -22,7 +22,7 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAccountStore } from '@/stores/account';
 const account = useAccountStore();
 </script>

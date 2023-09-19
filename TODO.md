@@ -3,19 +3,29 @@
 Any task or thing that needs to get done can be added here.
 
 * Create front page
-  * Create component for ask
+  * Define basic Delivery type
+  * Define basic Comment type
+  * Define basic Tag type
+  * Define Ask type
+  * Render 1st delivery in AskCard
 * Add UI for main functionality
   * Create new ask form
+    * Add upvote, add delivery, add comment button, add flag, to AskCard
   * Create new delivery form
   * Create new comment form
-* API is using forms, so add CSRF protection
+* API is using forms, so add CSRF protecting
 * Update readme test query commands
 
-## Backlog
+## Tech Backlog
 
 * Update ValidationProblemDetails to use camelCase properties in the errors.
-* Add front page "Hot" query.
 * Add proper log reporting
 * Add TraceId to requests and responses
 * Setup email server
 * Add domain event handling when a user registers
+
+## Feature Backlog
+
+* Add Daily, Weekly, Monthly challenges
+* Add front page "Hot" query.
+* Tag based search

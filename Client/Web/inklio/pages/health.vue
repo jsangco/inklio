@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // const { data: apiResult, apiPending, apiError } = await useFetchX('/api/health')
 const config = useRuntimeConfig();
 const apiResult = await $fetch(`${config.public.baseUrl}/api/health`)

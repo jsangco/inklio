@@ -2,10 +2,8 @@
   <div>
     <h1>Asks</h1>
     <div ref="scrollComponent">
-      <template v-if="!askStore.error" v-for="ask in askStore.getAsks">
-        <div>
-          <span>{{ ask.id }}. {{ ask.title }}</span> - <span>{{ ask.body }}</span>
-        </div>
+      <template v-if="!askStore.error" v-for="a in askStore.getAsks">
+        <AskCard v-bind:ask="a"/>
       </template>
       <template v-else>
         <div>
@@ -17,10 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAsksStore, Ask, ODataResponse } from '@/stores/asks';
+import { useAsksStore } from '@/stores/asks';
 const scrollComponent = ref(<any | null>null)
 onMounted(() => {
-  handleScroll();
   window.addEventListener("scroll", handleScroll);
 })
 
