@@ -1,4 +1,3 @@
-// using Inklio.Api.Domain;
 using System.Runtime.CompilerServices;
 using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;

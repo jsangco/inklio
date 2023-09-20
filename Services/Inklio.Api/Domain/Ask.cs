@@ -58,6 +58,12 @@ public class Ask : Entity, IAggregateRoot
     public bool CanTag { get; private set; } = true;
 
     /// <summary>
+    /// Gets or the number of comments on an ask. Including the
+    /// comments on child deliveries.
+    /// </summary>
+    public int CommentCount { get; private set; }
+
+    /// <summary>
     /// The collection of comments for the <see cref="Ask"/>
     /// </summary>
     private List<AskComment> comments = new List<AskComment>();
@@ -183,7 +189,7 @@ public class Ask : Entity, IAggregateRoot
     public DateTime? LockedAtUtc { get; private set; }
 
     /// <summary>
-    /// Gets or sets the number of times the ask was saved.
+    /// Gets or the number of times the ask was saved.
     /// </summary>
     public int SaveCount { get; private set; }
 
@@ -314,6 +320,7 @@ public class Ask : Entity, IAggregateRoot
 
         var comment = new AskComment(this, body, createdBy);
         this.comments.Add(comment);
+        this.CommentCount += 1;
         return comment;
     }
 
@@ -338,7 +345,25 @@ public class Ask : Entity, IAggregateRoot
         var delivery = new Delivery(this, body, createdBy, isAi, isNsfl, isNsfw, isSpoiler, title);
         this.deliveries.Add(delivery);
         this.IsDelivered = this.deliveries.Count > 0;
+        this.DeliveryCount += 1;
         return delivery;
+    }
+
+    /// <summary>
+    /// Adds a comment to a child delivery.
+    /// </summary>
+    /// <param name="body">The body of the <see cref="DeliveryComment"/>.</param>
+    /// <param name="createdById">The creator of the <see cref="DeliveryComment"/>.</param>
+    /// <returns>The newly created comment</returns>
+    public DeliveryComment AddDeliveryComment(string body, int deliveryId, User createdBy)
+    {
+        var delivery = this.Deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot add comment to delivery. The delivery is not part of the Ask");
+        }
+        this.CommentCount += 1;
+        return delivery.AddComment(body, createdBy);
     }
 
     /// <summary>

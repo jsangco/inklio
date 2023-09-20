@@ -295,7 +295,6 @@ public class Delivery : Entity, IAggregateRoot
         this.images.Add(image);
     }
 
-
     /// <summary>
     /// Flags the <see cref="Delivery"/>.
     /// </summary>
@@ -314,7 +313,6 @@ public class Delivery : Entity, IAggregateRoot
 
         return this.flags[existingFlagIndex];
     }
-
 
     /// <summary>
     /// Add a tag to the <see cref="Delivery"/> object.

@@ -90,7 +90,7 @@ public class Delivery
     public int FlagCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the images of the ask.
+    /// Gets or sets the images of the delivery.
     /// </summary>
     [DataMember(Name = "images")]
     [JsonPropertyName("images")]
@@ -160,7 +160,7 @@ public class Delivery
     public int SaveCount { get; set; }
 
     /// <summary>
-    /// Gets or sets a collection of Tags for the ask.
+    /// Gets or sets a collection of Tags for the delivery.
     /// </summary>
     [DataMember(Name = "tags")]
     [JsonPropertyName("tags")]

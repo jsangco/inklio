@@ -1,5 +1,5 @@
 <template>
-  <div class="askcarddelivery askcarddelivery-wrapper">
+  <div class="askcarddelivery">
     <img :src="delivery.images[0].url"/>
     <div class="askcarddelivery-overlay">
       <h1 v-if="delivery.title">{{ delivery.title }}</h1>
@@ -24,10 +24,13 @@ const props = defineProps<{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: var(--askcarddelivery-overlay-background-color);
   display: flex;
   padding: 10px;
   box-sizing: border-box;
+}
+.askcarddelivery-overlay:hover {
+  background-color: transparent;
 }
 
 .askcarddelivery h1{
@@ -40,13 +43,13 @@ const props = defineProps<{
   left: 10px;
 }
 
-.askcarddelivery-wrapper{
+.askcarddelivery{
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: grey;
-  border: none rgb(0, 0, 0) 2px;
+  background-color: var(--askcarddelivery-background-color);
+  border: solid var(--askcarddelivery-border-color) 2px;
   border-radius: 10px;
   padding: 5px;
   margin-left: 10px;

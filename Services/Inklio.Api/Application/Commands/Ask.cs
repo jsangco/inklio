@@ -60,6 +60,14 @@ public class Ask
     public bool CanTag { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the number of comments on an ask--includes the number
+    /// of comments on child deliveries.
+    /// </summary>
+    [DataMember(Name = "commentCount")]
+    [JsonPropertyName("commentCount")]
+    public int CommentCount { get; set; }
+
+    /// <summary>
     /// Gets or sets a collection of comments for the ask.
     /// </summary>
     [DataMember(Name = "comments")]

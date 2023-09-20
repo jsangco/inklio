@@ -7,6 +7,7 @@ CREATE TABLE [inklio].[ask]
   [can_edit] BIT NOT NULL DEFAULT 1,
   [can_flag] BIT NOT NULL DEFAULT 1,
   [can_tag] BIT NOT NULL DEFAULT 1,
+  [comment_count] INT NOT NULL DEFAULT 0,
   [created_at_utc] DATETIME2 NOT NULL,
   [created_by_id] INT NOT NULL
     CONSTRAINT [fk_ask_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,

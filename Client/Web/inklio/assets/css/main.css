@@ -1,21 +1,41 @@
+:root {
+
+  /* default elements */
+  --background-color: #3a3b3c;
+  --font-color: #e4e6eb;
+  --nav-background-color: #171717;
+  --nav-background-hover-color: #545353;
+  --a-color: #bb86fc;
+  --a-hover-color: #caa5f7;
+  --button-background-color: #caa5f7;
+  --button-hover-background-color: #b295d0;
+  --button-font-color: #000000;
+  --textarea-background-color: #4d4d4d;
+  --textarea-font-color: #e4e6eb;
+  --textarea-border-color: #ffffff;
+  --error-backgorund-color: #310a0a;
+  --error-border-color: #b89292;
+
+  /* front page */
+  --askcard-background-color: rgb(46, 46, 46);
+  --askcard-hover-background-color: rgb(56, 56, 56);
+  --askcard-border-color: #8f76ad;
+  --askcarddelivery-background-color: #909090;
+  --askcarddelivery-border-color: #000000;
+  --askcarddelivery-overlay-background-color: rgba(0, 0, 0, .6);
+}
+
 /* Body and background */
 body {
-  background-color: #3a3b3c;
-  color: #e4e6eb;
+  background-color: var(--background-color);
+  color: var(--font-color);
   padding-top: 44px;
   font-family: Arial, sans-serif;
 }
 
-/* Header */
-header {
-  background-color: #1a1a1a;
-  color: #e4e6eb;
-  padding: 20px;
-}
-
 /* Navigation */
 nav {
-  background-color: #171717;
+  background-color: var(--nav-background-color);
   position: fixed;
   top: 0px;
   left: 0px;
@@ -26,14 +46,14 @@ nav {
 }
 
 nav a {
-  color: #e4e6eb;
+  color: var(--font-color);
   text-decoration: none;
   padding: 10px 20px;
   display: inline-block;
 }
 
 nav a:hover {
-  background-color: #545353;
+  background-color: var(--nav-background-hover-color);
 }
 
 /* Main content */
@@ -43,18 +63,18 @@ main {
 
 /* Links */
 a {
-  color: #bb86fc;
+  color: var(--a-color);
   text-decoration: none;
 }
 
 a:hover {
-  color: #caa5f7;
+  color: var(--a-hover-color);
 }
 
 /* Buttons */
 button {
-  background-color: #caa5f7;
-  color: #000000;
+  background-color: var(--button-background-color);
+  color: var(--button-font-color);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -62,7 +82,7 @@ button {
 }
 
 button:hover {
-  background-color: #b295d7;
+  background-color: var(--button-hover-background-color);
 }
 
 /* Form elements */
@@ -70,31 +90,16 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 textarea {
-  background-color: #4d4d4d;
-  color: #e4e6eb;
-  border: 1px solid #ffffff;
+  background-color: var(--textarea-background-color);
+  color: var(--textarea-font-color);
+  border: 1px solid var(--textarea-border-color);
   padding: 10px;
   margin-right:15px;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
-textarea:focus {
-  border-color: #bb86fc;
-}
-
-/* Footer */
-footer {
-  background-color: #1a1a1a;
-  color: #e4e6eb;
-  text-align: center;
-  padding: 10px;
-}
-
 .form-error {
-  background-color: #310a0a;
-  border: 1px solid #b89292;
+  background-color: var(--error-backgorund-color);
+  border: 1px solid var(--error-border-color);
   border-radius: 4px;
   padding: 5px;
   white-space: nowrap;

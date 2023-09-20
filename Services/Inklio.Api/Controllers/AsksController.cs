@@ -33,7 +33,7 @@ public class AsksController : ODataController
         this.mapper = mapper ?? throw new ArgumentException(nameof(mapper));
     }
 
-    [EnableQuery(PageSize = 20)]
+    [EnableQuery]
     [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {

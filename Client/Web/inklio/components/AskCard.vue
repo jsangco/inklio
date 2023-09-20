@@ -1,6 +1,6 @@
 <template>
-  <div class="askcard askcard-wrapper">
-    <h1>{{ ask.title }}</h1>
+  <div class="askcard">
+    <h1>{{ ask.title }} ({{ ask.id }})</h1>
     <p>{{ ask.body }}</p>
     <AskCardDelivery v-if="ask.deliveries.length > 0" :delivery="ask.deliveries[0]"/>
   </div>
@@ -27,22 +27,22 @@ const props = defineProps<{
 
 .askcard img {
   object-fit: cover;
-  max-width: 300px;
-  max-height: 300px;
+  max-width: 640px;
+  max-height: 360px;
 }
 
-.askcard-wrapper{
-  background-color: rgb(46, 46, 46);
-  border: solid rgb(0, 0, 0) 5px;
+.askcard{
+  background-color: var(--askcard-background-color);
+  border: solid var(--askcard-border-color) 3px;
   border-radius: 10px;
   padding: 5px;
   margin-left: 40px;
   margin-right: 40px;
+  margin-bottom: 5px;
   width: 440px;
 }
 
-.askcard-wrapper:hover {
-  background-color: rgb(57, 57, 57);
-
+.askcard:hover {
+  background-color: var(--askcard-hover-background-color);
 }
 </style>
