@@ -53,9 +53,19 @@ public class Image : Entity
     public Ask Thread { get; private set; }
 
     /// <summary>
-    /// Gets the URL for the image.
+    /// Gets the full URL for the image.
     /// </summary>
-    public string? Url { get; private set; }
+    public string? UrlFull { get; private set; }
+
+    /// <summary>
+    /// Gets the host of the URL for the image.
+    /// </summary>
+    public string? UrlHost { get; private set; }
+
+    /// <summary>
+    /// Gets the relative path of the URL for the image.
+    /// </summary>
+    public string? UrlRelative { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of a <see cref="Image"/> object.
@@ -91,6 +101,8 @@ public class Image : Entity
     public void SetBlob(Blob blob)
     {
         this.ContentType = blob.ContentType;
-        this.Url = blob.Url.ToString();
+        this.UrlFull = blob.Url.ToString();
+        this.UrlHost = blob.Url.Host;
+        this.UrlRelative = blob.Url.PathAndQuery;
     }
 }

@@ -2,8 +2,6 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Create front page
-  * Render 1st delivery in AskCard
 * Create Ask view page
 * Add UI for main functionality
   * Create new ask form

@@ -2,7 +2,7 @@
   <div>
     <div>Delivery</div>
     <div v-if="delivery.title">{{ delivery.title }}</div>
-    <img :src="delivery.images[0].url.replace('azure-storage', '127.0.0.1')"/>
+    <img :src="delivery.images[0].url"/>
     <div v-if="delivery.body">{{ delivery.body }}</div>
   </div>
 </template>

@@ -17,5 +17,7 @@ CREATE TABLE [inklio].[image]
   [size_in_bytes] BIGINT,
   [thread_id] INT NOT NULL
     CONSTRAINT [fk_image_thread_id] FOREIGN KEY REFERENCES [inklio].[ask] (id) ON UPDATE CASCADE,
-  [url] NVARCHAR(256) NULL,
+  [url_full] NVARCHAR(256) NULL,
+  [url_host] NVARCHAR(128) NULL,
+  [url_relative] NVARCHAR(128) NULL,
 )

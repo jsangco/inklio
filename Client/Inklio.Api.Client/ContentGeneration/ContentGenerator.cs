@@ -125,7 +125,7 @@ public class ContentGenerator
     {
         byte[] imageBytes = await File.ReadAllBytesAsync(sampleImagePath, cancellationToken);
 
-        var rand = new Random(0);
+        var rand = new Random(1);
         var user = this.users.First();
         var askRequest = await user.GetAsksAsync(null, cancellationToken);
         List<Ask> asks = new List<Ask>(100);

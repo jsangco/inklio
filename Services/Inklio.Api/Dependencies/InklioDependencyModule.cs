@@ -1,3 +1,4 @@
+using AutoMapper;
 using Azure.Storage.Blobs;
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Repositories;
@@ -19,7 +20,8 @@ public class InklioDependencyModule : Autofac.Module
     /// <inheritdoc/>
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<MyService>().AsSelf();
+        WebConfiguration webConfiguration = this.configuration.GetSection("Web").Get<WebConfiguration>();
+        builder.Register<WebConfiguration>(ctx => webConfiguration);
 
         string sqlConnectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
         if (this.hostEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(sqlConnectionString))
@@ -63,8 +65,14 @@ public class InklioDependencyModule : Autofac.Module
         builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterMediatR(typeof(Program).Assembly);
         builder.RegisterModule(new MediatorDependencyModule());
-
-        WebConfiguration webConfiguration = this.configuration.GetSection("Web").Get<WebConfiguration>();
-        builder.Register<WebConfiguration>(ctx => webConfiguration);
+        builder.Register<IMapper>(ctx =>
+        {
+            var webConfig = ctx.Resolve<WebConfiguration>();
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new InklioAutoMapperProfile(new Uri(webConfig.BaseUrl)));
+            });
+            return mapperConfig.CreateMapper();
+        }).SingleInstance();
     }
 }

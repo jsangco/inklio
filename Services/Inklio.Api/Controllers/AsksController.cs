@@ -1,22 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq.Expressions;
-using System.Text;
 using System.Text.Json;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EFCore.NamingConventions.Internal;
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
-using Inklio.Api.Infrastructure.EFCore;
-using Inklio.Api.Infrastructure.Filters;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.OData.Extensions;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.VisualBasic;
 
 namespace Inklio.Api.Controllers;
 
@@ -26,63 +16,28 @@ public class AsksController : ODataController
     private readonly ILogger<AsksController> logger;
     private readonly IAskRepository askRepository;
     private readonly IMediator mediator;
-    private readonly InklioContext context;
     private readonly IWebHostEnvironment hostEnvironment;
-    private readonly IMapper projector = new MapperConfiguration(cfg =>
-    {
-        cfg.CreateProjection<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
-        cfg.CreateProjection<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateProjection<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
-        cfg.CreateProjection<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
-        cfg.CreateProjection<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
-    }).CreateMapper();
-
-    private readonly IMapper mapper = new MapperConfiguration(cfg =>
-    {
-        cfg.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.AskImage, Inklio.Api.Application.Commands.AskImage>();
-        cfg.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.Delivery, Inklio.Api.Application.Commands.Delivery>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.DeliveryComment, Inklio.Api.Application.Commands.DeliveryComment>()
-            .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
-        cfg.CreateMap<Inklio.Api.Domain.DeliveryImage, Inklio.Api.Application.Commands.DeliveryImage>();
-        cfg.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>();
-        cfg.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
-    }).CreateMapper();
+    private readonly IMapper mapper;
 
     public AsksController(
         ILogger<AsksController> logger,
         IAskRepository askRepository,
         IMediator mediator,
-        InklioContext context,
+        IMapper mapper,
         IWebHostEnvironment hostEnvironment)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.askRepository = askRepository ?? throw new ArgumentNullException(nameof(askRepository));
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        this.context = context ?? throw new ArgumentNullException(nameof(context));
         this.hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+        this.mapper = mapper ?? throw new ArgumentException(nameof(mapper));
     }
 
     [EnableQuery(PageSize = 20)]
     [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {
-        var asks = projector.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks());
+        var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks());
         return asks;
     }
 
@@ -93,7 +48,7 @@ public class AsksController : ODataController
         CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
-        var askDto = mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
+        var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
         return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
     }
 
@@ -104,7 +59,7 @@ public class AsksController : ODataController
         CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
-        var comments = this.projector.ProjectTo<Inklio.Api.Application.Commands.AskComment>(ask.Comments.AsQueryable());
+        var comments = this.mapper.ProjectTo<Inklio.Api.Application.Commands.AskComment>(ask.Comments.AsQueryable());
         return comments;
     }
 
@@ -115,7 +70,7 @@ public class AsksController : ODataController
         CancellationToken cancellationToken)
     {
         var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
-        var deliveries = this.projector.ProjectTo<Inklio.Api.Application.Commands.Delivery>(ask.Deliveries.AsQueryable());
+        var deliveries = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Delivery>(ask.Deliveries.AsQueryable());
         return deliveries;
     }
 
@@ -133,7 +88,7 @@ public class AsksController : ODataController
             throw new InklioDomainException(404, $"Delivery {deliveryId} could not be found");
         }
 
-        var deliveryDto = mapper.Map<Inklio.Api.Application.Commands.Delivery>(delivery);
+        var deliveryDto = this.mapper.Map<Inklio.Api.Application.Commands.Delivery>(delivery);
         return deliveryDto ?? throw new InvalidOperationException("Could not map Delivery DTO");
     }
 
@@ -151,7 +106,7 @@ public class AsksController : ODataController
             throw new InklioDomainException(404, $"Delivery {deliveryId} could not be found");
         }
 
-        var comments = this.projector.ProjectTo<Inklio.Api.Application.Commands.DeliveryComment>(delivery.Comments.AsQueryable());
+        var comments = this.mapper.ProjectTo<Inklio.Api.Application.Commands.DeliveryComment>(delivery.Comments.AsQueryable());
 
         return comments;
     }
