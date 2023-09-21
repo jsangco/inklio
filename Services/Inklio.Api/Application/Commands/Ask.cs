@@ -89,6 +89,13 @@ public class Ask
     public string CreatedBy { get; set; } = "";
 
     /// <summary>
+    /// Gets or sets the number of deliveries on the ask.
+    /// </summary>
+    [DataMember(Name = "deliveryCount")]
+    [JsonPropertyName("deliveryCount")]
+    public int DeliveryCount { get; set; }
+
+    /// <summary>
     /// Gets or sets the deliveries for the ask.
     /// </summary>
     [DataMember(Name = "deliveries")]

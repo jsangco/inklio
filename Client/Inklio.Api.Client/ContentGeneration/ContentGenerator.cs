@@ -157,33 +157,38 @@ public class ContentGenerator
     {
         var rand = new Random(0);
         Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
-        var createDeliveries = SampleComments.AskCommentCreate.Select(comment =>
+        var createComments = SampleComments.AskCommentCreate.Select(comment =>
         {
             var ask = asks[rand.Next(asks.Length)];
             var user = this.users[rand.Next(this.users.Count)];
             return user.AddCommentAsync(comment, ask.Id, cancellationToken);
-        }).ToArray();
-
-        await Task.WhenAll(createDeliveries);
+        });
+        foreach(var task in createComments)
+        {
+            await task;
+        }
     }
 
     private async Task CreateDeliveryComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
         Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
-        var createDeliveries = SampleComments.AskCommentCreate.Select(comment =>
+        var createComments = SampleComments.DeliveryCommentCreate.Select(comment =>
         {
             var ask = asks[rand.Next(asks.Length)];
             var user = this.users[rand.Next(this.users.Count)];
-            while(ask.Deliveries.Any() == false)
+            while (ask.Deliveries.Any() == false)
             {
                 ask = asks[rand.Next(asks.Length)];
             }
             var delivery = ask.Deliveries.ToArray()[rand.Next(ask.Deliveries.Count())];
             return user.AddCommentAsync(comment, ask.Id, delivery.Id, cancellationToken);
-        }).ToArray();
+        });
 
-        await Task.WhenAll(createDeliveries);
+        foreach(var task in createComments)
+        {
+            await task;
+        }
 
     }
 }

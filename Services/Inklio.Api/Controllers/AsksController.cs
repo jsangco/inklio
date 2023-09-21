@@ -5,6 +5,7 @@ using AutoMapper;
 using EFCore.NamingConventions.Internal;
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
+using Inklio.Api.Infrastructure.Filters;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
@@ -33,7 +34,7 @@ public class AsksController : ODataController
         this.mapper = mapper ?? throw new ArgumentException(nameof(mapper));
     }
 
-    [EnableQuery]
+    [EnableQuery()]
     [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {

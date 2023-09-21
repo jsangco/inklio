@@ -2,15 +2,13 @@
 
 Any task or thing that needs to get done can be added here.
 
-* add reply count to bottom of askcard
-* Create Ask view page
 * Add UI for main functionality
   * Create new ask form
     * Add upvote, add delivery, add comment button, add flag, to AskCard
   * Create new delivery form
   * Create new comment form
-* API is using forms, so add CSRF protecting
 * Update readme test query commands
+* Rehost the site
 
 ## Tech Backlog
 
@@ -20,6 +18,8 @@ Any task or thing that needs to get done can be added here.
 * Setup email server
 * Add domain event handling when a user registers
 * Add ability to delete Asks, Deliveries, Comments, Tags, Images
+* Investigate race conditions seen when generating content with simultaneous calls.
+* API is using forms, so add CSRF protecting
 
 ## Feature Backlog
 

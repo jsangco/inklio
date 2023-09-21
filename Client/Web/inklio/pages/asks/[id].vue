@@ -5,4 +5,5 @@
 </template>
 
 <script setup lang="ts">
+import { Ask } from '~/types/types';
 </script>

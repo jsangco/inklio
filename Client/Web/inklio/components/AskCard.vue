@@ -7,7 +7,7 @@
       </div>
       <AskCardDelivery v-if="ask.deliveries.length > 0" :delivery="ask.deliveries[0]" />
       <div class="askcard-footer">
-        <p>{{ ask.commentCount }} replies</p>
+        <p>{{ ask.commentCount + ask.deliveryCount }} replies</p>
       </div>
     </NuxtLink>
   </div>

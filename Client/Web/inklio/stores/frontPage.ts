@@ -42,7 +42,7 @@ export const useFrontPageStore = defineStore({
   },
   actions: {
     async initialize() {
-      const askFetch = await useFetchX("api/v1/asks?expand=deliveries(expand=images;select=images,body,title)&select=deliveries,commentCount,body,title,id"); //&orderby=id%20desc
+      const askFetch = await useFetchX("api/v1/asks?expand=deliveries(expand=images;select=images,body,title)&select=deliveries,commentCount,deliveryCount,body,title,id"); //&orderby=id%20desc
       const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
       if (odataResponse.error) {
         this.error = odataResponse.error;

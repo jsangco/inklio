@@ -67,6 +67,7 @@ if (app.Environment.IsProduction())
 {
     app.UseHttpsRedirection();
 }
+app.UseODataExceptionHandler(appBuilder.Environment);
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

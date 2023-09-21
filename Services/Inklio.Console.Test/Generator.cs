@@ -45,11 +45,13 @@ public static class Generator
             asks.First().Id);
         }
 
+        asks = await getOrCreateAsksAsync();
         if (asks.First().Comments.Any() == false)
         {
             await user.AddCommentAsync("My Ask Comment", asks.First().Id);
         }
 
+        asks = await getOrCreateAsksAsync();
         if (asks.First().Deliveries.First().Comments.Any() == false)
         {
             await user.AddCommentAsync("My Delivery Comment", asks.First().Id, asks.First().Deliveries.First().Id);

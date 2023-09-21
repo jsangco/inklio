@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Inklio.Api.Application.Commands;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData;
@@ -33,6 +34,43 @@ public static class ODataExtensions
                 context.Request.Scheme = apiUri.Scheme;
             }
             await next.Invoke();
+        });
+        return app;
+    }
+
+    /// <summary>
+    /// A middleware that validates the OData query and returns the proper error (i.e. 400) if the query is invalid.
+    /// </summary>
+    /// <remarks>
+    /// This is needed because the an ODataException will cause a 500 error to be returned to the client.
+    /// </remarks>
+    /// <param name="app">The <see cref="IApplicationBuilder"/>.</param>
+    /// <returns>An <see cref="IApplicationBuilder"/>.</returns>
+    public static IApplicationBuilder UseODataExceptionHandler(this IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.Use(async (context, next) =>
+        {
+            try
+            {
+                await next.Invoke();
+            }
+            catch (ODataException odataException)
+            {
+                var problemDetails = new ProblemDetails()
+                {
+                    Title = "Bad Request",
+                    Instance = context.Request.Path,
+                    Status = 400,
+                    Detail = odataException.Message,
+                };
+
+                if (env.IsDevelopment() || env.IsStaging())
+                {
+                    problemDetails.Extensions.Add("DeveloperMessage", odataException.ToString());
+                }
+                context.Response.StatusCode = problemDetails.Status.Value;
+                await context.Response.WriteAsJsonAsync(JsonSerializer.Serialize(problemDetails));
+            }
         });
         return app;
     }

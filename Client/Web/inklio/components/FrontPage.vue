@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { Ask } from '~/types/types';
 import { useFrontPageStore } from '@/stores/frontPage';
 const scrollComponent = ref(<any | null>null)
 onMounted(() => {

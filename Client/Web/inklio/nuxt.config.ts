@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',],
   runtimeConfig: {
     public: {
-      baseUrl: process.env.BASE_URL || 'http://localhost'
+      baseUrl: process.env.BASE_URL || 'http://localhost',
+      env: process.env.ENV,
     },
   },
   routeRules: {
