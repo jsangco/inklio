@@ -72,8 +72,7 @@ public static class ODataExtensions
         builder.EnableLowerCamelCase();
         builder.EntitySet<Ask>("asks").EntityType
             .HasKey(e => e.Id)
-            .Page(20, 20)
-            .Expand(2, SelectExpandType.Automatic, "tags");
+            .Page(20, 20);
         builder.EntitySet<Delivery>("deliveries").EntityType
             .HasKey(e => e.Id)
             .Page(20, 20)

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Asks</h1>
+    <h1>Front Page</h1>
     <div ref="scrollComponent">
-      <template v-if="!askStore.error" v-for="a in askStore.getAsks">
+      <template v-if="!frontPageStore.error" v-for="a in frontPageStore.getAsks">
         <AskCard v-bind:ask="a"/>
       </template>
       <template v-else>
         <div>
-          {{ askStore.error }}
+          {{ frontPageStore.error }}
         </div>
       </template>
     </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAsksStore } from '@/stores/asks';
+import { useFrontPageStore } from '@/stores/frontPage';
 const scrollComponent = ref(<any | null>null)
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
@@ -30,11 +30,11 @@ const handleScroll = async () => {
   let currentPosition = element!.getBoundingClientRect().bottom;
 
   if ( currentPosition < window.innerHeight) {
-    await askStore.next();
+    await frontPageStore.next();
   }
 }
 
-const askStore = useAsksStore();
-await askStore.initialize();
+const frontPageStore = useFrontPageStore();
+await frontPageStore.initialize();
 
 </script>

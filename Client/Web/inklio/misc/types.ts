@@ -14,10 +14,12 @@ export type Ask = {
   canEdit: boolean;
   canFlag: boolean;
   canTag: boolean;
+  commentCount: number;
   createdAtUtc: Date;
   createdBy: string;
   editedAtUtc: Date | null;
   editedBy: string | null;
+  deliveryCount: number;
   flagCount: boolean;
   isDeleted: boolean;
   isDelivered: boolean;

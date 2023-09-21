@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { AsyncData } from "nuxt/app";
-import { Ask, ODataResponse } from "@/types/types";
+import { Ask, ODataResponse } from "~/misc/types";
 
 function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataResponse<T> {
   if (response.error.value) {
@@ -22,21 +22,21 @@ function ToODataResponse<T>(response: AsyncData<any, Error | null>): ODataRespon
   }) as ODataResponse<T>;
 }
 
-export type AskState = {
+export type FrontPageState = {
   asks: Ask[];
   nextLink: string | null,
   error: any | null,
 }
 
-const emptyAskState: AskState = {
+const emptyFrontPageState: FrontPageState = {
   asks: [],
   nextLink: null,
   error: null,
 }
 
-export const useAsksStore = defineStore({
-  id: 'asksStore',
-  state: () => emptyAskState,
+export const useFrontPageStore = defineStore({
+  id: 'frontPageStore',
+  state: () => emptyFrontPageState,
   getters: {
     getAsks: (state) => state.asks,
   },
@@ -66,8 +66,10 @@ export const useAsksStore = defineStore({
       if (odataResponse.error) {
         this.error = odataResponse.error;
       }
-      this.asks = this.asks.concat(odataResponse.value);
-      this.nextLink = odataResponse.nextLink;
+      else {
+        this.asks = this.asks.concat(odataResponse.value);
+        this.nextLink = odataResponse.nextLink;
+      }
     },
   },
 });

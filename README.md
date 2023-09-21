@@ -1,5 +1,5 @@
 # Introduction
-Code Repo for the Inklio project
+Code Repo for the Inklio project - A community for creatives to get inspirational prompts.
 
 ## Running locally
 

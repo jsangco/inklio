@@ -1,5 +1,9 @@
 :root {
 
+  /* FIXME: Some of color variables should be consolidated into terms
+  like, "primary-color", "secondary-color", etc... to ensure that all
+  buttons and colors on the site have a proper theme. */
+
   /* default elements */
   --background-color: #3a3b3c;
   --font-color: #e4e6eb;
@@ -20,6 +24,7 @@
   --askcard-background-color: rgb(46, 46, 46);
   --askcard-hover-background-color: rgb(56, 56, 56);
   --askcard-border-color: #8f76ad;
+  --askcard-footer-background-color: #8f76ad;
   --askcarddelivery-background-color: #909090;
   --askcarddelivery-border-color: #000000;
   --askcarddelivery-overlay-background-color: rgba(0, 0, 0, .6);
