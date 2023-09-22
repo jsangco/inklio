@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { AskCard } from "#build/components";
-import { Ask } from "@/types/types"
+import { Ask } from "@/misc/types"
 const props = defineProps<{
   ask : Ask,
 }>();

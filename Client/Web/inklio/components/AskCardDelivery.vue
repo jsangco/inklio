@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { Delivery } from "@/types/types"
+import { Delivery } from "@/misc/types"
 import { del } from "nuxt/dist/app/compat/capi";
 const props = defineProps<{
   delivery : Delivery,

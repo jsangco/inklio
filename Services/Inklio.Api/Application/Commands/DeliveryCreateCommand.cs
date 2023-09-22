@@ -29,13 +29,14 @@ public class DeliveryCreateCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets a flag indicating whether to include the parent tags when creating the delivery.
     /// </summary>
+    [DataMember(Name = "includeAskTags")]
+    [JsonPropertyName("includeAskTags")]
     public bool IncludeAskTags { get; set; } = true;
 
     /// <summary>
     /// Gets or set the tags associated with the Delivery
     /// </summary>
-    [DataMember(Name = "images")]
-    [JsonPropertyName("images")]
+    [JsonIgnore]
     public IEnumerable<IFormFile>? Images { get; set; } = null;
 
     /// <summary>

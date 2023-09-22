@@ -17,6 +17,7 @@
   --textarea-background-color: #4d4d4d;
   --textarea-font-color: #e4e6eb;
   --textarea-border-color: #ffffff;
+  --textarea-placeholder-font-color: #b6b6b6;
   --error-backgorund-color: #310a0a;
   --error-border-color: #b89292;
 
@@ -102,6 +103,17 @@ textarea {
   margin-right:15px;
 }
 
+input {
+  background-color: var(--textarea-background-color);
+  color: var(--textarea-font-color);
+}
+input::placeholder {
+  color: var(--textarea-placeholder-font-color);
+}
+
+textarea::placeholder {
+  color: var(--textarea-placeholder-font-color);
+}
 .form-error {
   background-color: var(--error-backgorund-color);
   border: 1px solid var(--error-border-color);
