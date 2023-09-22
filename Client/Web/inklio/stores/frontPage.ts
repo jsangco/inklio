@@ -42,6 +42,7 @@ export const useFrontPageStore = defineStore({
   },
   actions: {
     async initialize() {
+      this.error = null;
       const askFetch = await useFetchX("api/v1/asks?expand=deliveries(expand=images;select=images,body,title)&select=deliveries,commentCount,deliveryCount,body,title,id"); //&orderby=id%20desc
       const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
       if (odataResponse.error) {
@@ -57,6 +58,7 @@ export const useFrontPageStore = defineStore({
 
       // Prevent multiple simultaneous calls to this function from creating multiple
       // asynchronous requests
+      this.error = null;
       const url = this.nextLink;
       this.nextLink = null;
 

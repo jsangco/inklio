@@ -7,7 +7,7 @@
       </template>
       <p>{{ ask.body }}</p>
     </div>
-    <DeliverySubmit :ask="ask"/>
+    <DeliverySubmit :ask="ask" @delivery-submit="reload"/>
     <div>
       <h1>Deliveries</h1>
       <template v-for="d in ask.deliveries">
@@ -42,15 +42,19 @@
 
 <script setup lang="ts">
 import { Ask } from '@/misc/types';
-
+const ask = ref<Ask>({} as Ask);
 const props = defineProps<{
   id: string
 }>();
-const askFetch = await useFetchX(`api/v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
-if (askFetch.error.value) {
-  throw askFetch.error.value;
+const reload = async () => {
+  const askFetch = await useFetchX(`api/v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
+  if (askFetch.error.value) {
+    throw askFetch.error.value;
+  }
+  ask.value = askFetch.data.value;
 }
-const ask = ref(askFetch.data.value as Ask);
+
+await reload();
 
 </script>
 

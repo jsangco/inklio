@@ -1,6 +1,6 @@
 <template>
   <div class="askcarddelivery">
-    <img :src="delivery.images[0].url"/>
+    <img v-if="delivery.images.length > 0" :src="delivery.images[0].url"/>
     <div class="askcarddelivery-overlay">
       <h1 v-if="delivery.title">{{ delivery.title }}</h1>
       <p v-if="delivery.body">{{ delivery.body }}</p>
@@ -54,6 +54,7 @@ const props = defineProps<{
   padding: 5px;
   margin-left: 10px;
   width: 400px;
+  height: 360px;
   overflow: hidden;
 }
 </style>

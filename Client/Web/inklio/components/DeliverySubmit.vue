@@ -1,40 +1,47 @@
 <template>
   <div>
-    <form class="delivery-submit" @submit.prevent="submitDelivery">
-      <div class="delivery-submit-text" ref="elDeliverySubmit">
-        <input type="text" ref="elTitle" v-model="deliveryCreate.title" placeholder="Your delivery title..." />
-        <textarea ref="elBody" v-model="deliveryCreate.body" @input="autoResize" @mouseup="autoResize" @focus="autoResize"
-          placeholder="Describe your delivery..."></textarea>
+    <form class="delivery-submit" ref="elForm" @submit.prevent="submitDelivery">
+      <div v-if="isDeliverySubmittedOk" class="form-success">
+        Delivered!
       </div>
-      <input type="file" ref="elImages" accept="image/jpeg,image/png" multiple="true" />
+      <div v-if="submitError" class="form-error">
+        {{ submitError.detail }}
+      </div>
+      <div class="delivery-submit-text" ref="elDeliverySubmit">
+        <input type="text" ref="elTitle" name="title" v-model="deliveryCreate.title"
+          placeholder="(Optional) Your delivery title..." />
+        <textarea ref="elBody" name="body" v-model="deliveryCreate.body" @input="autoResize" @mouseup="autoResize"
+          @focus="autoResize" placeholder="(Optional) Describe your delivery..."></textarea>
+      </div>
+      <label>Images: </label>
+      <input type="file" ref="elImages" name="images" accept="image/jpeg,image/png" multiple="true" />
       <button type="submit">Submit</button>
     </form>
-    {{ submitResults }}
   </div>
 </template>
 
 <script setup lang="ts">
-import { DeliverySubmit } from "#build/components";
-import {Ask, Delivery, DeliveryCreate} from "@/misc/types"
+import { AskCard, DeliverySubmit } from "#build/components";
+import { Ask, Delivery, DeliveryCreate } from "@/misc/types"
+const emit = defineEmits(["delivery-submit"]);
 const props = defineProps<{
   ask: Ask
 }>();
-const deliveryCreate = ref<DeliveryCreate>({} as DeliveryCreate); 
+const isDeliverySubmittedOk = ref(false);
+const deliveryCreate = ref<DeliveryCreate>({} as DeliveryCreate);
+const elForm = ref(<any | null>null);
 const elBody = ref(<any | null>null);
 const elTitle = ref(<any | null>null);
 const elImages = ref(<any | null>null);
 const elDeliverySubmit = ref(<any | null>null);
-const submitResults = ref<any>("pending");
+const submitError = ref<any | null>(null);
 
 const autoResize = () => {
-  console.log("test");
-  console.log(elTitle.value.scrollHeight);
   elDeliverySubmit.value.style.height = `${elTitle.value.scrollHeight + elBody.value.scrollHeight + 6}px`;
 };
 
 const submitDelivery = async () => {
   const form = new FormData();
-  console.log(JSON.stringify(JSON.stringify(deliveryCreate.value)));
   form.append("delivery", JSON.stringify(deliveryCreate.value));
   const files = elImages.value.files;
   for (var i = 0; i < files.length; i++) {
@@ -42,20 +49,43 @@ const submitDelivery = async () => {
     form.append("images", file, `image${i}`);
   }
 
-  console.log(form);
-  // var url = `http://localhost:7187/v1/asks/${props.ask.id}/deliveries`;
+  submitError.value = null;
+  isDeliverySubmittedOk.value = false;
   var url = `http://localhost/api/v1/asks/${props.ask.id}/deliveries`;
   const fetchResults = await $fetch.raw(url, {
     method: "POST",
     body: form,
   }).catch(error => {
-    submitResults.value = error.data;
+    if (error.status == 413) {
+      submitError.value = { detail: "Submission size is too large" };
+    }
+    else {
+      submitError.value = error.data;
+    }
   });
+
+  // Clear the form and reload the page.
+  if (fetchResults?.ok) {
+    isDeliverySubmittedOk.value = true;
+    elForm.value.reset();
+    deliveryCreate.value = {} as DeliveryCreate;
+    emit("delivery-submit", { id: props.ask.id });
+  }
 }
 
 </script>
 
 <style>
+.delivery-submit .form-success {
+  margin: 0 0 10px 0;
+  width: 300px;
+}
+
+.delivery-submit .form-error {
+  margin: 0 0 10px 0;
+  width: 300px;
+}
+
 .delivery-submit button {
   margin: 10px;
   display: block;

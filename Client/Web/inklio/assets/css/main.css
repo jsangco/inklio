@@ -18,6 +18,8 @@
   --textarea-font-color: #e4e6eb;
   --textarea-border-color: #ffffff;
   --textarea-placeholder-font-color: #b6b6b6;
+  --success-backgorund-color: #0a3114;
+  --success-border-color: #92b895;
   --error-backgorund-color: #310a0a;
   --error-border-color: #b89292;
 
@@ -117,6 +119,13 @@ textarea::placeholder {
 .form-error {
   background-color: var(--error-backgorund-color);
   border: 1px solid var(--error-border-color);
+  border-radius: 4px;
+  padding: 5px;
+  white-space: nowrap;
+}
+.form-success {
+  background-color: var(--success-backgorund-color);
+  border: 1px solid var(--success-border-color);
   border-radius: 4px;
   padding: 5px;
   white-space: nowrap;
