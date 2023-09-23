@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inklio.Api.Controllers;
 
+[ApiController]
 [Route("v1/asks")]
 public class AsksController : ODataController
 {
@@ -135,7 +136,7 @@ public class AsksController : ODataController
     [Authorize]
     [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
-        int askId,
+         int askId,
         [FromBody] AskCommentCreateCommand commentCreateCommand,
         CancellationToken cancellationToken)
     {

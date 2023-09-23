@@ -21,9 +21,10 @@ public class AskCommentCreateCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets the Body of the Comment.
     /// </summary>
+    [Required]
+    [StringLength(20000, MinimumLength = 1, ErrorMessage = "Comment body is not within the required length.")]
     [DataMember(Name = "body")]
     [JsonPropertyName("body")]
-    [Required, MinLength(1), MaxLength(20000)]
     public string Body { get; set; } = string.Empty;
 
     /// <summary>

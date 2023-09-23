@@ -12,7 +12,7 @@
       <h3>{{ask.comments.length}} Comment{{ask.comments.length == 1 ? "" : "s"}}</h3>
             <div @click="showAskCommentSubmit">
               <CommentSubmit v-if="isShowAskCommentSubmit" :ask="ask" :delivery="null" @comment-submit="reload"/>
-              <a v-if="!isShowAskCommentSubmit" class="comment-add">add comment</a>
+              <a v-if="!isShowAskCommentSubmit" class="comment-add">Add a comment</a>
             </div>
       <template v-for="ac in ask.comments">
         <div class="askpage-comment">
@@ -39,7 +39,7 @@
             <h4>{{d.comments.length}} Comment{{d.comments.length == 1 ? "" : "s"}}</h4>
             <div @click="showDeliveryCommentSubmit(d.id.toString())">
               <CommentSubmit v-if="isShowDeleryCommentSubmit[d.id.toString()]" :ask="ask" :delivery="d" @comment-submit="reload"/>
-              <a v-if="!isShowDeleryCommentSubmit[d.id.toString()]" class="comment-add">add comment</a>
+              <a v-if="!isShowDeleryCommentSubmit[d.id.toString()]" class="comment-add">Add a comment</a>
             </div>
             <template v-for="dc in d.comments">
               <div class="askpage-delivery-comment">
@@ -87,6 +87,7 @@ await reload();
 <style>
 .comment-add {
   cursor: pointer;
+  margin-left: 10px;
 }
 .createdby {
   font-size: smaller;
@@ -124,16 +125,16 @@ await reload();
   margin-bottom: 20px;
 }
 .askpage h2{
-  margin: 2px 2px 5px 0px;
+  margin: 2px 2px 5px 5px;
 }
 .askpage h3{
-  margin: 2px 2px 5px 0px;
+  margin: 2px 2px 5px 5px;
 }
 .askpage h4{
-  margin: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 5px;
 }
 .askpage p {
-  margin: 11px 0 11px 0;
+  margin: 11px 0px 11px 5px;
 }
 .askpage-delivery-comment {
   border-bottom: 1px solid var(--askpage-comment-border-color);
