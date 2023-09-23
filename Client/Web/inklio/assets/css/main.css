@@ -28,9 +28,13 @@
   --askcard-hover-background-color: rgb(56, 56, 56);
   --askcard-border-color: #8f76ad;
   --askcard-footer-background-color: #8f76ad;
-  --askcarddelivery-background-color: #909090;
+  --askcarddelivery-background-color: #3b373b;
   --askcarddelivery-border-color: #000000;
   --askcarddelivery-overlay-background-color: rgba(0, 0, 0, .6);
+
+  /* ask page */
+  --askpage-comment-border-color: #8F76AD88;
+  --askpage-createdby-font-color: #52525288;
 }
 
 /* Body and background */

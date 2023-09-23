@@ -8,32 +8,40 @@
       <p>{{ ask.body }}</p>
     </div>
     <DeliverySubmit :ask="ask" @delivery-submit="reload"/>
-    <div>
-      <h1>Deliveries</h1>
+    <div class="askpage-comment-wrapper">
+      <h3>{{ask.comments.length}} Comment{{ask.comments.length == 1 ? "" : "s"}}</h3>
+      <template v-for="ac in ask.comments">
+        <div class="askpage-comment">
+          <div class="createdby">
+            <img src="~/assets/img/user.png"/> <i>{{ ac.createdBy }}</i>
+          </div>
+          <p>{{ ac.body }}</p>
+        </div>
+      </template>
+    </div>
+    <div class="askpage-deliveries">
+      <h1>{{ask.deliveries.length}} Deliver{{ask.deliveries.length == 1 ? "y" : "ies"}}</h1>
       <template v-for="d in ask.deliveries">
-        <h3>Delivery by {{ d.createdBy }}</h3>
         <div class="askpage-delivery">
-          <h2>{{ d.title }}</h2>
+          <div class="createdby">
+            <img src="~/assets/img/user.png"/> <i>{{ d.createdBy }}</i>
+          </div>
+          <h2>{{ d.title }} </h2>
           <template v-for="di in d.images">
             <img :src="di.url" />
           </template>
           <p>{{ d.body }}</p>
-          <div>
-            <h4>Delivery comments</h4>
+          <div class="askpage-delivery-comment-wrapper">
+            <h4>{{d.comments.length}} Comment{{d.comments.length == 1 ? "" : "s"}}</h4>
             <template v-for="dc in d.comments">
               <div class="askpage-delivery-comment">
+                <div class="createdby">
+                  <img src="~/assets/img/user.png"/> <i>{{ dc.createdBy }}</i>
+                </div>
                 <p>{{ dc.body }}</p>
               </div>
             </template>
           </div>
-        </div>
-      </template>
-    </div>
-    <div>
-      <h1>Comments</h1>
-      <template v-for="ac in ask.comments">
-        <div class="askpage-delivery-comment">
-          <p>{{ ac.body }}</p>
         </div>
       </template>
     </div>
@@ -59,7 +67,65 @@ await reload();
 </script>
 
 <style>
+.createdby {
+  font-size: smaller;
+}
+.createdby  i{
+  opacity: .8;
+}
+.createdby img {
+  filter: invert();
+  vertical-align: middle;
+  height: 16px;
+  margin-right: 10px;
+}
+
+.askpage {
+  width:800px;
+}
 .askpage img {
-  padding: 5px;
+  padding-right: 5px;
+}
+
+.askpage-deliveries {
+  background-color: var(--askcarddelivery-background-color);
+  margin-top:10px;
+  border-top: 1px solid var(--askpage-comment-border-color);
+}
+
+.askpage-delivery-comment-wrapper {
+  background-color: var(--askcard-background-color);
+  margin-left: 10px;
+}
+
+.askpage-delivery {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+.askpage h2{
+  margin: 2px 2px 5px 0px;
+}
+.askpage h3{
+  margin: 2px 2px 5px 0px;
+}
+.askpage h4{
+  margin: 2px 2px 2px 2px;
+}
+.askpage p {
+  margin: 11px 0 11px 0;
+}
+.askpage-delivery-comment {
+  border-bottom: 1px solid var(--askpage-comment-border-color);
+  padding: 20px 0 0 20px;
+}
+
+.askpage-comment-wrapper {
+  background-color: var(--askcard-background-color);
+  border-top: 1px solid var(--askpage-comment-border-color);
+}
+
+.askpage-comment {
+  border-bottom: 1px solid var(--askpage-comment-border-color);
+  padding: 20px 0 0 20px;
 }
 </style>

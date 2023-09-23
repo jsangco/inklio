@@ -2,11 +2,11 @@
 
 Any task or thing that needs to get done can be added here.
 
+* Investigate file size limits.
 * Understand why re-log is required after every deployment
 * Add UI for main functionality
   * Create new ask form
     * Add upvote, add delivery, add comment button, add flag, to AskCard
-  * Create new delivery form
   * Create new comment form
 * Update readme test query commands
 * Rehost the site

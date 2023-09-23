@@ -10,6 +10,7 @@ using Inklio.Api.Dependencies;
 using Inklio.Api.Infrastructure.Filters;
 using Inklio.Api.Domain;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.Http.Features;
 
 Console.WriteLine("Starting Inklio Api");
 var appBuilder = WebApplication.CreateBuilder(args);
