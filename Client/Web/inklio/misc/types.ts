@@ -38,6 +38,16 @@ export type Ask = {
   images: Image[];
 }
 
+export type AskCreate = {
+  body: string;
+  isNsfl: boolean;
+  isNsfw: boolean;
+  isSpoiler: boolean;
+  title: string;
+  tags: Tag[];
+}
+
+
 export type Delivery = {
   id: number;
   body: string | null;
@@ -64,15 +74,6 @@ export type Delivery = {
   viewCount: number;
   images: Image[];
   comments: Comment[];
-  tags: Tag[];
-}
-
-export type AskCreate = {
-  body: string;
-  isNsfl: boolean;
-  isNsfw: boolean;
-  isSpoiler: boolean;
-  title: string;
   tags: Tag[];
 }
 
@@ -106,6 +107,11 @@ export type Comment = {
   threadId: number;
   upvoteCount: number;
 };
+
+export type CommentCreate = {
+  body: string;
+}
+
 
 export type Image = {
   url: string;

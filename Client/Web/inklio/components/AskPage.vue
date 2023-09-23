@@ -10,6 +10,10 @@
     <DeliverySubmit :ask="ask" @delivery-submit="reload"/>
     <div class="askpage-comment-wrapper">
       <h3>{{ask.comments.length}} Comment{{ask.comments.length == 1 ? "" : "s"}}</h3>
+            <div @click="showAskCommentSubmit">
+              <CommentSubmit v-if="isShowAskCommentSubmit" :ask="ask" :delivery="null" @comment-submit="reload"/>
+              <a v-if="!isShowAskCommentSubmit" class="comment-add">add comment</a>
+            </div>
       <template v-for="ac in ask.comments">
         <div class="askpage-comment">
           <div class="createdby">
@@ -33,6 +37,10 @@
           <p>{{ d.body }}</p>
           <div class="askpage-delivery-comment-wrapper">
             <h4>{{d.comments.length}} Comment{{d.comments.length == 1 ? "" : "s"}}</h4>
+            <div @click="showDeliveryCommentSubmit(d.id.toString())">
+              <CommentSubmit v-if="isShowDeleryCommentSubmit[d.id.toString()]" :ask="ask" :delivery="d" @comment-submit="reload"/>
+              <a v-if="!isShowDeleryCommentSubmit[d.id.toString()]" class="comment-add">add comment</a>
+            </div>
             <template v-for="dc in d.comments">
               <div class="askpage-delivery-comment">
                 <div class="createdby">
@@ -54,12 +62,22 @@ const ask = ref<Ask>({} as Ask);
 const props = defineProps<{
   id: string
 }>();
+const isShowAskCommentSubmit = ref(false);
+const showAskCommentSubmit = () => {
+  isShowAskCommentSubmit.value = true;
+}
+const isShowDeleryCommentSubmit = ref<any>({});
+const showDeliveryCommentSubmit = (i:string) => {
+  isShowDeleryCommentSubmit.value[i] = true;
+}
 const reload = async () => {
   const askFetch = await useFetchX(`/v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
   if (askFetch.error.value) {
     throw askFetch.error.value;
   }
   ask.value = askFetch.data.value;
+  isShowAskCommentSubmit.value = false;
+  isShowDeleryCommentSubmit.value = {};
 }
 
 await reload();
@@ -67,6 +85,9 @@ await reload();
 </script>
 
 <style>
+.comment-add {
+  cursor: pointer;
+}
 .createdby {
   font-size: smaller;
 }

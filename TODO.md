@@ -2,6 +2,7 @@
 
 Any task or thing that needs to get done can be added here.
 
+* empty comment bodies can be posted. this needs to be fixed
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate file size limits.
 * Understand why re-log is required after every deployment
