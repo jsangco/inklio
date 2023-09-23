@@ -4,7 +4,6 @@ trigger:
 variables:
 - name: configuration
   value: Release
-- group: InklioSql
 
 steps:
 - task: UseDotNet@2
