@@ -43,7 +43,10 @@ export const useFrontPageStore = defineStore({
   actions: {
     async initialize() {
       this.error = null;
-      const askFetch = await useFetchX("/v1/asks?expand=deliveries(expand=images;select=images,body,title)&select=deliveries,commentCount,deliveryCount,body,title,id&orderby=id%20desc");
+      // BUG: https://localhost:7187/v1/customers?select=id&orderby=id%20desc&$skiptoken=id-97
+      // Skip token does not work with 'orderby=id desc'
+      // https://github.com/OData/AspNetCoreOData/discussions/1059
+      const askFetch = await useFetchX("/v1/asks?orderby=id%20desc&expand=deliveries(expand=images;select=images,body,title)");
 
       const odataResponse = ToODataResponse<Ask>(askFetch as AsyncData<any, Error | null>);
       if (odataResponse.error) {

@@ -110,7 +110,7 @@ public static class ODataExtensions
         builder.EnableLowerCamelCase();
         builder.EntitySet<Ask>("asks").EntityType
             .HasKey(e => e.Id)
-            .Page(20, 20);
+            .Page(10, 10);
         builder.EntitySet<Delivery>("deliveries").EntityType
             .HasKey(e => e.Id)
             .Page(20, 20)
