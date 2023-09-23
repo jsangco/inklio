@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Front Page</h1>
+    <AskSubmit @ask-submit="frontPageStore.initialize"/>
     <div ref="scrollComponent">
       <template v-if="!frontPageStore.error" v-for="a in frontPageStore.getAsks">
         <AskCard v-bind:ask="a"/>

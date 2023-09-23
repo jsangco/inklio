@@ -2,11 +2,11 @@
 
 Any task or thing that needs to get done can be added here.
 
+* delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate file size limits.
 * Understand why re-log is required after every deployment
 * Add UI for main functionality
-  * Create new ask form
-    * Add upvote, add delivery, add comment button, add flag, to AskCard
+  * Add upvote, add flag, to AskCard
   * Create new comment form
 * Update readme test query commands
 * Rehost the site

@@ -23,9 +23,8 @@
 </template>
 
 <script setup>
-// const { data: apiResult, apiPending, apiError } = await useFetchX('/api/health')
 const config = useRuntimeConfig();
-const apiResult = await $fetch(`${config.public.baseUrl}/api/health`)
+const apiResult = await $fetch(`${config.public.apiUrl}/health`)
 </script>
 
 <style>

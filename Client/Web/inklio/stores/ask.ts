@@ -21,7 +21,7 @@ export const useAskStore = defineStore({
   },
   actions: {
     async fetchAsk(id : number) {
-      const askFetch = await useFetchX(`api/v1/asks/${id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
+      const askFetch = await useFetchX(`/v1/asks/${id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
       if (askFetch.error) {
         this.error = askFetch.error;
       }

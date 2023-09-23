@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3><i>Submit your delivery:</i></h3>
     <form class="delivery-submit" ref="elForm" @submit.prevent="submitDelivery">
       <div v-if="isDeliverySubmittedOk" class="form-success">
         Delivered!
@@ -9,7 +10,7 @@
       </div>
       <div class="delivery-submit-text" ref="elDeliverySubmit">
         <input type="text" ref="elTitle" name="title" v-model="deliveryCreate.title"
-          placeholder="(Optional) Your delivery title..." />
+          placeholder="(Optional) Your delivery's title..." />
         <textarea ref="elBody" name="body" v-model="deliveryCreate.body" @input="autoResize" @mouseup="autoResize"
           @focus="autoResize" placeholder="(Optional) Describe your delivery..."></textarea>
       </div>
@@ -35,6 +36,7 @@ const elTitle = ref(<any | null>null);
 const elImages = ref(<any | null>null);
 const elDeliverySubmit = ref(<any | null>null);
 const submitError = ref<any | null>(null);
+const config = useRuntimeConfig();
 
 const autoResize = () => {
   elDeliverySubmit.value.style.height = `${elTitle.value.scrollHeight + elBody.value.scrollHeight + 6}px`;
@@ -51,7 +53,7 @@ const submitDelivery = async () => {
 
   submitError.value = null;
   isDeliverySubmittedOk.value = false;
-  var url = `http://localhost/api/v1/asks/${props.ask.id}/deliveries`;
+  var url = `${config.public.apiUrl}/v1/asks/${props.ask.id}/deliveries`;
   const fetchResults = await $fetch.raw(url, {
     method: "POST",
     body: form,
@@ -78,12 +80,10 @@ const submitDelivery = async () => {
 <style>
 .delivery-submit .form-success {
   margin: 0 0 10px 0;
-  width: 300px;
 }
 
 .delivery-submit .form-error {
   margin: 0 0 10px 0;
-  width: 300px;
 }
 
 .delivery-submit button {
@@ -94,7 +94,6 @@ const submitDelivery = async () => {
 .delivery-submit-text {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   width: 600px;
   height: 150px;
   box-sizing: border-box;

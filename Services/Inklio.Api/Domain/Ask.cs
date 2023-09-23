@@ -339,7 +339,7 @@ public class Ask : Entity, IAggregateRoot
     {
         if (createdBy.Id == this.CreatedBy.Id)
         {
-            throw new InklioDomainException(400, $"A delivery cannot be submitted by the original asker. User {createdBy.Username}");
+            throw new InklioDomainException(400, $"A delivery cannot be submitted by the original asker. User: '{createdBy.Username}'");
         }
 
         var delivery = new Delivery(this, body, createdBy, isAi, isNsfl, isNsfw, isSpoiler, title);

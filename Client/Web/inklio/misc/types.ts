@@ -67,6 +67,15 @@ export type Delivery = {
   tags: Tag[];
 }
 
+export type AskCreate = {
+  body: string;
+  isNsfl: boolean;
+  isNsfw: boolean;
+  isSpoiler: boolean;
+  title: string;
+  tags: Tag[];
+}
+
 export type DeliveryCreate = {
   body: string;
   includeAskTags: boolean;
