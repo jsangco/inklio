@@ -3,7 +3,7 @@ CREATE TABLE [auth].[AspNetUserLogins]
 	[LoginProvider] [nvarchar](128) NOT NULL,
 	[ProviderKey] [nvarchar](128) NOT NULL,
 	[ProviderDisplayName] [nvarchar](max) NULL,
-	[UserId] [uniqueidentifier](450) NOT NULL
+	[UserId] [uniqueidentifier] NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ALTER TABLE [auth].[AspNetUserLogins] ADD  CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY CLUSTERED

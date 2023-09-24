@@ -10,9 +10,9 @@
       </div>
       <div class="ask-submit-text" ref="elAskSubmit">
         <input type="text" ref="elTitle" name="title" v-model="askCreate.title"
-          placeholder="(Optional) Your ask's title..." />
+          placeholder="Your ask's title..." />
         <textarea ref="elBody" name="body" v-model="askCreate.body" @input="autoResize" @mouseup="autoResize"
-          @focus="autoResize" placeholder="(Optional) Describe your ask..."></textarea>
+          @focus="autoResize" placeholder="Describe your ask..."></textarea>
       </div>
       <label>Images: </label>
       <input type="file" ref="elImages" name="images" accept="image/jpeg,image/png" multiple="true" />

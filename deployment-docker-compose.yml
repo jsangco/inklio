@@ -1,16 +1,15 @@
 version: "3.4"
 services:
   reverseproxy:
+    depends_on:
+      - api
+      - web
     image: inklio.azurecr.io/docker/reverseproxy:latest
     ports:
       - 80:80
       - 443:443
   api:
-    depends_on:
-      - reverseproxy
     image: inklio.azurecr.io/docker/inklio.api:latest
   web:
-    depends_on:
-      - reverseproxy
     image: inklio.azurecr.io/docker/inklio.web:latest
     restart: always

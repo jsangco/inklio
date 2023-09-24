@@ -71,7 +71,7 @@ const showDeliveryCommentSubmit = (i:string) => {
   isShowDeleryCommentSubmit.value[i] = true;
 }
 const reload = async () => {
-  const askFetch = await useFetchX(`/v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
+  const askFetch = await useFetchX(`v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
   if (askFetch.error.value) {
     throw askFetch.error.value;
   }

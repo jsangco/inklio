@@ -2,15 +2,14 @@
 
 Any task or thing that needs to get done can be added here.
 
-* empty comment bodies can be posted. this needs to be fixed
+* Fix azure storage link on hosted site
+* Understand why re-log is required after every deployment
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate file size limits.
-* Understand why re-log is required after every deployment
 * Add UI for main functionality
   * Add upvote, add flag, to AskCard
   * Create new comment form
 * Update readme test query commands
-* Rehost the site
 
 ## Tech Backlog
 
@@ -28,3 +27,4 @@ Any task or thing that needs to get done can be added here.
 * Add Daily, Weekly, Monthly challenges
 * Add front page "Hot" query that ensures deliveries have priority.
 * Tag based search
+* User and Account page

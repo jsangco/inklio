@@ -87,5 +87,5 @@ app.MapHealthChecks("/health", new HealthCheckOptions
     Predicate = healthCheck => healthCheck.Name == "Database",
 });
 
-Console.WriteLine("Starting application. Version: " + HealthCheckWriter.GetAppVersion());
+Console.WriteLine("Starting Inklio API. Version: " + HealthCheckWriter.GetAppVersion());
 app.Run();

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { camelizeKeys } from "humps";
+import humps from 'humps';
 
 export type Role = "ADMINISTRATOR" | "USER" | "MODERATOR";
 export type Account = {
@@ -25,6 +25,7 @@ const emptyAccountState: Account = {
 }
 
 const accountsRequest = async (url: string, body: any): Promise<JsonResponse> => {
+  const { camelizeKeys } = humps;
   const errorResult = ref();
   const response = await $fetch(url, {
     method: "POST",

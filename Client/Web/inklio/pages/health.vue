@@ -6,7 +6,7 @@
         Configuration
       </td>
       <td>
-        {{ useRuntimeConfig() }}
+        {{config}}
       </td>
     </tr>
     <tr>

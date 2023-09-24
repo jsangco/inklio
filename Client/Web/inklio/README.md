@@ -74,4 +74,4 @@ yarn preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-
+> WARNING: The environment variables used at build time are what get stuck in the docker container. Make sure the enviroment variables match the production environment when building. The build pipeline should automatically handle this, so don't push from a dev environment.

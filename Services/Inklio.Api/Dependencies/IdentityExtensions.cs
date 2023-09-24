@@ -63,9 +63,17 @@ public static class IdentityExtensions
             // options.Cookie.HttpOnly = true;
             // options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-            options.LoginPath = "/Identity/Account/Login";
-            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            options.LoginPath = "/login";
+            options.AccessDeniedPath = "/login";
             options.SlidingExpiration = true;
+            options.Events = new CookieAuthenticationEvents()
+            {
+                OnRedirectToLogin = (context) =>
+                {
+                    context.HttpContext.Response.Redirect(context.RedirectUri.Replace("http://", "https://"));
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         return services;
