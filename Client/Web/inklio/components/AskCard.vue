@@ -2,7 +2,7 @@
   <div class="askcard">
     <NuxtLink :to="`/asks/${ask.id}`">
       <div>
-        <h1>{{ ask.title }} ({{ ask.id }})</h1>
+        <h1>{{ ask.title }}</h1>
         <p>{{ ask.body }}</p>
       </div>
       <AskCardDelivery v-if="ask.deliveries.length > 0" :delivery="ask.deliveries[0]" />

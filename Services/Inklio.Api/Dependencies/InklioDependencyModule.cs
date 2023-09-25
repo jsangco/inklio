@@ -70,7 +70,7 @@ public class InklioDependencyModule : Autofac.Module
             var webConfig = ctx.Resolve<WebConfiguration>();
             var mapperConfig = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new InklioAutoMapperProfile(new Uri(webConfig.BaseUrl)));
+                cfg.AddProfile(new InklioAutoMapperProfile(new Uri(webConfig.ImagesUrl)));
             });
             return mapperConfig.CreateMapper();
         }).SingleInstance();

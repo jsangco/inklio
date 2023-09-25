@@ -2,14 +2,12 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Fix azure storage link on hosted site
+* Create production nginx.conf that replaces the the local when running in build pipeline
 * Understand why re-log is required after every deployment
-* delivery and ask submit pages are copy-pasted and should be refactored.
-* Investigate file size limits.
-* Add UI for main functionality
-  * Add upvote, add flag, to AskCard
-  * Create new comment form
+* Investigate file size limits. asp.net issue? ngnix issue?
+* Add upvote, add flag, to AskCard
 * Update readme test query commands
+* delivery and ask submit pages are copy-pasted and should be refactored.
 
 ## Tech Backlog
 
@@ -21,6 +19,7 @@ Any task or thing that needs to get done can be added here.
 * Add ability to delete Asks, Deliveries, Comments, Tags, Images
 * Investigate race conditions seen when generating content with simultaneous calls.
 * API is using forms, so add CSRF protecting
+* Make ngnix r. proxy work with azure storage redirect. It seems to fail because it can't handle http -> https redirects.
 
 ## Feature Backlog
 

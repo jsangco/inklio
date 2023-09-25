@@ -7,9 +7,9 @@ public class InklioAutoMapperProfile : Profile
     /// Initializes a new instance of an <see cref="InklioAutoMapperProfile"/> object.
     /// </summary>
     /// <param name="baseUri">The URI prepended to the paths of images. (i.e. http://localhost/images/)</param>
-    public InklioAutoMapperProfile(Uri baseUri)
+    public InklioAutoMapperProfile(Uri imagesBaseUri)
     {
-        string imageUrl = baseUri.ToString() + "images";
+        string imageUrl = imagesBaseUri.ToString().Trim('/');
 
         this.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
