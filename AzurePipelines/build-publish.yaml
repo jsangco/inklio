@@ -8,6 +8,13 @@ variables:
 
 ## Build API application
 steps:
+- script: |
+    echo "Saving git commit short hash into gitshorthash variable:"
+    gitshorthash=$(git rev-parse --short HEAD)
+    echo $gitshorthash
+    echo "##vso[task.setvariable variable=gitshorthash;]$gitshorthash"
+  displayName: Save Git Short Hash
+
 - task: UseDotNet@2
   displayName: Use .Net 6.0.x
   inputs:
@@ -67,29 +74,6 @@ steps:
     cd ./Client/Web/inklio
     yarn run build
   displayName: 'yarn run build'
-
-
-## Build and Deploy SQL changes
-- script: |
-    dotnet tool install -g microsoft.sqlpackage
-  displayName: "dotnet tool install -g microsoft.sqlpackage"
-
-- script: |
-    cd ./Services/Inklio.Sql
-    dotnet build ./Inklio.Sql.sqlproj /p:NetCoreBuild=true
-  displayName: "dotnet build ./Inklio.Sql.sqlproj /p:NetCoreBuild=true"
-
-- script: |
-    cd ./Services/Inklio.Sql
-    sqlpackage /Action:Publish /SourceFile:"./bin/Release/Inklio.Sql.dacpac" /TargetConnectionString:"$(sqlConnectionString)"
-  displayName: "sqlpackage publish"
-
-- script: |
-    echo "Saving git commit short hash into gitshorthash variable:"
-    gitshorthash=$(git rev-parse --short HEAD)
-    echo $gitshorthash
-    echo "##vso[task.setvariable variable=gitshorthash;]$gitshorthash"
-  displayName: Save Git Short Hash
 
 
 ## Docker Build and Publish applications

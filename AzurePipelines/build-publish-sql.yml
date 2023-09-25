@@ -5,10 +5,16 @@
 
 trigger:
   branches:
-    - dev
+    include:
+      - dev
   paths:
     include:
       - 'Services/Inklio.Sql'
+
+variables:
+- name: configuration
+  value: Release
+- group: inklio-vars
 
 pool:
   vmImage: ubuntu-latest
@@ -29,12 +35,3 @@ steps:
     cd ./Services/Inklio.Sql
     sqlpackage /Action:Publish /SourceFile:"./bin/Release/Inklio.Sql.dacpac" /TargetConnectionString:"$(sqlConnectionString)"
   displayName: "sqlpackage publish"
-
-- script: |
-    echo "Saving git commit short hash into gitshorthash variable:"
-    gitshorthash=$(git rev-parse --short HEAD)
-    echo $gitshorthash
-    echo "##vso[task.setvariable variable=gitshorthash;]$gitshorthash"
-  displayName: Save Git Short Hash
-
-

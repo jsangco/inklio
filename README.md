@@ -14,7 +14,7 @@ All services can be run together using docker compose. The configuration steps a
 
 ### 2. SQL Database connection
 
-> NOTE: The SQL DB resource is currently deleted. Please use local debugging for now.
+> NOTE: Local SQL debugging can be used by running `docker compose up`
 
 1. [Grant your IP address access](https://learn.microsoft.com/en-us/azure/azure-sql/database/network-access-controls-overview?view=azuresql#allow-azure-services) to the SQL DB in the Azure Portal
 2. Retrieve the connection string from the Azure Portal
@@ -39,23 +39,23 @@ The `.env` file can also be modified to use remote resources.
 
 ### 4. Build Release and run Docker Compose
 
-Run `dotnet build -c Release .\Inklio.sln` from the project directory.
+Run `dotnet build -c Release .\Inklio.sln` from the [./Services/Inklio.Api](./Services/Inklio.Api) directory.
 
-Run `docker compose up --build` from the [docker-compose.yml](./docker-compose.yml) file directory. If the application starts correctly you should be able to run `curl http://localhost:80`
+Run `yarn run build` from the [./Client/Web/inklio](./Client/Web/inklio) directory.
 
-> **NOTE:** The HTTPS connection does not work because there is no local SSL cert; use HTTP.
+Run `docker compose up --build` from the [docker-compose.yml](./docker-compose.yml) (i.e. the root) file directory. If the application starts correctly you should be able to run `curl http://localhost`
 
-> **NOTE:** If changes are made to a back-end service, you must rebuild the `Release` version of the service and then run `docker compose up --build`. If this is not done, the new changes will not be included.
+> **NOTE:** The HTTPS connection does not work because there is no local SSL cert--use HTTP.
+
+> **NOTE:** If changes are made to a service, you must rebuild the `Release` version of the service and then run `docker compose up --build`. If this is not done, the new changes will not be included.
 
 ### 5. Test the API
-
-There is no front-end UI at this time, so the application can be only tested using the REST APIs.
 
 The swagger page for the APIs can be accessed using the following URL [http://localhost:80/api/swagger/](http://localhost:80/api/swagger/)
 
 Various CLI commands are provided below that can be used to test the API from the CLI
 
-Below are some sample powershell commands that can be used to interact with the Inklio.Api endpoints
+Below are some sample powershell commands that can be used to interact with the Inklio.Api endpoints.
 
 ### Account Creation
 
@@ -74,6 +74,8 @@ Invoke-WebRequest http://localhost/api/v1/accounts/reset -Method POST -ContentTy
 ```
 
 ### Application
+
+> **NOTE:** These API calls will fail without proper authentication.
 
 ```powershell
 

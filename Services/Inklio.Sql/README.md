@@ -7,18 +7,22 @@ Details on how to manage the Inklio SQL server
 
  ## Modifying the database
 
- Changes to the database are done by publishing dacpac files. These files are built using the `Inklio.Sql.sqlproj` file. Below are the steps to build and deploy SQL changes. In the future these changes can be automated once Microsoft properly supports deployments on linux VMs
+Making changes to the database is done by committing changes made to the sqlproj. This will trigger the build pipeline that automatically deploys changes to the database.
+
+Deployments can also be done manually and locally using the steps below.
+
+> **WARNING:** The build pipeline is free and limited in functionality. If SQL changes must be deployed before application changes are published, the SQL changes should be published in seperate and prior commit.
 
  ### Prerequisites
 
- 1. [SqlPackage](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download?view=sql-server-ver16). 
- 2. [.Net 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+ 1. [.Net 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+ 2. `dotnet tool install -g microsoft.sqlpackage`
 
 ### Steps
 
 1. Build the Inklio.sql.sqlproj
     `dotnet build .\Inklio.Sql.sqlproj /p:NetCoreBuild=true`
 2. Publish the dacpac
-   SqlPackage.exe /Action:Publish /SourceFile:".\bin\Debug\Inklio.Sql.dacpac" /TargetConnectionString:"<db Connection string here>"
+   `sqlpackage /Action:Publish /SourceFile:".\bin\Debug\Inklio.Sql.dacpac" /TargetConnectionString:"<db Connection string here>"`
 
 > NOTE: The SqlPackage step takes about 2 minutes to complete.
