@@ -56,7 +56,7 @@ Seeding content can be done by running the [Inklio.Console.Test](Services\Inklio
 ```
 cd ./Services/Inklio.Console.Test
 dotnet run
-``
+```
 
 This will generate a bunch of psuedo-content on the locally running website.
 
