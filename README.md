@@ -92,20 +92,20 @@ Invoke-WebRequest http://localhost/api/v1/accounts/reset -Method POST -ContentTy
 
 # Create an Ask
 $askCreateCommand = @{"ask"="{'body':'my body'}"; images=(get-item -path ./aqua.png)}
-Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
+Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost/api/v1/asks
 
 # Add a Delivery to an Ask
 $deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
-Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost:7187/v1/asks/1/deliveries
+Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost/api/v1/asks/1/deliveries
 
 # Add a Comment to an Ask
-Invoke-WebRequest -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/comments
+Invoke-WebRequest -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost/api/v1/asks/1/comments
 
 # Add a Comment to a Delivery
-Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost:7187/v1/asks/1/deliveries/1/comments
+Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost/api/v1/asks/1/deliveries/1/comments
 
 # Add a Tag to an Ask and all its child objects (i.e. Deliveries, Comments)
-Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost:7187/v1/asks/1/tags
+Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost/api/v1/asks/1/tags
 
 # Get all Asks
 curl http://localhost:80/api/v1/asks

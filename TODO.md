@@ -2,12 +2,13 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Create production nginx.conf that replaces the the local when running in build pipeline
-* Understand why re-log is required after every deployment
-* Investigate file size limits. asp.net issue? ngnix issue?
+* limit display size of images in askpage delivery.
+* Clicking an image should full size the image.
 * Add upvote, add flag, to AskCard
+* Understand why re-log is required after every deployment
 * Update readme test query commands
 * delivery and ask submit pages are copy-pasted and should be refactored.
+* Investigate race conditions seen when generating content with simultaneous calls.
 
 ## Tech Backlog
 
@@ -17,9 +18,8 @@ Any task or thing that needs to get done can be added here.
 * Setup email server
 * Add domain event handling when a user registers
 * Add ability to delete Asks, Deliveries, Comments, Tags, Images
-* Investigate race conditions seen when generating content with simultaneous calls.
 * API is using forms, so add CSRF protecting
-* Make ngnix r. proxy work with azure storage redirect. It seems to fail because it can't handle http -> https redirects.
+* Make nginx r. proxy work with azure storage redirect. It seems to fail because it can't handle http -> https redirects.
 
 ## Feature Backlog
 
