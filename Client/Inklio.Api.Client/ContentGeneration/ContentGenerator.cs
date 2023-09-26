@@ -156,10 +156,17 @@ public class ContentGenerator
     private async Task CreateAskComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
+        var user = this.users.First();
+        var askRequest = await user.GetAsksAsync(null, cancellationToken);
+        List<Ask> asks = new List<Ask>(100);
+        while (askRequest.NextLink != null)
+        {
+            asks.AddRange(askRequest.Value);
+            askRequest = await user.GetAsksAsync(askRequest.NextLink.ToString(), cancellationToken);
+        }
         var createComments = SampleComments.AskCommentCreate.Select(comment =>
         {
-            var ask = asks[rand.Next(asks.Length)];
+            var ask = asks[rand.Next(asks.Count)];
             var user = this.users[rand.Next(this.users.Count)];
             return user.AddCommentAsync(comment, ask.Id, cancellationToken);
         });
@@ -172,14 +179,21 @@ public class ContentGenerator
     private async Task CreateDeliveryComments(CancellationToken cancellationToken = default)
     {
         var rand = new Random(0);
-        Ask[] asks = (await this.users.First().GetAsksAsync(null, cancellationToken)).Value.ToArray();
+        var user = this.users.First();
+        var askRequest = await user.GetAsksAsync(null, cancellationToken);
+        List<Ask> asks = new List<Ask>(100);
+        while (askRequest.NextLink != null)
+        {
+            asks.AddRange(askRequest.Value);
+            askRequest = await user.GetAsksAsync(askRequest.NextLink.ToString(), cancellationToken);
+        }
         var createComments = SampleComments.DeliveryCommentCreate.Select(comment =>
         {
-            var ask = asks[rand.Next(asks.Length)];
+            var ask = asks[rand.Next(asks.Count)];
             var user = this.users[rand.Next(this.users.Count)];
             while (ask.Deliveries.Any() == false)
             {
-                ask = asks[rand.Next(asks.Length)];
+                ask = asks[rand.Next(asks.Count)];
             }
             var delivery = ask.Deliveries.ToArray()[rand.Next(ask.Deliveries.Count())];
             return user.AddCommentAsync(comment, ask.Id, delivery.Id, cancellationToken);
