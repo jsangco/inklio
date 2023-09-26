@@ -3,7 +3,7 @@ using Inklio.Api.Client;
 
 public static class Generator
 {
-    public static async Task GenerateAskDeliveryCommentAsync()
+    public static async Task GenerateAskDeliveryCommentAsync(string filePath)
     {
         var user = new User("jace5");
         await user.CreateOrLoginAsync();
@@ -20,7 +20,7 @@ public static class Generator
                     Title = "My Ask Title",
                     IsNsfl = true,
                     IsNsfw = false,
-                    Images = new byte[][] { File.ReadAllBytes("C:\\src\\Inklio\\aqua.png"), File.ReadAllBytes("C:\\src\\Inklio\\aqua.png") },
+                    Images = new byte[][] { File.ReadAllBytes(filePath), File.ReadAllBytes(filePath) },
                     Tags = new Tag[] { new Tag("aqua") }
                 });
             }
@@ -38,7 +38,7 @@ public static class Generator
                 IsNsfl = true,
                 IsNsfw = false,
                 IsSpoiler = true,
-                Images = new byte[][] { File.ReadAllBytes("C:\\src\\Inklio\\aqua.png"), File.ReadAllBytes("C:\\src\\Inklio\\aqua.png") },
+                Images = new byte[][] { File.ReadAllBytes(filePath), File.ReadAllBytes(filePath) },
                 Tags = new Tag[] { new Tag("aqua") }
 
             },

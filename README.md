@@ -49,7 +49,18 @@ Run `docker compose up --build` from the [docker-compose.yml](./docker-compose.y
 
 > **NOTE:** If changes are made to a service, you must rebuild the `Release` version of the service and then run `docker compose up --build`. If this is not done, the new changes will not be included.
 
-### 5. Test the API
+### 5. Seed content or Test the API
+
+Seeding content can be done by running the [Inklio.Console.Test](Services\Inklio.Console.Test) application.
+
+```
+cd ./Services/Inklio.Console.Test
+dotnet run
+``
+
+This will generate a bunch of psuedo-content on the locally running website.
+
+#### Testing the APIs manually.
 
 The swagger page for the APIs can be accessed using the following URL [http://localhost:80/api/swagger/](http://localhost:80/api/swagger/)
 

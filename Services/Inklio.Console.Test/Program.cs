@@ -5,9 +5,10 @@ using Inklio.Api.Client;
 
 Console.WriteLine("Starting program");
 
-User.DefaultBaseUri = new Uri("https://inklio.azurewebsites.net/api/");
+string sampleFilePath = "..\\..\\aqua.png";
+User.DefaultBaseUri = new Uri("http://localhost/api/");
 
-await Generator.GenerateAskDeliveryCommentAsync();
+await Generator.GenerateAskDeliveryCommentAsync(sampleFilePath);
 
-// var contentGenerator = new ContentGenerator(ContentGenerator.Usernames);
-// await contentGenerator.SeedContent("C:\\src\\Inklio\\aqua.png");
+var contentGenerator = new ContentGenerator(ContentGenerator.Usernames);
+await contentGenerator.SeedContent(sampleFilePath);

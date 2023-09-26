@@ -24,6 +24,7 @@ Any task or thing that needs to get done can be added here.
 ## Feature Backlog
 
 * Add Daily, Weekly, Monthly challenges
+* Rewards for challenges
 * Add front page "Hot" query that ensures deliveries have priority.
 * Tag based search
 * User and Account page

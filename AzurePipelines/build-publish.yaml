@@ -76,6 +76,14 @@ steps:
   displayName: 'yarn run build'
 
 
+## Reverse proxy config
+- script: |
+    cd ./ReverseProxy
+    mv nginx.conf nginx-local.conf
+    mv prod.nginx.conf nginx.conf
+  displayName: "Set nginx.conf"
+
+
 ## Docker Build and Publish applications
 
 - task: Docker@2
