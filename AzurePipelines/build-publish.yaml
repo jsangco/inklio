@@ -80,7 +80,7 @@ steps:
 - script: |
     cd ./ReverseProxy
     mv nginx.conf nginx-local.conf
-    mv prod.nginx.conf nginx.conf
+    mv prod.ngnix.conf nginx.conf
   displayName: "Set nginx.conf"
 
 
