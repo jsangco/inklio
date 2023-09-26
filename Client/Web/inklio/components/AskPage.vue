@@ -32,14 +32,15 @@
           </div>
           <h2>{{ d.title }} </h2>
           <template v-for="di in d.images">
-            <img :src="di.url" />
+            <img :src="di.url" :class="getImageExpandState(di.url)"
+            @click="toggleImageExpand(di.url)" @click.middle="openImageNewTab(di.url)" @mousedown="handleMouseDown"/>
           </template>
           <p>{{ d.body }}</p>
           <div class="askpage-delivery-comment-wrapper">
             <h4>{{d.comments.length}} Comment{{d.comments.length == 1 ? "" : "s"}}</h4>
             <div @click="showDeliveryCommentSubmit(d.id.toString())">
-              <CommentSubmit v-if="isShowDeleryCommentSubmit[d.id.toString()]" :ask="ask" :delivery="d" @comment-submit="reload"/>
-              <a v-if="!isShowDeleryCommentSubmit[d.id.toString()]" class="comment-add">Add a comment</a>
+              <CommentSubmit v-if="isShowDeliveryCommentSubmit[d.id.toString()]" :ask="ask" :delivery="d" @comment-submit="reload"/>
+              <a v-if="!isShowDeliveryCommentSubmit[d.id.toString()]" class="comment-add">Add a comment</a>
             </div>
             <template v-for="dc in d.comments">
               <div class="askpage-delivery-comment">
@@ -57,19 +58,51 @@
 </template>
 
 <script setup lang="ts">
-import { Ask } from '@/misc/types';
+import { Ask, Delivery } from '@/misc/types';
+import { del } from 'nuxt/dist/app/compat/capi';
 const ask = ref<Ask>({} as Ask);
 const props = defineProps<{
   id: string
 }>();
+
+// Hide/Show comment controls
 const isShowAskCommentSubmit = ref(false);
 const showAskCommentSubmit = () => {
   isShowAskCommentSubmit.value = true;
 }
-const isShowDeleryCommentSubmit = ref<any>({});
+const isShowDeliveryCommentSubmit = ref<any>({});
 const showDeliveryCommentSubmit = (i:string) => {
-  isShowDeleryCommentSubmit.value[i] = true;
+  isShowDeliveryCommentSubmit.value[i] = true;
 }
+
+// Shrink/Expand images
+const expandedItems = ref<any>({});
+const toggleImageExpand = (deliveryUrl: string) => {
+  const isExpanded = `${deliveryUrl}` in expandedItems.value && expandedItems.value[deliveryUrl];
+  if (isExpanded) {
+    expandedItems.value[deliveryUrl] = false;
+  }
+  else {
+    expandedItems.value[deliveryUrl] = true;
+  }
+}
+const getImageExpandState = (deliveryUrl: string) => {
+  const isExpanded = `${deliveryUrl}` in expandedItems.value && expandedItems.value[deliveryUrl];
+  return isExpanded ? "askpage-delivery-img-expand" : "askpage-delivery-img-no-expand";
+}
+
+// Open image in new tab
+const openImageNewTab = (deliveryUrl: string) => {
+  event?.preventDefault();
+  window.open(deliveryUrl, "_blank");
+}
+const handleMouseDown = (event: any) => {
+  if (event.button == 1) {
+    event.preventDefault();
+  }
+}
+
+// (re)Loads page content when the page is initialized or when a comment/delivery is added
 const reload = async () => {
   const askFetch = await useFetchX(`v1/asks/${props.id}?expand=deliveries(expand=images,comments,tags),images,comments,tags`);
   if (askFetch.error.value) {
@@ -77,10 +110,9 @@ const reload = async () => {
   }
   ask.value = askFetch.data.value;
   isShowAskCommentSubmit.value = false;
-  isShowDeleryCommentSubmit.value = {};
+  isShowDeliveryCommentSubmit.value = {};
 }
-
-await reload();
+await reload(); // Initial page load
 
 </script>
 
@@ -123,6 +155,16 @@ await reload();
 .askpage-delivery {
   padding-left: 20px;
   margin-bottom: 20px;
+}
+.askpage-delivery-img-expand {
+  max-height: 50vw;
+  min-height: 333px;
+  cursor:pointer;
+}
+.askpage-delivery-img-no-expand {
+  max-width: 592px;
+  max-height: 333px;
+  cursor:pointer;
 }
 .askpage h2{
   margin: 2px 2px 5px 5px;

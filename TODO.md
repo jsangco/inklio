@@ -2,8 +2,6 @@
 
 Any task or thing that needs to get done can be added here.
 
-* limit display size of images in askpage delivery.
-* Clicking an image should full size the image.
 * Add upvote, add flag, to AskCard
 * Understand why re-log is required after every deployment
 * Update readme test query commands
