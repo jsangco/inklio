@@ -7,8 +7,8 @@
   <PropertyGroup>
   </PropertyGroup>
   <Target Name="default" >
-    <Exec Command="yarn install" EchoOff="true" /> 
-    <Exec Command="yarn build" EchoOff="true" /> 
+    <Exec Command="yarn install" EchoOff="true" />
+    <Exec Command="yarn build" EchoOff="true" />
     <Copy SourceFiles="../../../.env.local" DestinationFiles="../../../.env" SkipUnchangedFiles="true" />
   </Target>
 

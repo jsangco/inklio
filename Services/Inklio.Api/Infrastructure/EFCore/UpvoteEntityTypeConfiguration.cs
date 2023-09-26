@@ -17,8 +17,6 @@ class UpvoteEntityTypeConfiguration : IEntityTypeConfiguration<Upvote>
 
         builder.Ignore(b => b.DomainEvents);
 
-        builder.HasOne(e => e.CreatedBy);
-
         // builder.Property(o => o.Id);
         // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
 

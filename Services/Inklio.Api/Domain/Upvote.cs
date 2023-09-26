@@ -20,12 +20,7 @@ public class Upvote : Entity
     /// <summary>
     /// The ID of the <see cref="User"/> that created the upvote.
     /// </summary>
-    public int createdById { get; private set; }
-
-    /// <summary>
-    /// The ID of the <see cref="User"/> that created the upvote.
-    /// </summary>
-    public User CreatedBy { get; private set; }
+    public int CreatedById { get; private set; }
 
 #pragma warning disable CS8618
     /// <summary>
@@ -40,12 +35,11 @@ public class Upvote : Entity
     /// Initalizes an instance of a <see cref="Upvote"/> object.
     /// </summary>
     /// <param name="typeId">The type of the upvote</param>
-    /// <param name="user">The user creating the upvote</param>
-    public Upvote(int typeId, User user)
+    /// <param name="createdBy">The user creating the upvote</param>
+    public Upvote(int typeId, User createdBy)
     {
         this.CreatedAtUtc = DateTime.UtcNow;
         this.TypeId = typeId;
-        this.CreatedBy = user;
-        this.createdById = user.Id;
+        this.CreatedById = createdBy.Id;
     }
 }

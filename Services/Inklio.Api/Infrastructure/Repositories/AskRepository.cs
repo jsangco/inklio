@@ -32,10 +32,22 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public IQueryable<Ask> GetAsks()
+    public IQueryable<AskQueryObject> GetAsks(UserId? userId)
     {
-        return this.context.Asks
-            .Where(a => a.IsDeleted == false);
+        if (userId is null)
+        {
+            return this.context.Asks
+                .Where(a => a.IsDeleted == false)
+                .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = false });
+        }
+        else
+        {
+            var upvoteUserId = this.context.Users.First(u => u.UserId == userId).Id;
+            return this.context.Asks
+                .Where(a => a.IsDeleted == false)
+                .Include(a => a.Upvotes)
+                .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = a.Upvotes.Any(u => u.CreatedById == upvoteUserId) });
+        }
     }
 
     /// <inheritdoc/>
@@ -44,12 +56,16 @@ public class AskRepository : IAskRepository
         Ask? ask = await this.context.Asks
             .Where(a => a.IsDeleted == false)
             .Include(a => a.Comments)
+            .Include(a => a.Comments).ThenInclude(e => e.Upvotes)
             .Include(a => a.Images)
             .Include(a => a.Tags)
+            .Include(a => a.Upvotes)
             .Include(a => a.Deliveries)
             .Include(a => a.Deliveries).ThenInclude(d => d.Comments)
+            .Include(a => a.Deliveries).ThenInclude(d => d.Comments).ThenInclude(c => c.Upvotes)
             .Include(a => a.Deliveries).ThenInclude(d => d.Images)
-            .Include(e => e.Deliveries).ThenInclude(e => e.Tags)
+            .Include(a => a.Deliveries).ThenInclude(e => e.Tags)
+            .Include(a => a.Deliveries).ThenInclude(e => e.Upvotes)
             .FirstOrDefaultAsync(a => a.Id == askId, cancellationToken);
 
         if (ask is not null)

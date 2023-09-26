@@ -2,7 +2,7 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Update style of Upvote.vue
+* Fix upvote login bug
 * Fix upvote query for deliveries
 * Add Comment upvote
 * add flag, to AskCard
@@ -14,6 +14,7 @@ Any task or thing that needs to get done can be added here.
 ## Tech Backlog
 
 * Update ValidationProblemDetails to use camelCase properties in the errors.
+* Generate and add thumbnail links to images. https://learn.microsoft.com/en-us/dotnet/api/system.drawing.image.getthumbnailimage?view=dotnet-plat-ext-7.0
 * Add proper log reporting
 * Add TraceId to requests and responses
 * Setup email server

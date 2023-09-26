@@ -32,7 +32,7 @@ public class AskUpvote : Upvote
     /// <param name="ask">The parent <see cref="Ask"/> object</param>
     /// <param name="typeId">The type of the upvote</param>
     /// <param name="createdBy">The Upvote creator</param>
-    public AskUpvote(Ask ask, int typeId, User user) : base(typeId, user)
+    public AskUpvote(Ask ask, int typeId, User createdBy) : base(typeId, createdBy)
     {
         this.Ask = ask;
         this.AskId = ask.Id;

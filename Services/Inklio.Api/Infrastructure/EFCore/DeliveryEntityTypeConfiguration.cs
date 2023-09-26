@@ -31,7 +31,12 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         builder
             .HasMany(e => e.Images)
             .WithOne();
-    
+
+        builder
+            .HasMany(e => e.Upvotes)
+            .WithOne(e => e.Delivery)
+            .HasForeignKey(e => e.DeliveryId);
+
         builder
             .HasMany(e => e.Tags)
             .WithMany(e => e.Deliveries)

@@ -11,9 +11,5 @@ class CommentUpvoteEntityTypeConfiguration : IEntityTypeConfiguration<CommentUpv
     public void Configure(EntityTypeBuilder<CommentUpvote> builder)
     {
         builder.ToTable("upvote", InklioContext.DbSchema);
-
-        builder
-            .HasOne(e => e.Comment)
-            .WithMany(e => e.Upvotes);
     }
 }

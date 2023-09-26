@@ -336,7 +336,7 @@ public class Delivery : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public Upvote AddUpvote(int typeId, User user)
     {
-        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.createdById == user.Id);
+        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
         if ( existingUpvoteIndex < 0)
         {
             var upvote = new DeliveryUpvote(this, typeId, user);
@@ -351,13 +351,13 @@ public class Delivery : Entity, IAggregateRoot
     /// <summary>
     /// Removes an upvote and removes the user from the list of upvoters.
     /// </summary>
-    /// <param name="userId"></param>
-    public void RemoveUpvote(Upvote upvote)
+    /// <param name="user">The user that created the upvote</param>
+    public void DeleteUpvote(User user)
     {
-        int upvoterIndex = this.upvotes.FindIndex(u => u.Id == upvote.Id);
-        if ( upvoterIndex >= 0)
+        int upvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
+        if (upvoteIndex >= 0)
         {
-            this.upvotes.RemoveAt(upvoterIndex);
+            this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
         }
     }

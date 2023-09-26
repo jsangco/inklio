@@ -163,7 +163,7 @@ public class Comment : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public Upvote AddUpvote(int typeId, User user)
     {
-        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedBy.Id == user.Id);
+        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
         if ( existingUpvoteIndex < 0)
         {
             var upvote = new CommentUpvote(this, typeId, user);

@@ -5,7 +5,6 @@ using AutoMapper;
 using EFCore.NamingConventions.Internal;
 using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
-using Inklio.Api.Infrastructure.Filters;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
@@ -39,7 +38,8 @@ public class AsksController : ODataController
     [HttpGet]
     public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
     {
-        var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks());
+        var userId = this.User.UserIdOrDefault();
+        var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(userId));
         return asks;
     }
 
@@ -134,6 +134,17 @@ public class AsksController : ODataController
     }
 
     [Authorize]
+    [HttpPost("{askId}/upvote")]
+    public async Task AddUpvote(
+        int askId,
+        CancellationToken cancellationToken)
+    {
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: {CommandName}", upvoteCreateCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
+    }
+
+    [Authorize]
     [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
          int askId,
@@ -210,8 +221,20 @@ public class AsksController : ODataController
         tagCommand.DeliveryId = deliveryId;
         tagCommand.UserId = this.User.UserId();
 
-        this.logger.LogInformation("----- Sending command: {CommandName}", tagCommand.GetGenericTypeName());
+        this.logger.LogInformation("----- Sending command: ask {CommandName}", tagCommand.GetGenericTypeName());
         await this.mediator.Send(tagCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpPost("{askId}/deliveries/{deliveryId}/upvote")]
+    public async Task AddDeliveryUpvote(
+        int askId,
+        int deliveryId,
+        CancellationToken cancellationToken)
+    {
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, deliveryId, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: delivery {CommandName}", upvoteCreateCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
     }
 
     /// <summary>

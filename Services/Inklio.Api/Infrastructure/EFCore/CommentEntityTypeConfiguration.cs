@@ -27,6 +27,11 @@ class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
         builder.Property<int>(e => e.ThreadId).IsRequired();
 
         builder
+            .HasMany(e => e.Upvotes)
+            .WithOne(e => e.Comment)
+            .HasForeignKey(e => e.CommentId);
+
+        builder
             .HasDiscriminator<byte>("CommentClassTypeId")
             .HasValue<Comment>((byte)CommentClassType.Comment)
             .HasValue<AskComment>((byte)CommentClassType.AskComment)

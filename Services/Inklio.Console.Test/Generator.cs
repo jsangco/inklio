@@ -3,18 +3,20 @@ using Inklio.Api.Client;
 
 public static class Generator
 {
-    public static async Task GenerateAskDeliveryCommentAsync(string filePath)
+    public static async Task GenerateAskDeliveryCommentUpvoteAsync(string filePath)
     {
-        var user = new User("jace5");
-        await user.CreateOrLoginAsync();
+        var user1 = new User("testuser1");
+        var user2 = new User("testuser2");
+        await user1.CreateOrLoginAsync();
+        await user2.CreateOrLoginAsync();
 
+        // Create an Ask
         var getOrCreateAsksAsync = async () =>
         {
-            var askCreator = new User("jace4");
-            IEnumerable<Ask> asks = (await askCreator.GetAsksAsync()).Value;
+            IEnumerable<Ask> asks = (await user2.GetAsksAsync()).Value;
             if (asks.Any() == false)
             {
-                await askCreator.AddAskAsync(new AskCreate()
+                await user2.AddAskAsync(new AskCreate()
                 {
                     Body = "My Ask Body",
                     Title = "My Ask Title",
@@ -24,14 +26,15 @@ public static class Generator
                     Tags = new Tag[] { new Tag("aqua") }
                 });
             }
-            var newAsks = await askCreator.GetAsksAsync();
+            var newAsks = await user2.GetAsksAsync();
             return newAsks.Value;
         };
-
         var asks = await getOrCreateAsksAsync();
+
+        // Create a Delivery
         if (asks.First().Deliveries.Any() == false)
         {
-            await user.AddDeliveryAsync(new DeliveryCreate()
+            await user1.AddDeliveryAsync(new DeliveryCreate()
             {
                 Body = "My Delivery Body",
                 Title = "My Delivery Title",
@@ -48,16 +51,29 @@ public static class Generator
         asks = await getOrCreateAsksAsync();
         if (asks.First().Comments.Any() == false)
         {
-            await user.AddCommentAsync("My Ask Comment", asks.First().Id);
+            await user1.AddCommentAsync("My Ask Comment", asks.First().Id);
         }
 
         asks = await getOrCreateAsksAsync();
         if (asks.First().Deliveries.First().Comments.Any() == false)
         {
-            await user.AddCommentAsync("My Delivery Comment", asks.First().Id, asks.First().Deliveries.First().Id);
+            await user1.AddCommentAsync("My Delivery Comment", asks.First().Id, asks.First().Deliveries.First().Id);
         }
 
-        var finalResults = await user.GetAsksAsync();
+        // Add upvotes
+        foreach (var ask in asks)
+        {
+            await user1.AddUpvoteAsync(ask.Id);
+            await user2.AddUpvoteAsync(ask.Id);
+
+            foreach (var d in ask.Deliveries)
+            {
+                await user1.AddUpvoteAsync(ask.Id, d.Id);
+                await user2.AddUpvoteAsync(ask.Id, d.Id);
+            }
+        }
+
+        var finalResults = await user1.GetAsksAsync();
         string json = JsonSerializer.Serialize(finalResults);
         Console.WriteLine(json);
     }

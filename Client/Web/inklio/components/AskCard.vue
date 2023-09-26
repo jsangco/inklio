@@ -6,10 +6,13 @@
         <p>{{ ask.body }}</p>
       </div>
       <AskCardDelivery v-if="ask.deliveries.length > 0" :delivery="ask.deliveries[0]" />
-      <div class="askcard-footer">
-        <p>{{ ask.commentCount + ask.deliveryCount }} replies</p>
-      </div>
     </NuxtLink>
+    <div class="askcard-footer">
+      <div>
+        <Upvote :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount"/>
+        <span>{{ ask.commentCount + ask.deliveryCount }} replies</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +46,7 @@ const props = defineProps<{
   max-height: 360px;
 }
 
-.askcard{
+.askcard {
   display:flex;
   flex-direction: column;
   justify-content: space-between;
@@ -57,7 +60,7 @@ const props = defineProps<{
   overflow: hidden;
 }
 
-.askcard-footer{
+.askcard-footer {
   align-self: flex-end;
   width:100%;
   background-color: var(--askcard-footer-background-color);
@@ -65,6 +68,11 @@ const props = defineProps<{
   padding-bottom: 1px;
 }
 
+.askcard-footer div {
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;
+}
 .askcard:hover {
   background-color: var(--askcard-hover-background-color);
 }

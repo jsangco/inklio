@@ -353,6 +353,7 @@ public class Ask : Entity, IAggregateRoot
     /// Adds a comment to a child delivery.
     /// </summary>
     /// <param name="body">The body of the <see cref="DeliveryComment"/>.</param>
+    /// <param name="deliveryId">The id of the delivery.</param>
     /// <param name="createdById">The creator of the <see cref="DeliveryComment"/>.</param>
     /// <returns>The newly created comment</returns>
     public DeliveryComment AddDeliveryComment(string body, int deliveryId, User createdBy)
@@ -360,10 +361,28 @@ public class Ask : Entity, IAggregateRoot
         var delivery = this.Deliveries.FirstOrDefault(d => d.Id == deliveryId);
         if (delivery is null)
         {
-            throw new InklioDomainException(400, "Cannot add comment to delivery. The delivery is not part of the Ask");
+            throw new InklioDomainException(400, "Cannot add comment to delivery. The delivery is not part of the Ask.");
         }
         this.CommentCount += 1;
         return delivery.AddComment(body, createdBy);
+    }
+
+    /// <summary>
+    /// Upvotes a <see cref="Delivery"/> in the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="deliveryId">The id of the delivery.</param>
+    /// <param name="typeId">The type of the upvote.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Upvote AddDeliveryUpvote(int deliveryId, int typeId, User user)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot add upvote to delivery. The delivery is not part of the Ask.");
+        }
+        var upvote = delivery.AddUpvote(typeId, user);
+
+        return upvote;
     }
 
     /// <summary>
@@ -439,7 +458,7 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public Upvote AddUpvote(int typeId, User user)
     {
-        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedBy.Id == user.Id);
+        int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
         if ( existingUpvoteIndex < 0)
         {
             var upvote = new AskUpvote(this, typeId, user);
@@ -499,6 +518,34 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Removes an upvote and removes the user from the list of upvoters.
+    /// </summary>
+    /// <param name="user">The user that created the upvote</param>
+    public void DeleteUpvote(User user)
+    {
+        int upvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
+        if (upvoteIndex >= 0)
+        {
+            this.upvotes.RemoveAt(upvoteIndex);
+            this.UpvoteCount -= 1;
+        }
+    }
+
+    /// <summary>
+    /// Removes an upvote from the delivery and removes the user from the list of upvoters.
+    /// </summary>
+    /// <param name="user">The user that created the upvote</param>
+    public void DeleteDeliveryUpvote(int deliveryId, User user)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot add upvote to delivery. The delivery is not part of the Ask.");
+        }
+        delivery.DeleteUpvote(user);
+    }
+
+    /// <summary>
     /// Removes a Tag from the ask.
     /// </summary>
     /// <param name="tag">The tag to remove</param>
@@ -509,20 +556,6 @@ public class Ask : Entity, IAggregateRoot
         if (tagIndex >= 0)
         {
             this.tags.RemoveAt(tagIndex);
-        }
-    }
-
-    /// <summary>
-    /// Removes an upvote and removes the user from the list of upvoters.
-    /// </summary>
-    /// <param name="userId"></param>
-    public void RemoveUpvote(AskUpvote upvote)
-    {
-        int upvoterIndex = this.upvotes.FindIndex(u => u.Id == upvote.Id);
-        if ( upvoterIndex >= 0)
-        {
-            this.upvotes.RemoveAt(upvoterIndex);
-            this.UpvoteCount -= 1;
         }
     }
 }

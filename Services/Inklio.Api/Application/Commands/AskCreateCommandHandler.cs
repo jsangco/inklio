@@ -2,6 +2,9 @@ using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 using MediatR;
 
+/// <summary>
+/// Handler for creating asks
+/// </summary>
 public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
 {
     private readonly IAskRepository askRepository;
@@ -45,6 +48,9 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
 
         // Create the ask
         DomainAsk ask = DomainAsk.Create(request.Body, user, request.IsNsfl, request.IsNsfw, request.IsSpoiler, request.Title);
+
+        // The creator automatically upvotes their post.
+        ask.AddUpvote((int)UpvoteType.Basic, user);
 
         // Get and add tags to the new Ask
         IEnumerable<DomainTag> tags = this.GetOrCreateTags(request.Tags, user);

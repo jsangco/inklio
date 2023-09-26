@@ -8,7 +8,7 @@ Console.WriteLine("Starting program");
 string sampleFilePath = "..\\..\\aqua.png";
 User.DefaultBaseUri = new Uri("http://localhost/api/");
 
-await Generator.GenerateAskDeliveryCommentAsync(sampleFilePath);
+await Generator.GenerateAskDeliveryCommentUpvoteAsync(sampleFilePath);
 
 var contentGenerator = new ContentGenerator(ContentGenerator.Usernames);
 await contentGenerator.SeedContent(sampleFilePath);

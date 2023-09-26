@@ -284,6 +284,64 @@ public class User : IDisposable
     }
 
     /// <summary>
+    /// Adds an upvote.
+    /// </summary>
+    /// <param name="askId">The ID of the ask.</param>
+    /// <param name="deliveryId">The ID of the delivery.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A task.</returns>
+    public async Task AddUpvoteAsync(int askId, int deliveryId, CancellationToken cancellationToken = default)
+    {
+        await CreateOrLoginAsync(cancellationToken);
+
+        this.logger.LogInformation(
+            "Adding upvote to delivery. {Username} | {Url} | {AskId} | {DeliveryId}",
+            this.Username,
+            this.httpClient?.BaseAddress?.ToString(),
+            askId,
+            deliveryId);
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/deliveries/{deliveryId}/upvote", null);
+
+        try
+        {
+            createResponse.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException e)
+        {
+            var error = await createResponse.Content.ReadAsStringAsync();
+            throw new InklioClientException((int)createResponse.StatusCode, $"Unable to add upvote to delivery {deliveryId} on ask {askId}\n{error}", e);
+        }
+    }
+
+    /// <summary>
+    /// Adds an upvote.
+    /// </summary>
+    /// <param name="askId">The ID of the ask.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A task.</returns>
+    public async Task AddUpvoteAsync(int askId, CancellationToken cancellationToken = default)
+    {
+        await CreateOrLoginAsync(cancellationToken);
+
+        this.logger.LogInformation(
+            "Adding upvote to ask. {Username} | {Url} | {AskId}",
+            this.Username,
+            this.httpClient?.BaseAddress?.ToString(),
+            askId);
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/upvote", null);
+
+        try
+        {
+            createResponse.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException e)
+        {
+            var error = await createResponse.Content.ReadAsStringAsync();
+            throw new InklioClientException((int)createResponse.StatusCode, $"Unable to add upvote to ask {askId}\n{error}", e);
+        }
+    }
+
+    /// <summary>
     /// Gets the asks.
     /// </summary>
     /// <param name="cancellationToken">A cancellation token.</param>

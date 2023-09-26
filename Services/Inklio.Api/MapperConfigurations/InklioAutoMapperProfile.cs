@@ -11,6 +11,9 @@ public class InklioAutoMapperProfile : Profile
     {
         string imageUrl = imagesBaseUri.ToString().Trim('/');
 
+        this.CreateMap<Inklio.Api.Domain.AskQueryObject, Inklio.Api.Application.Commands.Ask>()
+            .IncludeMembers(e => e.Ask)
+            .ForMember(e => e.IsUpvoted, e => e.MapFrom(e => e.IsUpvoted));
         this.CreateMap<Inklio.Api.Domain.Ask, Inklio.Api.Application.Commands.Ask>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));
         this.CreateMap<Inklio.Api.Domain.AskComment, Inklio.Api.Application.Commands.AskComment>()

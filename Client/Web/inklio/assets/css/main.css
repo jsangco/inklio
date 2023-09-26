@@ -35,6 +35,10 @@
   /* ask page */
   --askpage-comment-border-color: #8F76AD88;
   --askpage-createdby-font-color: #52525288;
+
+  /* upvote */
+  --upvote-off-fill: black;
+  --upvote-on-fill: green;
 }
 
 /* Body and background */

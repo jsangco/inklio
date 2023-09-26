@@ -18,8 +18,9 @@ public interface IAskRepository : IRepository<Ask>
     /// <summary>
     /// Gets all <see cref="Ask"/> objects from the repository.
     /// </summary>
+    /// <param name="userId">An optional user Id associated with the query.</param>
     /// <returns>All ask obojects</returns>
-    IQueryable<Ask> GetAsks();
+    IQueryable<AskQueryObject> GetAsks(UserId? userId);
 
     /// <summary>
     /// Gets an <see cref="Ask"/> from the repository.

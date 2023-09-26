@@ -33,6 +33,11 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
             .WithOne();
 
         builder
+            .HasMany(e => e.Upvotes)
+            .WithOne(e => e.Ask)
+            .HasForeignKey(e => e.AskId);
+
+        builder
             .HasMany(e => e.Tags)
             .WithMany(e => e.Asks)
             .UsingEntity<AskTag>(

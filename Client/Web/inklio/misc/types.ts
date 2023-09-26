@@ -27,6 +27,8 @@ export type Ask = {
   isLocked: boolean;
   isNsfw: boolean;
   isNsfl: boolean;
+  isSpoiler: boolean;
+  isUpvoted: boolean;
   lockedAtUtc: Date | null;
   saveCount: boolean;
   title: string;

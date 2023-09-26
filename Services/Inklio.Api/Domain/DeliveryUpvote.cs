@@ -32,7 +32,7 @@ public class DeliveryUpvote : Upvote
     /// <param name="delivery">The parent <see cref="Delivery"/> object</param>
     /// <param name="typeId">The type of the upvote</param>
     /// <param name="createdBy">The Upvote creator</param>
-    public DeliveryUpvote(Delivery delivery, int typeId, User user) : base(typeId, user)
+    public DeliveryUpvote(Delivery delivery, int typeId, User createdBy) : base(typeId, createdBy)
     {
         this.Delivery = delivery;
         this.DeliveryId = delivery.Id;

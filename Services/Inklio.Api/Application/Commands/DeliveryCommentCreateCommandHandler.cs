@@ -2,6 +2,9 @@ using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 using MediatR;
 
+/// <summary>
+/// Handler for creating comments on deliveries
+/// </summary>
 public class DeliveryCommentCreateCommandHandler : IRequestHandler<DeliveryCommentCreateCommand, bool>
 {
     private readonly IAskRepository askRepository;

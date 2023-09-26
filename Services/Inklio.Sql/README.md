@@ -3,9 +3,9 @@ Details on how to manage the Inklio SQL server
 
 ## Overview
 
- The Inklio SQL server is hosted in Azure.
+The Inklio SQL server is hosted in Azure.
 
- ## Modifying the database
+## Modifying the database
 
 Making changes to the database is done by committing changes made to the sqlproj. This will trigger the build pipeline that automatically deploys changes to the database.
 
@@ -30,3 +30,8 @@ The dev machines IP address must be [granted access](https://learn.microsoft.com
    `sqlpackage /Action:Publish /SourceFile:".\bin\Debug\Inklio.Sql.dacpac" /TargetConnectionString:"<db Connection string here>"`
 
 > NOTE: The SqlPackage step takes about 2 minutes to complete.
+
+### Resetting the database locally
+
+The following script can be used to reset the container for the local db:
+`docker build --no-cache -t inklio-inkliodb:latest .`

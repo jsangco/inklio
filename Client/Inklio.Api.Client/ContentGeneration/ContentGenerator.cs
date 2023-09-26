@@ -102,6 +102,7 @@ public class ContentGenerator
         await this.CreateDeliveriesAsync(sampleImagePath);
         await this.CreateAskComments();
         await this.CreateDeliveryComments();
+        await this.CreateUpvotes();
     }
 
     private Task LoginAllUsersAsync(CancellationToken cancellationToken = default)
@@ -204,5 +205,35 @@ public class ContentGenerator
             await task;
         }
 
+    }
+
+    private async Task CreateUpvotes(CancellationToken cancellationToken = default)
+    {
+        var rand = new Random(0);
+        var user = this.users.First();
+        var askRequest = await user.GetAsksAsync(null, cancellationToken);
+        List<Ask> asks = new List<Ask>(100);
+        while (askRequest.NextLink != null)
+        {
+            asks.AddRange(askRequest.Value);
+            askRequest = await user.GetAsksAsync(askRequest.NextLink.ToString(), cancellationToken);
+        }
+        foreach (var u in users)
+        {
+            foreach (var ask in asks)
+            {
+                if (rand.Next(10) == 0)
+                {
+                    await u.AddUpvoteAsync(ask.Id, cancellationToken);
+                }
+                foreach (var delivery in ask.Deliveries)
+                {
+                    if (rand.Next(10) == 0)
+                    {
+                        await u.AddUpvoteAsync(ask.Id, delivery.Id, cancellationToken);
+                    }
+                }
+            }
+        }
     }
 }

@@ -32,9 +32,9 @@ public class CommentUpvote : Upvote
     /// <param name="comment">The parent <see cref="Comment"/> object</param>
     /// <param name="typeId">The type of the upvote</param>
     /// <param name="createdBy">The Upvote creator</param>
-    public CommentUpvote(Comment comment, int typeId, User user) : base(typeId, user)
+    public CommentUpvote(Comment comment, int typeId, User createdBy) : base(typeId, createdBy)
     {
         this.Comment = comment;
-        this.CommentId = Comment.Id;
+        this.CommentId = comment.Id;
     }
 }

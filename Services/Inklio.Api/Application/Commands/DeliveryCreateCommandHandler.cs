@@ -2,7 +2,7 @@ using Inklio.Api.Application.Commands;
 using Inklio.Api.Domain;
 
 /// <summary>
-/// Command to create a <see cref="DomainDelivery"/>
+/// Command handler to create a <see cref="DomainDelivery"/>
 /// </summary>
 public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateCommand, bool>
 {
@@ -37,6 +37,9 @@ public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateComman
         var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         DomainDelivery delivery = ask.AddDelivery(request.Body, user, request.IsAi, request.IsNsfl, request.IsNsfw, request.IsSpoiler, request.Title);
+
+        // The creator automatically upvotes their post.
+        delivery.AddUpvote((int)UpvoteType.Basic, user);
 
         // Get and add tags to the new Ask
         IEnumerable<DomainTag> tags = request.IncludeAskTags ?
