@@ -13,7 +13,11 @@ Deployments can also be done manually and locally using the steps below.
 
 > **WARNING:** The build pipeline is free and limited in functionality. If SQL changes must be deployed before application changes are published, the SQL changes should be published in seperate and prior commit.
 
- ### Prerequisites
+### Permissions
+
+The dev machines IP address must be [granted access](https://learn.microsoft.com/en-us/azure/azure-sql/database/network-access-controls-overview?view=azuresql#allow-azure-services). This is done in the Azure Portal by the site admin.
+
+### Prerequisites
 
  1. [.Net 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
  2. `dotnet tool install -g microsoft.sqlpackage`

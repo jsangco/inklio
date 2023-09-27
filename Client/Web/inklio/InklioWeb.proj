@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Project template taken from: https://gist.github.com/fearthecowboy/9e06ad9d92c5d939582147a35c049693 -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DefaultProjectTypeGuid>FAE04EC0-301F-11D3-BF4B-00C04F79EFBC</DefaultProjectTypeGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <Target Name="default" >
+    <Exec Command="yarn install" EchoOff="true" /> 
+    <Exec Command="yarn build" EchoOff="true" /> 
+    <Copy SourceFiles="../../../.env.local" DestinationFiles="../../../.env" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- prevents NU1503 -->
+  <Target Name="_IsProjectRestoreSupported"
+          Returns="@(_ValidProjectsForRestore)">
+    <ItemGroup>
+      <_ValidProjectsForRestore Include="$(MSBuildProjectFullPath)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="Restore" />
+</Project>

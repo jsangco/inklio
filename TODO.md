@@ -2,7 +2,10 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Add upvote, add flag, to AskCard
+* Update style of Upvote.vue
+* Fix upvote query for deliveries
+* Add Comment upvote
+* add flag, to AskCard
 * Understand why re-log is required after every deployment
 * Update readme test query commands
 * delivery and ask submit pages are copy-pasted and should be refactored.

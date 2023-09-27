@@ -5,14 +5,50 @@ Code Repo for the Inklio project - A community for creatives to get inspirationa
 
 All services can be run together using docker compose. The configuration steps are provided below.
 
-### 1. Install development Tools
+## Prerequisites
 
-* [VSCode](https://code.visualstudio.com/) - IDE
-  * [SQL Server (mssql) Extension](https://github.com/microsoft/vscode-mssql)
-* [.Net 6+ SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) - For building C# projects
-* [Docker](https://docs.docker.com/get-docker/) - For building and running containers
+### Required
 
-### 2. SQL Database connection
+* [.Net 6+ SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) - For building C# projects.
+* [Docker](https://docs.docker.com/get-docker/) - For building and running containers.
+* [Node.js](https://nodejs.org/en) - Front-end development. Inklio uses 18 LTS.
+
+### Recommended
+
+* [VSCode](https://code.visualstudio.com/) - IDE.
+* [SQL Server (mssql) Extension](https://github.com/microsoft/vscode-mssql)
+* Powershell ([Win](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3)) ([Linux](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-linux?view=powershell-7.3)) ([macOS](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-macos?view=powershell-7.3)) - Handy for crossplatform scripts.
+
+### 1. Build inklio solution
+
+From the root directory, build [Inklio.sln](../../../Inklio.sln) file in `Release`.
+
+`dotnet build .\Inklio.sln -c Release`
+
+### 2. Run docker compose
+
+`docker compose up --build`
+
+| **NOTE:** The `--build` is only needed the frist time `docker compose up` is run.
+
+### 3. Generate fake content on the site
+
+The site doesn't have any content yet, but fake content can be generated. By running the [Inklio.Console.Test](./Services/Inklio.Console.Test/Inklio.Console.Test.csproj) application.
+
+```bash
+cd ./Services/Inklio.Console.Test
+dotnet run
+```
+### 4. Verify the site works
+
+Open `http://localhost`
+
+### 5. Start coding!
+
+* [Inklio.Web](./Client/Web/README.md)
+* [Inklio.Api](./Services/Inklio.Api/README.md)
+* [Inklio.Sql](./Services/Inklio.Sql/README.md)
+
 
 > NOTE: Local SQL debugging can be used by running `docker compose up`
 
