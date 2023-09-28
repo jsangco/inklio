@@ -107,41 +107,48 @@ Below are some sample powershell commands that can be used to interact with the 
 ### Account Creation
 
 ``` powershell
-$accountCreate = '{"email":"inkliojace@mailinator.com","username":"jace","password":"aoeuaoeu1","confirmPassword":"aoeuaoeu1"}'
-Invoke-WebRequest http://localhost/api/v1/accounts/register -Method POST -ContentType "application/json" -Body $accountCreate
+$accountCreate = '{"email":"inkliotestuser1@mailinator.com","username":"testuser1","password":"SuperSecret!1","confirmPassword":"SuperSecret!1"}'
+Invoke-WebRequest http://localhost/api/v1/accounts/register -SessionVariable session -Method POST -ContentType "application/json" -Body $accountCreate
 
-$accountLogin = '{"username":"jace","password":"aoeuaoeu1","isRememberMe":false}'
-Invoke-WebRequest http://localhost/api/v1/accounts/login -Method POST -ContentType "application/json" -Body $accountLogin
+$accountLogin = '{"username":"testuser1","password":"SuperSecret!1","isRememberMe":false}'
+Invoke-WebRequest http://localhost/api/v1/accounts/login -SessionVariable session -Method POST -ContentType "application/json" -Body $accountLogin
 
-$accountForget = '{"email":"inkliojace@mailinator.com"}'
+$accountForget = '{"email":"inkliotestuser1@mailinator.com"}'
 Invoke-WebRequest http://localhost/api/v1/accounts/forget -Method POST -ContentType "application/json" -Body $accountForget
 
-$accountReset = '{"email":"inkliojace@mailinator.com","password":"aoeuaoeu1","confirmPassword":"aoeuaoeu1","code":"REPLACE_RESET_CODE_HERE"}'
+$accountReset = '{"email":"inkliotestuser1@mailinator.com","password":"SuperSecret!1","confirmPassword":"SuperSecret!1","code":"REPLACE_RESET_CODE_HERE"}'
 Invoke-WebRequest http://localhost/api/v1/accounts/reset -Method POST -ContentType "application/json" -Body $accountReset
 ```
 
 ### Application
 
-> **NOTE:** These API calls will fail without proper authentication.
+> **NOTE:** Some of these APIs require authentication. This can be done in powershell by first calling the login API and setting the `SessionVariable` property
+>  `$accountLogin = '{"username":"testuser1","password":"SuperSecret!1","isRememberMe":false}'`
+>  `Invoke-WebRequest http://localhost/api/v1/accounts/login -SessionVariable session -Method POST -ContentType "application/json" -Body $accountLogin`
+>
+> Then calling the target API and setting the `-WebSession $session` property.
 
 ```powershell
 
 # Create an Ask
 $askCreateCommand = @{"ask"="{'body':'my body'}"; images=(get-item -path ./aqua.png)}
-Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost/api/v1/asks
+Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" http://localhost/api/v1/asks
 
 # Add a Delivery to an Ask
 $deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
-Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost/api/v1/asks/1/deliveries
+Invoke-WebRequest -WebSession $session -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" http://localhost/api/v1/asks/1/deliveries
 
 # Add a Comment to an Ask
-Invoke-WebRequest -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost/api/v1/asks/1/comments
+Invoke-WebRequest -WebSession $session -Method POST -Body (@{"body"="myAskComment";} | ConvertTo-Json) -ContentType "application/json" http://localhost/api/v1/asks/1/comments
 
 # Add a Comment to a Delivery
-Invoke-WebRequest -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" https://localhost/api/v1/asks/1/deliveries/1/comments
+Invoke-WebRequest -WebSession $session -Method POST -Body (@{"body"="myDeliveryComment";} | ConvertTo-Json) -ContentType "application/json" http://localhost/api/v1/asks/1/deliveries/1/comments
 
 # Add a Tag to an Ask and all its child objects (i.e. Deliveries, Comments)
-Invoke-WebRequest -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" https://localhost/api/v1/asks/1/tags
+Invoke-WebRequest -WebSession $session -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" http://localhost/api/v1/asks/1/tags
+
+# Upvote an ask
+Invoke-WebRequest -WebSession $session -Method POST -ContentType "application/json" http://localhost/api/v1/asks/1/upvote
 
 # Get all Asks
 curl http://localhost:80/api/v1/asks
