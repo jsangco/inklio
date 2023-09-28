@@ -20,7 +20,7 @@ From the root directory, build [Inklio.sln](../../../Inklio.sln) file in `Releas
 
 `docker compose up --build`
 
-| **NOTE:** The `--build` is only needed the frist time `docker compose up` is run.
+| **NOTE:** The `--build` is only needed the first time `docker compose up` is run.
 
 ### 3. Host the development inklio web front-end
 
@@ -36,6 +36,15 @@ yarn dev
 * Modify the [FrontEnd.vue](./components/FrontPage.vue) file and verify the site reflects the changes
 
 > **NOTE:** When using the reverse-proxy for debugging, using HTTP, and *not* HTTP**S** is required.
+
+### 5. (Optional) Fill the site with test content
+
+A freshly initialized site has no content, but you can generate test content by running the [Inklio.Console.Test](../../../Services/Inklio.Console.Test/) app.
+
+```bash
+cd ./Services/Inklio.Console.Test
+dotnet run
+```
 
 ## Building the Docker container
 
