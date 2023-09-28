@@ -20,25 +20,18 @@ public class AskCreateCommand : IRequest<bool>
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets the content rating of the ask.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
+
+    /// <summary>
     /// Gets or sets optional images to include in the ask
     /// </summary>
     [DataMember(Name = "images")]
     [JsonPropertyName("images")]
     public IEnumerable<IFormFile>? Images { get; set; } = null;
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is NSFW.
-    /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask contains a spoiler.

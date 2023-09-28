@@ -132,20 +132,6 @@ public class Delivery
     public bool IsLocked { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery is NSFW.
-    /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
-
-    /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.
     /// </summary>
     [DataMember(Name = "lockedAtUtc")]

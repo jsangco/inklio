@@ -19,9 +19,8 @@ public static class Generator
                 await user2.AddAskAsync(new AskCreate()
                 {
                     Body = "My Ask Body",
+                    ContentRating = 1,
                     Title = "My Ask Title",
-                    IsNsfl = true,
-                    IsNsfw = false,
                     Images = new byte[][] { File.ReadAllBytes(filePath), File.ReadAllBytes(filePath) },
                     Tags = new Tag[] { new Tag("aqua") }
                 });
@@ -37,9 +36,8 @@ public static class Generator
             await user1.AddDeliveryAsync(new DeliveryCreate()
             {
                 Body = "My Delivery Body",
+                ContentRating = 1,
                 Title = "My Delivery Title",
-                IsNsfl = true,
-                IsNsfw = false,
                 IsSpoiler = true,
                 Images = new byte[][] { File.ReadAllBytes(filePath), File.ReadAllBytes(filePath) },
                 Tags = new Tag[] { new Tag("aqua") }

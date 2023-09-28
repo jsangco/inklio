@@ -10,6 +10,7 @@ CREATE TABLE [inklio].[delivery]
   [can_edit] BIT NOT NULL DEFAULT 1,
   [can_flag] BIT NOT NULL DEFAULT 1,
   [can_tag] BIT NOT NULL DEFAULT 1,
+  [content_rating] TINYINT NOT NULL DEFAULT 0,
   [created_at_utc] DATETIME2 NOT NULL,
   [created_by_id] INT NOT NULL
     CONSTRAINT [fk_delivery_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,
@@ -21,8 +22,6 @@ CREATE TABLE [inklio].[delivery]
   [is_deleted] BIT NOT NULL DEFAULT 0,
   [is_delivery_accepted] BIT NOT NULL DEFAULT 0,
   [is_locked] BIT NOT NULL DEFAULT 0,
-  [is_nsfw] BIT NOT NULL DEFAULT 0,
-  [is_nsfl] BIT NOT NULL DEFAULT 0,
   [is_spoiler] BIT NOT NULL DEFAULT 0,
   [locked_at_utc] DATETIME2 NULL,
   [save_count] INT NOT NULL DEFAULT 0,

@@ -60,12 +60,18 @@ public class Ask
     public bool CanTag { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the number of comments on an ask--includes the number
-    /// of comments on child deliveries.
+    /// Gets or sets the number of comments on an ask
     /// </summary>
     [DataMember(Name = "commentCount")]
     [JsonPropertyName("commentCount")]
     public int CommentCount { get; set; }
+
+    /// <summary>
+    /// Gets the content rating of the ask.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
 
     /// <summary>
     /// Gets or sets a collection of comments for the ask.
@@ -150,20 +156,6 @@ public class Ask
     [DataMember(Name = "isLocked")]
     [JsonPropertyName("isLocked")]
     public bool IsLocked { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is NSFW.
-    /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the ask contains a spoiler.

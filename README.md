@@ -135,7 +135,7 @@ $askCreateCommand = @{"ask"="{'body':'my body'}"; images=(get-item -path ./aqua.
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" http://localhost/api/v1/asks
 
 # Add a Delivery to an Ask
-$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"contentRating"=1; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -WebSession $session -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" http://localhost/api/v1/asks/1/deliveries
 
 # Add a Comment to an Ask

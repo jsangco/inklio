@@ -107,11 +107,11 @@ Invoke-WebRequest https://localhost:7187/v1/accounts/reset -Method POST -Content
 ```powershell
 
 # Create an Ask
-$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+$askCreateCommand = @{"body"="myAskBodyPs"; "title"="myAskTitlePs"; "contentRating"=1; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $askCreateCommand -ContentType "multipart/form-data" https://localhost:7187/asks
 
 # Add a Delivery to an Ask
-$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"isNsfw"=$true;"isNsfl"=$false;IsNsfw=$true; images=(get-item -path ./aqua.png)}
+$deliveryCreateCommand = @{"body"="myDeliveryBodyPs"; "title"="myDeliveryTitlePs";"contentRating"=1; images=(get-item -path ./aqua.png)}
 Invoke-WebRequest -Method POST -Form $deliveryCreateCommand -ContentType "multipart/form-data" https://localhost:7187/v1/asks/1/deliveries
 
 # Add a Comment to an Ask

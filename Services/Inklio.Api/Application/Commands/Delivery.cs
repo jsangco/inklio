@@ -20,6 +20,13 @@ public class Delivery
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets the content rating of the delivery.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
+
+    /// <summary>
     /// Gets or sets a flag indicating whether or not a user can comment on the delivery.
     /// </summary>
     [DataMember(Name = "canComment")]
@@ -132,18 +139,11 @@ public class Delivery
     public bool IsLocked { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery is NSFW.
+    /// Gets or sets a flag indicating whether or not the delivery contains a spoiler.
     /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
+    [DataMember(Name = "isSpoiler")]
+    [JsonPropertyName("isSpoiler")]
+    public bool isSpoiler { get; set; }
 
     /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.

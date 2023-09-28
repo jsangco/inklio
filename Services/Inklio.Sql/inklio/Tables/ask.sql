@@ -8,6 +8,7 @@ CREATE TABLE [inklio].[ask]
   [can_flag] BIT NOT NULL DEFAULT 1,
   [can_tag] BIT NOT NULL DEFAULT 1,
   [comment_count] INT NOT NULL DEFAULT 0,
+  [content_rating] TINYINT NOT NULL DEFAULT 0,
   [created_at_utc] DATETIME2 NOT NULL,
   [created_by_id] INT NOT NULL
     CONSTRAINT [fk_ask_created_by_id_user_id] FOREIGN KEY REFERENCES [inklio].[user] ([id]) ON UPDATE NO ACTION,
@@ -21,8 +22,6 @@ CREATE TABLE [inklio].[ask]
   [is_delivered] BIT NOT NULL DEFAULT 0,
   [is_delivery_accepted] BIT NOT NULL DEFAULT 0,
   [is_locked] BIT NOT NULL DEFAULT 0,
-  [is_nsfw] BIT NOT NULL DEFAULT 0,
-  [is_nsfl] BIT NOT NULL DEFAULT 0,
   [is_spoiler] BIT NOT NULL DEFAULT 0,
   [locked_at_utc] DATETIME2 NULL,
   [save_count] INT NOT NULL DEFAULT 0,

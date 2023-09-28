@@ -16,6 +16,13 @@ public class DeliveryCreate
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets the content rating of the delivery.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
+
+    /// <summary>
     /// Gets or sets any images assoiated with the ask.
     /// </summary>
     [DataMember(Name = "images")]
@@ -23,28 +30,14 @@ public class DeliveryCreate
     public IEnumerable<byte[]>? Images { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
+    /// Gets or sets a flag indicating whether or not the delivery was created using Ai.
     /// </summary>
     [DataMember(Name = "isAi")]
     [JsonPropertyName("isAi")]
     public bool IsAi { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask is NSFW.
-    /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask NSFL.
+    /// Gets or sets a flag indicating whether or not the delivery contains a spoiler.
     /// </summary>
     [DataMember(Name = "isSpoiler")]
     [JsonPropertyName("isSpoiler")]

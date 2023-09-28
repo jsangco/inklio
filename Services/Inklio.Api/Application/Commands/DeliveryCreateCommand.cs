@@ -27,6 +27,13 @@ public class DeliveryCreateCommand : IRequest<bool>
     public string Body { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets the content rating of the delivery.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
+
+    /// <summary>
     /// Gets or sets a flag indicating whether to include the parent tags when creating the delivery.
     /// </summary>
     [DataMember(Name = "includeAskTags")]
@@ -45,20 +52,6 @@ public class DeliveryCreateCommand : IRequest<bool>
     [DataMember(Name = "isAi")]
     [JsonPropertyName("isAi")]
     public bool IsAi { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery NSFL.
-    /// </summary>
-    [DataMember(Name = "isNsfl")]
-    [JsonPropertyName("isNsfl")]
-    public bool IsNsfl { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating whether or not the delivery is NSFW.
-    /// </summary>
-    [DataMember(Name = "isNsfw")]
-    [JsonPropertyName("isNsfw")]
-    public bool IsNsfw { get; set; }
 
     /// <summary>
     /// Gets or sets a flag indicating whether or not the delivery contains a spoiler.

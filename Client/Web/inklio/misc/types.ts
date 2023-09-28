@@ -15,6 +15,7 @@ export type Ask = {
   canFlag: boolean;
   canTag: boolean;
   commentCount: number;
+  contentRating: number;
   createdAtUtc: Date;
   createdBy: string;
   editedAtUtc: Date | null;
@@ -25,8 +26,6 @@ export type Ask = {
   isDelivered: boolean;
   isDeliveryAccepted: boolean;
   isLocked: boolean;
-  isNsfw: boolean;
-  isNsfl: boolean;
   isSpoiler: boolean;
   isUpvoted: boolean;
   lockedAtUtc: Date | null;
@@ -42,8 +41,7 @@ export type Ask = {
 
 export type AskCreate = {
   body: string;
-  isNsfl: boolean;
-  isNsfw: boolean;
+  contentRating: number;
   isSpoiler: boolean;
   title: string;
   tags: Tag[];
@@ -57,6 +55,7 @@ export type Delivery = {
   canEdit: boolean;
   canFlag: boolean;
   canTag: boolean;
+  contentRating: number;
   createdAtUtc: Date;
   createdBy: string;
   editedAtUtc: Date | null;
@@ -67,8 +66,7 @@ export type Delivery = {
   isDelivered: boolean;
   isDeliveryAccepted: boolean;
   isLocked: boolean;
-  isNsfw: boolean;
-  isNsfl: boolean;
+  isSpoiler: boolean;
   lockedAtUtc: Date | null;
   saveCount: boolean;
   title: string | null;
@@ -81,10 +79,9 @@ export type Delivery = {
 
 export type DeliveryCreate = {
   body: string;
+  contentRating: number;
   includeAskTags: boolean;
   isAi: boolean;
-  isNsfl: boolean;
-  isNsfw: boolean;
   isSpoiler: boolean;
   title: string;
   tags: Tag[];

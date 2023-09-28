@@ -47,7 +47,7 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
         user.SetAskCount(user.AskCount + 1);
 
         // Create the ask
-        DomainAsk ask = DomainAsk.Create(request.Body, user, request.IsNsfl, request.IsNsfw, request.IsSpoiler, request.Title);
+        DomainAsk ask = DomainAsk.Create(request.Body, request.ContentRating, user, request.IsSpoiler, request.Title);
 
         // The creator automatically upvotes their post.
         ask.AddUpvote((int)UpvoteType.Basic, user);
