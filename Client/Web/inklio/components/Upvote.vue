@@ -5,12 +5,17 @@
   </span>
 </template>
 <script setup lang="ts">
+import { useAccountStore } from '~/stores/account';
+
 const props = defineProps<{
   upvoteCount: number,
   isUpvoted: boolean,
   askId: number,
   deliveryId: number | null,
 }>();
+
+const account = useAccountStore();
+
 const isUpvoted = ref(props.isUpvoted);
 const upvoteCount = ref(props.upvoteCount);
 
@@ -20,6 +25,10 @@ const getUpvoted = () => {
 }
 
 const toggleUpvote = async () => {
+  if (account.isLoggedIn == false) {
+    navigateTo("/login");
+  }
+
   isUpvoted.value = !isUpvoted.value;
   upvoteCount.value = isUpvoted.value ? upvoteCount.value + 1 : upvoteCount.value - 1;
 
