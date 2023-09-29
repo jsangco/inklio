@@ -2,7 +2,6 @@
 
 Any task or thing that needs to get done can be added here.
 
-* Fix upvote login bug
 * Fix upvote query for deliveries
 * Add Comment upvote
 * add flag, to AskCard

@@ -27,7 +27,7 @@ public class UpvoteDeleteCommand : IRequest<bool>
     /// <param name="askId">The ID of the ask to remove the upvote from.</param>
     /// <param name="deliveryId">The ID of the ask to remove the upvote from.</param>
     /// <param name="userId">The ID of the user creating the upvote.</param>
-    public UpvoteDeleteCommand(int askId, int deliveryId, UserId userId)
+    public UpvoteDeleteCommand(int askId, int? deliveryId, UserId userId)
     {
         this.AskId = askId;
         this.DeliveryId = deliveryId;

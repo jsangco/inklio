@@ -108,7 +108,7 @@ const reload = async () => {
   if (askFetch.error.value) {
     throw askFetch.error.value;
   }
-  ask.value = askFetch.data.value;
+  ask.value = askFetch.data.value as Ask;
   isShowAskCommentSubmit.value = false;
   isShowDeliveryCommentSubmit.value = {};
 }

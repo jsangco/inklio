@@ -134,17 +134,6 @@ public class AsksController : ODataController
     }
 
     [Authorize]
-    [HttpPost("{askId}/upvote")]
-    public async Task AddUpvote(
-        int askId,
-        CancellationToken cancellationToken)
-    {
-        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, this.User.UserId());
-        this.logger.LogInformation("----- Sending command: {CommandName}", upvoteCreateCommand.GetGenericTypeName());
-        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
-    }
-
-    [Authorize]
     [HttpPost("{askId}/comments")]
     public async Task AddAskComment(
          int askId,
@@ -170,6 +159,15 @@ public class AsksController : ODataController
 
         this.logger.LogInformation("----- Sending command: {CommandName}", tagCommand.GetGenericTypeName());
         await this.mediator.Send(tagCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpPost("{askId}/upvote")]
+    public async Task AddAskUpvote(int askId, CancellationToken cancellationToken)
+    {
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: {CommandName}", upvoteCreateCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
     }
 
     [Authorize]
@@ -227,14 +225,27 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/upvote")]
-    public async Task AddDeliveryUpvote(
-        int askId,
-        int deliveryId,
-        CancellationToken cancellationToken)
+    public async Task AddDeliveryUpvote(int askId, int deliveryId, CancellationToken cancellationToken)
     {
         var upvoteCreateCommand = new UpvoteCreateCommand(askId, deliveryId, this.User.UserId());
         this.logger.LogInformation("----- Sending command: delivery {CommandName}", upvoteCreateCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteCreateCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpDelete("{askId}/upvote")]
+    public async Task DeleteAskUpvoteAsync(int askId, CancellationToken cancellationToken)
+    {
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, null, this.User.UserId());
+        await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpDelete("{askId}/deliveries/{deliveryId}/upvote")]
+    public async Task DeleteDeliveryUpvoteAsync(int askId, int deliveryId, CancellationToken cancellationToken)
+    {
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, deliveryId, this.User.UserId());
+        await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 
     /// <summary>
