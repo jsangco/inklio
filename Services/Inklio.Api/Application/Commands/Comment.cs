@@ -83,6 +83,13 @@ public class Comment
     public bool IsLocked { get; set; }
 
     /// <summary>
+    /// Gets or sets a flag indicating whether or not the delivery has been upvoted by the user.
+    /// </summary>
+    [DataMember(Name = "isUpvoted")]
+    [JsonPropertyName("isUpvoted")]
+    public bool IsUpvoted { get; set; }
+
+    /// <summary>
     /// Gets or sets the UTC time that the comment was locked.
     /// </summary>
     [DataMember(Name = "lockedAtUtc")]

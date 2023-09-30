@@ -17,6 +17,11 @@ public class UpvoteCreateCommand : IRequest<bool>
     public int? DeliveryId { get; set; }
 
     /// <summary>
+    /// Gets or sets the ID of the comment.
+    /// </summary>
+    public int? CommentId { get; set; }
+
+    /// <summary>
     /// Gets or sets the ID of the user creating the upvote.
     /// </summary>
     public UserId UserId { get; set; }
@@ -25,11 +30,13 @@ public class UpvoteCreateCommand : IRequest<bool>
     /// Initializes a new instance of a <see cref="UpvoteCreateCommand"/> object.
     /// </summary>
     /// <param name="askId">The ID of the ask.</param>
+    /// <param name="commentId">The ID of the comment.</param>
     /// <param name="deliveryId">The ID of the delivery.</param>
     /// <param name="userId">The ID of the user creating the upvote.</param>
-    public UpvoteCreateCommand(int askId, int? deliveryId, UserId userId)
+    public UpvoteCreateCommand(int askId, int? commentId, int? deliveryId, UserId userId)
     {
         this.AskId = askId;
+        this.CommentId = commentId;
         this.DeliveryId = deliveryId;
         this.UserId = userId;
     }

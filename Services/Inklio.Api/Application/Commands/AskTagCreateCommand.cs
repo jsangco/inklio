@@ -4,7 +4,7 @@ using Inklio.Api.SeedWork;
 namespace Inklio.Api.Application.Commands;
 
 [DataContract]
-public class DeliveryTagAddCommand : IRequest<bool>
+public class AskTagCreateCommand : IRequest<bool>
 {
     /// <summary>
     /// Gets or sets the ID of the ask to add the comment to
@@ -12,13 +12,6 @@ public class DeliveryTagAddCommand : IRequest<bool>
     [IgnoreDataMember]
     [JsonIgnore]
     public int AskId { get; set; }
-
-    /// <summary>
-    /// Gets or sets the ID of the delivery to add the comment to
-    /// </summary>
-    [IgnoreDataMember]
-    [JsonIgnore]
-    public int DeliveryId { get; set; }
 
     /// <summary>
     /// Gets or sets the tag info.

@@ -13,11 +13,15 @@ public sealed class InklioContext : DbContext, IUnitOfWork
 
     public DbSet<Ask> Asks  => Set<Ask>();
     public DbSet<AskComment> AskComments  => Set<AskComment>();
+    public DbSet<AskUpvote> AskUpvotes  => Set<AskUpvote>();
     public DbSet<Comment> Comments  => Set<Comment>();
+    public DbSet<CommentUpvote> CommentUpvotes  => Set<CommentUpvote>();
     public DbSet<Delivery> Deliveries => Set<Delivery>();
     public DbSet<DeliveryComment> DeliveryComments  => Set<DeliveryComment>();
+    public DbSet<DeliveryUpvote> DeliveryUpvotes  => Set<DeliveryUpvote>();
     public DbSet<User> Users  => Set<User>();
     public DbSet<Tag> Tags  => Set<Tag>();
+    public DbSet<Upvote> Upvotes  => Set<Upvote>();
 
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {

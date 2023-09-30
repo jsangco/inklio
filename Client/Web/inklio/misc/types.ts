@@ -67,6 +67,7 @@ export type Delivery = {
   isDeliveryAccepted: boolean;
   isLocked: boolean;
   isSpoiler: boolean;
+  isUpvoted: boolean;
   lockedAtUtc: Date | null;
   saveCount: boolean;
   title: string | null;
@@ -101,6 +102,7 @@ export type Comment = {
   flagCount: number;
   isDeleted: boolean;
   isLocked: boolean;
+  isUpvoted: boolean;
   lockedAtUtc: Date | null;
   saveCount: number;
   threadId: number;
@@ -110,7 +112,6 @@ export type Comment = {
 export type CommentCreate = {
   body: string;
 }
-
 
 export type Image = {
   url: string;

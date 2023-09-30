@@ -31,6 +31,17 @@ public interface IAskRepository : IRepository<Ask>
     Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Gets an <see cref="Ask"/> from the repository. And includes information
+    /// specific to the user making the query such as whether it has been
+    /// upvoted by the user.
+    /// </summary>
+    /// <param name="askId">The id of the ask to get.</param>
+    /// <param name="userId">The userId that is fetching the ask.</param>
+    /// <param name="cancellationToken">A cancellation token</param>
+    /// <returns>The ask.</returns>
+    Task<Ask> GetAskByIdAsync(int askId, UserId? userId, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Attempts to fetcha a <see cref="Tag"/> from the tag repository.
     /// </summary>
     /// <param name="type">The type of the tag</param>

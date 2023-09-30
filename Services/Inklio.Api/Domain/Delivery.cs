@@ -163,6 +163,13 @@ public class Delivery : Entity, IAggregateRoot
     public bool IsSpoiler { get; private set; } = false;
 
     /// <summary>
+    /// Gets a flag indicating whether or not the delivery was upvoted by the user.
+    /// This value is not stored in the database and is computed when a user
+    /// retrieves the delivery.
+    /// </summary>
+    public bool IsUpvoted { get; private set; } = false;
+
+    /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.
     /// </summary>
     public DateTime? LockedAtUtc { get; private set; } = null;
@@ -277,6 +284,26 @@ public class Delivery : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Upvotes a comment of the delivery.
+    /// </summary>
+    /// <param name="commentId">The ide of the comment to upvote.</param>
+    /// <param name="typeId">The type of the delivery</param>
+    /// <param name="user">The user creating the upvote.</param>
+    /// <returns>An <see cref="Upvote"/></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Upvote AddCommentUpvote(int commentId, int typeId, User user)
+    {
+        var comment = this.comments.FirstOrDefault(c => c.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot add upvote to comment. The comment is not part of the delivery.");
+        }
+        var upvote = comment.AddUpvote(typeId, user);
+
+        return upvote;
+    }
+
+    /// <summary>
     /// Adds a comment to the <see cref="Delivery"/> object.
     /// </summary>
     /// <param name="image">The image to add</param>
@@ -330,7 +357,7 @@ public class Delivery : Entity, IAggregateRoot
     public Upvote AddUpvote(int typeId, User user)
     {
         int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
-        if ( existingUpvoteIndex < 0)
+        if (existingUpvoteIndex < 0)
         {
             var upvote = new DeliveryUpvote(this, typeId, user);
             this.upvotes.Add(upvote);
@@ -353,6 +380,30 @@ public class Delivery : Entity, IAggregateRoot
             this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
         }
+    }
+
+    /// <summary>
+    /// Deletes an upvote from a comment on the delivery.
+    /// </summary>
+    /// <param name="commentId">The id of the comment.</param>
+    /// <param name="user">The user associated with the upvote.</param>
+    public void DeleteCommentUpvote(int commentId, User user)
+    {
+        var comment = this.comments.FirstOrDefault(c => c.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from comment. The comment is not part of the delivery.");
+        }
+        comment.DeleteUpvote(user);
+    }
+
+    /// <summary>
+    /// Sets the IsUpvoted flag if the Upvotes list contains passed in user.
+    /// </summary>
+    /// <param name="user">The user who may have upvoted the post.</param>
+    public void SetIsUpvoted(User user)
+    {
+        this.IsUpvoted = this.Upvotes.Any(u => u.CreatedById == user.Id);
     }
 
     /// <summary>

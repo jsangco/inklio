@@ -9,7 +9,7 @@
     </NuxtLink>
     <div class="askcard-footer">
       <div>
-        <Upvote :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount" :askId="ask.id" :deliveryId="null"/>
+        <Upvote :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount" :askId="ask.id" :deliveryId="null" :commentId="null"/>
         <span>{{ ask.commentCount + ask.deliveryCount }} replies</span>
       </div>
     </div>

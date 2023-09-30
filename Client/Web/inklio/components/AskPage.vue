@@ -16,6 +16,7 @@
             </div>
       <template v-for="ac in ask.comments">
         <div class="askpage-comment">
+          <Upvote :isUpvoted="ac.isUpvoted" :upvoteCount="ac.upvoteCount" :askId="ask.id" :deliveryId="null" :commentId="ac.id"/>
           <div class="createdby">
             <img src="~/assets/img/user.png"/> <i>{{ ac.createdBy }}</i>
           </div>
@@ -27,6 +28,7 @@
       <h1>{{ask.deliveries.length}} Deliver{{ask.deliveries.length == 1 ? "y" : "ies"}}</h1>
       <template v-for="d in ask.deliveries">
         <div class="askpage-delivery">
+          <Upvote :isUpvoted="d.isUpvoted" :upvoteCount="d.upvoteCount" :askId="ask.id" :deliveryId="d.id" :commentId="null"/>
           <div class="createdby">
             <img src="~/assets/img/user.png"/> <i>{{ d.createdBy }}</i>
           </div>
@@ -44,6 +46,7 @@
             </div>
             <template v-for="dc in d.comments">
               <div class="askpage-delivery-comment">
+                <Upvote :isUpvoted="dc.isUpvoted" :upvoteCount="dc.upvoteCount" :askId="ask.id" :deliveryId="d.id" :commentId="dc.id"/>
                 <div class="createdby">
                   <img src="~/assets/img/user.png"/> <i>{{ dc.createdBy }}</i>
                 </div>

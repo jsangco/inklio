@@ -31,6 +31,12 @@ The dev machines IP address must be [granted access](https://learn.microsoft.com
 
 > NOTE: The SqlPackage step takes about 2 minutes to complete.
 
+### Troubleshooting
+
+If there are major changes to the database, the build may fail with an error that says: "*The schema update is terminating because data loss might occur.*"
+
+In this case appending `/p:BlockOnPossibleDataLoss=false` to the `sqlpackage` command can force the deployment.
+
 ### Resetting the database locally
 
 The following script can be used to reset the container for the local db:

@@ -49,7 +49,8 @@ public class AsksController : ODataController
         int askId,
         CancellationToken cancellationToken)
     {
-        var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
+        var userId = this.User.UserIdOrDefault();
+        var ask = await this.askRepository.GetAskByIdAsync(askId, userId, cancellationToken);
         var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
         return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
     }
@@ -115,7 +116,7 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> AddAsk(
+    public async Task<IActionResult> CreateAsk(
         [FromForm] AskCreateForm askCreateForm,
         CancellationToken cancellationToken)
     {
@@ -135,7 +136,7 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/comments")]
-    public async Task AddAskComment(
+    public async Task CreateAskComment(
          int askId,
         [FromBody] AskCommentCreateCommand commentCreateCommand,
         CancellationToken cancellationToken)
@@ -149,9 +150,9 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/tags")]
-    public async Task AddAskTag(
+    public async Task CreateAskTag(
         int askId,
-        [FromBody] AskTagAddCommand tagCommand,
+        [FromBody] AskTagCreateCommand tagCommand,
         CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
@@ -163,16 +164,25 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/upvote")]
-    public async Task AddAskUpvote(int askId, CancellationToken cancellationToken)
+    public async Task CreateAskUpvote(int askId, CancellationToken cancellationToken)
     {
-        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, this.User.UserId());
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, null, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: {CommandName}", upvoteCreateCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpPost("{askId}/comments/{commentId}/upvote")]
+    public async Task CreateAskCommentUpvote(int askId, int commentId, CancellationToken cancellationToken)
+    {
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, commentId, null, this.User.UserId());
         this.logger.LogInformation("----- Sending command: {CommandName}", upvoteCreateCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteCreateCommand, cancellationToken);
     }
 
     [Authorize]
     [HttpPost("{askId}/deliveries")]
-    public async Task<IActionResult> AddDelivery(
+    public async Task<IActionResult> CreateDelivery(
         int askId,
         [FromForm] DeliveryCreateForm deliveryCreateForm,
         CancellationToken cancellationToken)
@@ -193,7 +203,7 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/comments")]
-    public async Task AddDeliveryComment(
+    public async Task CreateDeliveryComment(
         int askId,
         int deliveryId,
         [FromBody] DeliveryCommentCreateCommand commentCreateCommand,
@@ -209,10 +219,10 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/tags")]
-    public async Task AddDeliveryTag(
+    public async Task CreateDeliveryTag(
         int askId,
         int deliveryId,
-        [FromBody] DeliveryTagAddCommand tagCommand,
+        [FromBody] DeliveryTagCreateCommand tagCommand,
         CancellationToken cancellationToken)
     {
         tagCommand.AskId = askId;
@@ -225,10 +235,19 @@ public class AsksController : ODataController
 
     [Authorize]
     [HttpPost("{askId}/deliveries/{deliveryId}/upvote")]
-    public async Task AddDeliveryUpvote(int askId, int deliveryId, CancellationToken cancellationToken)
+    public async Task CreateDeliveryUpvote(int askId, int deliveryId, CancellationToken cancellationToken)
     {
-        var upvoteCreateCommand = new UpvoteCreateCommand(askId, deliveryId, this.User.UserId());
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, null, deliveryId, this.User.UserId());
         this.logger.LogInformation("----- Sending command: delivery {CommandName}", upvoteCreateCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteCreateCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpPost("{askId}/deliveries/{deliveryId}/comments/{commentId}/upvote")]
+    public async Task CreateDeliveryCommentUpvote(int askId, int deliveryId, int commentId, CancellationToken cancellationToken)
+    {
+        var upvoteCreateCommand = new UpvoteCreateCommand(askId, commentId, deliveryId, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: delivery comment {CommandName}", upvoteCreateCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteCreateCommand, cancellationToken);
     }
 
@@ -236,7 +255,17 @@ public class AsksController : ODataController
     [HttpDelete("{askId}/upvote")]
     public async Task DeleteAskUpvoteAsync(int askId, CancellationToken cancellationToken)
     {
-        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, null, this.User.UserId());
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, null, null, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: ask {CommandName}", upvoteDeleteCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpDelete("{askId}/comments/{commentId}/upvote")]
+    public async Task DeleteCommentUpvoteAsync(int askId, int commentId, CancellationToken cancellationToken)
+    {
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, commentId, null, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: ask comment {CommandName}", upvoteDeleteCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 
@@ -244,7 +273,17 @@ public class AsksController : ODataController
     [HttpDelete("{askId}/deliveries/{deliveryId}/upvote")]
     public async Task DeleteDeliveryUpvoteAsync(int askId, int deliveryId, CancellationToken cancellationToken)
     {
-        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, deliveryId, this.User.UserId());
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, null, deliveryId, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: delivery {CommandName}", upvoteDeleteCommand.GetGenericTypeName());
+        await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
+    }
+
+    [Authorize]
+    [HttpDelete("{askId}/deliveries/{deliveryId}/comments/{commentId}/upvote")]
+    public async Task DeleteDeliveryCommentUpvoteAsync(int askId, int commentId, int deliveryId, CancellationToken cancellationToken)
+    {
+        var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, commentId, deliveryId, this.User.UserId());
+        this.logger.LogInformation("----- Sending command: delivery comment {CommandName}", upvoteDeleteCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 

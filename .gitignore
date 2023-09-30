@@ -8,6 +8,7 @@
 Client/Web/nuxt-iam/
 Client/Web/supaAuth-main/
 Services/Inklio.Api/dockerRestartApi.ps1
+test.txt
 Client/tests/
 
 # Environment files

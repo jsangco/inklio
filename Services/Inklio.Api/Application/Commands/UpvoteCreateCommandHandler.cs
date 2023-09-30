@@ -36,11 +36,25 @@ public class UpvoteCreateCommandHandler : IRequestHandler<UpvoteCreateCommand, b
 
         if (request.DeliveryId.HasValue)
         {
-            ask.AddDeliveryUpvote(request.DeliveryId.Value, (int)UpvoteType.Basic, user);
+            if (request.CommentId.HasValue)
+            {
+                ask.AddDeliveryCommentUpvote(request.CommentId.Value, request.DeliveryId.Value, (int)UpvoteType.Basic, user);
+            }
+            else
+            {
+                ask.AddDeliveryUpvote(request.DeliveryId.Value, (int)UpvoteType.Basic, user);
+            }
         }
         else
         {
-            ask.AddUpvote((int)UpvoteType.Basic, user);
+            if (request.CommentId.HasValue)
+            {
+                ask.AddCommentUpvote(request.CommentId.Value, (int)UpvoteType.Basic, user);
+            }
+            else
+            {
+                ask.AddUpvote((int)UpvoteType.Basic, user);
+            }
         }
 
         await this.askRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

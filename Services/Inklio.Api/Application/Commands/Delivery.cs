@@ -143,7 +143,14 @@ public class Delivery
     /// </summary>
     [DataMember(Name = "isSpoiler")]
     [JsonPropertyName("isSpoiler")]
-    public bool isSpoiler { get; set; }
+    public bool IsSpoiler { get; set; }
+
+    /// <summary>
+    /// Gets or sets a flag indicating whether or not the delivery has been by upvoted by the user.
+    /// </summary>
+    [DataMember(Name = "isUpvoted")]
+    [JsonPropertyName("isUpvoted")]
+    public bool IsUpvoted { get; set; }
 
     /// <summary>
     /// Gets or sets the UTC time that the delivery was locked.

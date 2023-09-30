@@ -73,6 +73,13 @@ public class Comment : Entity, IAggregateRoot
     public bool IsLocked { get; private set; }
 
     /// <summary>
+    /// Gets a flag indicating whether or not the comment was upvoted by the user.
+    /// This value is not stored in the database and is computed when a user
+    /// retrieves the comment.
+    /// </summary>
+    public bool IsUpvoted { get; private set; }
+
+    /// <summary>
     /// Gets or sets the UTC time that the comment was locked.
     /// </summary>
     public DateTime LockedAtUtc { get; private set; }
@@ -164,7 +171,7 @@ public class Comment : Entity, IAggregateRoot
     public Upvote AddUpvote(int typeId, User user)
     {
         int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
-        if ( existingUpvoteIndex < 0)
+        if (existingUpvoteIndex < 0)
         {
             var upvote = new CommentUpvote(this, typeId, user);
             this.upvotes.Add(upvote);
@@ -176,16 +183,25 @@ public class Comment : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Removes an upvote and removes the user from the list of upvoters.
+    /// Deletes an upvote and removes the user from the list of upvoters.
     /// </summary>
-    /// <param name="userId"></param>
-    public void RemoveUpvote(Upvote upvote)
+    /// <param name="user">The user associated with the upvote</param>
+    public void DeleteUpvote(User user)
     {
-        int upvoterIndex = this.upvotes.FindIndex(u => u.Id == upvote.Id);
-        if ( upvoterIndex >= 0)
+        int upvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
+        if (upvoteIndex >= 0)
         {
-            this.upvotes.RemoveAt(upvoterIndex);
+            this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
         }
+    }
+
+    /// <summary>
+    /// Sets the IsUpvoted flag if the Upvotes list contains passed in user.
+    /// </summary>
+    /// <param name="user">The user who may have upvoted the post.</param>
+    public void SetIsUpvoted(User user)
+    {
+        this.IsUpvoted = this.Upvotes.Any(u => u.CreatedById == user.Id);
     }
 }

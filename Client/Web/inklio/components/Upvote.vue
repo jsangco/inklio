@@ -12,6 +12,7 @@ const props = defineProps<{
   isUpvoted: boolean,
   askId: number,
   deliveryId: number | null,
+  commentId: number | null,
 }>();
 
 const account = useAccountStore();
@@ -27,13 +28,18 @@ const getUpvoted = () => {
 const toggleUpvote = async () => {
   if (account.isLoggedIn == false) {
     navigateTo("/login");
+    return;
   }
 
   isUpvoted.value = !isUpvoted.value;
   upvoteCount.value = isUpvoted.value ? upvoteCount.value + 1 : upvoteCount.value - 1;
 
-  const url = props.deliveryId ? `v1/asks/${props.askId}/deliveries/${props.deliveryId}/upvote`
-    : `v1/asks/${props.askId}/upvote`;
+  const url = props.deliveryId ?
+    props.commentId ? `v1/asks/${props.askId}/deliveries/${props.deliveryId}/comments/${props.commentId}/upvote`
+      : `v1/asks/${props.askId}/deliveries/${props.deliveryId}/upvote`
+    : props.commentId ? `v1/asks/${props.askId}/comments/${props.commentId}/upvote`
+      : `v1/asks/${props.askId}/upvote`;
+
   const method = isUpvoted.value ? 'POST' : 'DELETE';
   const fetchResult = await useFetchX(url, {
     method: method

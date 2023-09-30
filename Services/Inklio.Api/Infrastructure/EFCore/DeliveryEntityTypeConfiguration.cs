@@ -16,6 +16,7 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         builder.HasIndex(e => e.Id).IsUnique();
 
         builder.Ignore(b => b.DomainEvents);
+        builder.Ignore(b => b.IsUpvoted);
 
         builder.HasOne(e => e.CreatedBy);
         builder.Navigation(e => e.CreatedBy).AutoInclude();

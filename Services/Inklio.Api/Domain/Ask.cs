@@ -178,6 +178,13 @@ public class Ask : Entity, IAggregateRoot
     public bool IsSpoiler { get; private set; } = false;
 
     /// <summary>
+    /// Gets a flag indicating whether or not the ask was upvoted by the user.
+    /// This value is not stored in the database and is computed when a user
+    /// retrieves the ask.
+    /// </summary>
+    public bool IsUpvoted { get; private set; } = false;
+
+    /// <summary>
     /// Gets the UTC time that the ask was locked.
     /// </summary>
     public DateTime? LockedAtUtc { get; private set; }
@@ -316,6 +323,23 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Adds an upvote to a <see cref="Comment"/> on the <see cref="Ask"> object.
+    /// </summary>
+    /// <param name="commentId">The id of the comment to upvote</param>
+    /// <param name="typeId">The type of the upvote.</param>
+    /// <param name="createdById">The creator of the <see cref="DeliveryComment"/>.</param>
+    /// <returns>The newly created comment</returns>
+    public Upvote AddCommentUpvote(int commentId, int typeId, User createdBy)
+    {
+        var comment = this.Comments.FirstOrDefault(c => c.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot add comment to comment. The comment is not part of the Ask.");
+        }
+        return comment.AddUpvote(typeId, createdBy);
+    }
+
+    /// <summary>
     /// Adds a delivery to the <see cref="Ask"/> object.
     /// </summary>
     /// <param name="body">The body of the <see cref="Delivery"/>.</param>
@@ -371,6 +395,25 @@ public class Ask : Entity, IAggregateRoot
             throw new InklioDomainException(400, "Cannot add upvote to delivery. The delivery is not part of the Ask.");
         }
         var upvote = delivery.AddUpvote(typeId, user);
+
+        return upvote;
+    }
+
+    /// <summary>
+    /// Upvotes a <see cref="DeliveryComment"/>'s in the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="commentId">The id of the comment.</param>
+    /// <param name="deliveryId">The id of the delivery.</param>
+    /// <param name="typeId">The type of the upvote.</param>
+    /// <param name="user">The upvoting user.</param>
+    public Upvote AddDeliveryCommentUpvote(int commentId, int deliveryId, int typeId, User user)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot add upvote to comment on delivery. The delivery is not part of the Ask.");
+        }
+        var upvote = delivery.AddCommentUpvote(commentId, typeId, user);
 
         return upvote;
     }
@@ -508,6 +551,19 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Removes an upvote from a comment.
+    /// </summary>
+    internal void DeleteCommentUpvote(int commentId, User user)
+    {
+        var comment = this.comments.FirstOrDefault(d => d.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from comment. The comment is not part of the Ask.");
+        }
+        comment.DeleteUpvote(user);
+    }
+
+    /// <summary>
     /// Removes an upvote and removes the user from the list of upvoters.
     /// </summary>
     /// <param name="user">The user that created the upvote</param>
@@ -522,17 +578,34 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Removes an upvote from the delivery and removes the user from the list of upvoters.
+    /// Deletes an upvote from the delivery and removes the user from the list of upvoters.
     /// </summary>
-    /// <param name="user">The user that created the upvote</param>
+    /// <param name="user">The user that created the upvote.</param>
     public void DeleteDeliveryUpvote(int deliveryId, User user)
     {
         var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
         if (delivery is null)
         {
-            throw new InklioDomainException(400, "Cannot add upvote to delivery. The delivery is not part of the Ask.");
+            throw new InklioDomainException(400, "Cannot remove upvote from delivery. The delivery is not part of the Ask.");
         }
         delivery.DeleteUpvote(user);
+    }
+
+    /// <summary>
+    /// Deletes an upvote from a comment on a delivery.
+    /// </summary>
+    /// <param name="commentId">The ide of the comment.</param>
+    /// <param name="deliveryId">The ide of the delivery.</param>
+    /// <param name="user">The user upvote to delete.</param>
+    /// <exception cref="InklioDomainException"></exception>
+    public void DeleteDeliveryCommentUpvote(int commentId, int deliveryId, User user)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from comment on delivery. The delivery is not part of the Ask.");
+        }
+        delivery.DeleteCommentUpvote(commentId, user);
     }
 
     /// <summary>
@@ -547,5 +620,14 @@ public class Ask : Entity, IAggregateRoot
         {
             this.tags.RemoveAt(tagIndex);
         }
+    }
+
+    /// <summary>
+    /// Sets the IsUpvoted flag if the Upvotes list contains passed in user.
+    /// </summary>
+    /// <param name="user">The user who may have upvoted the post.</param>
+    public void SetIsUpvoted(User user)
+    {
+        this.IsUpvoted = this.Upvotes.Any(u => u.CreatedById == user.Id);
     }
 }

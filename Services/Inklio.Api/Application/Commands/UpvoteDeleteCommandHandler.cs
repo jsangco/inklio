@@ -36,11 +36,25 @@ public class UpvoteDeleteCommandHandler : IRequestHandler<UpvoteDeleteCommand, b
 
         if (request.DeliveryId.HasValue)
         {
-            ask.DeleteDeliveryUpvote(request.DeliveryId.Value, user);
+            if (request.CommentId.HasValue)
+            {
+                ask.DeleteDeliveryCommentUpvote(request.CommentId.Value, request.DeliveryId.Value, user);
+            }
+            else
+            {
+                ask.DeleteDeliveryUpvote(request.DeliveryId.Value, user);
+            }
         }
         else
         {
-            ask.DeleteUpvote(user);
+            if (request.CommentId.HasValue)
+            {
+                ask.DeleteCommentUpvote(request.CommentId.Value, user);
+            }
+            else
+            {
+                ask.DeleteUpvote(user);
+            }
         }
 
         await this.askRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

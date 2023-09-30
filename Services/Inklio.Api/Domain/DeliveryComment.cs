@@ -1,3 +1,4 @@
+
 namespace Inklio.Api.Domain;
 
 /// <summary>
