@@ -7,11 +7,11 @@
     <form @submit.prevent="loginAccount">
       <div>
         <label for="username">Username</label>
-        <input v-model="username" type="text" id="username" />
+        <input v-model="username" type="text" id="loginUsername" />
       </div>
       <div>
         <label for="password">Password</label>
-        <input v-model="password" type="password" id="password" />
+        <input v-model="password" type="password" id="loginPassword" />
       </div>
       <button type="submit">Login</button>
     </form>
