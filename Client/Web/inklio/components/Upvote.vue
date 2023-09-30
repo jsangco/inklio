@@ -27,7 +27,7 @@ const getUpvoted = () => {
 
 const toggleUpvote = async () => {
   if (account.isLoggedIn == false) {
-    navigateTo("/login");
+    navigateTo("/login-register");
     return;
   }
 
