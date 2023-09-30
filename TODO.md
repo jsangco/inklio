@@ -3,6 +3,7 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
+* Production is showing developer messages
 * Implement post flagging.
 * Implement post deletion by administrators.
 * Understand why re-log is required after every deployment

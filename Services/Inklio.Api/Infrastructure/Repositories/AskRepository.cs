@@ -104,22 +104,24 @@ public class AskRepository : IAskRepository
         }
 
         // Set the IsUpvoted flag for all deliveries and comments
-        var user = this.context.Users.First(u => u.UserId == userId);
-
-        ask.SetIsUpvoted(user);
-
-        foreach (var delivery in ask.Deliveries)
+        var user = this.context.Users.FirstOrDefault(u => u.UserId == userId);
+        if (user is not null)
         {
-            delivery.SetIsUpvoted(user);
-            foreach (var comment in delivery.Comments)
+            ask.SetIsUpvoted(user);
+
+            foreach (var delivery in ask.Deliveries)
+            {
+                delivery.SetIsUpvoted(user);
+                foreach (var comment in delivery.Comments)
+                {
+                    comment.SetIsUpvoted(user);
+                }
+            }
+
+            foreach (var comment in ask.Comments)
             {
                 comment.SetIsUpvoted(user);
             }
-        }
-
-        foreach (var comment in ask.Comments)
-        {
-            comment.SetIsUpvoted(user);
         }
 
         return ask;
