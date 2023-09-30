@@ -11,11 +11,8 @@
         <button @click="account.logout">Log out</button>
       </span>
       <span v-else>
-        <NuxtLink to="/login">
-          <span>Login</span>
-        </NuxtLink>
-        <NuxtLink to="/register">
-          <span>Register</span>
+        <NuxtLink to="/login-register">
+          <span>Login / Register</span>
         </NuxtLink>
       </span>
     </span>

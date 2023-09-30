@@ -2,16 +2,16 @@
 
 Any task or thing that needs to get done can be added here.
 
+## TODO Queue
 * Implement post flagging.
 * Implement post deletion by administrators.
 * Understand why re-log is required after every deployment
-* Update readme test query commands
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
-* Combine login and register page.
 
 ## Tech Backlog
 
+* Back button should return user to previous position on page.
 * Update ValidationProblemDetails to use camelCase properties in the errors.
 * Generate and add thumbnail links to images. https://learn.microsoft.com/en-us/dotnet/api/system.drawing.image.getthumbnailimage?view=dotnet-plat-ext-7.0
 * Add proper log reporting
@@ -29,3 +29,4 @@ Any task or thing that needs to get done can be added here.
 * Add front page "Hot" query that ensures deliveries have priority.
 * Tag based search
 * User and Account page
+* Email user when upvotes, comments or deliveries are posted.
