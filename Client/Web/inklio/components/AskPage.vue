@@ -1,7 +1,10 @@
 <template>
   <div class="askpage">
     <div class="askpage-ask">
-      <h1>{{ ask.title }}</h1>
+      <h1>
+        <Upvote class="askpage-ask-upvote" :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount" :askId="ask.id" :deliveryId="null" :commentId="null"/>
+        {{ ask.title }}
+      </h1>
       <template v-for="ai in ask.images">
         <img :src="ai.url" />
       </template>
@@ -195,4 +198,9 @@ await reload(); // Initial page load
   border-bottom: 1px solid var(--askpage-comment-border-color);
   padding: 20px 0 0 20px;
 }
+
+.askpage-ask-upvote {
+  display: inline;
+}
+
 </style>

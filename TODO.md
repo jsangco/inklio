@@ -4,8 +4,9 @@ Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
 * Production is showing developer messages
-* Implement post flagging.
 * Implement post deletion by administrators.
+* Implement post flagging.
+* Fix it so 300 errors properly redirect to login-register page.
 * Understand why re-log is required after every deployment
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
