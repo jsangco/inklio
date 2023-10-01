@@ -27,6 +27,7 @@ import { useAccountStore } from "~/stores/account";
 const account = useAccountStore();
 const emit = defineEmits(["ask-submit"]);
 const isAskSubmittedOk = ref(false);
+const isSubmitting = ref(false);
 const askCreate = ref<AskCreate>({} as AskCreate);
 const elForm = ref(<any | null>null);
 const elBody = ref(<any | null>null);
@@ -45,6 +46,10 @@ const submitAsk = async () => {
     navigateTo("/login-register");
     return;
   }
+  if (isSubmitting.value) {
+    return;
+  }
+  isSubmitting.value = true;
 
   const form = new FormData();
   form.append("ask", JSON.stringify(askCreate.value));
@@ -61,6 +66,7 @@ const submitAsk = async () => {
     method: "POST",
     body: form,
   }).catch(error => {
+    isSubmitting.value = false;
     if (error.status == 413) {
       submitError.value = { detail: "Submission size is too large" };
     }
@@ -76,6 +82,8 @@ const submitAsk = async () => {
     askCreate.value = {} as AskCreate;
     emit("ask-submit");
   }
+
+  isSubmitting.value = false;
 }
 
 </script>

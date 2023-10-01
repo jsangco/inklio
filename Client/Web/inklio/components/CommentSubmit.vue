@@ -27,6 +27,7 @@ const props = defineProps<{
 }>()
 const account = useAccountStore();
 const isCommentSubmittedOk = ref(false);
+const isSubmitting = ref(false);
 const commentCreate = ref<CommentCreate>({} as CommentCreate);
 const elBody = ref(<any | null>null);
 const elCommentSubmit = ref(<any | null>null);
@@ -42,6 +43,10 @@ const submitComment = async () => {
     navigateTo("/login-register");
     return;
   }
+  if (isSubmitting.value) {
+    return;
+  }
+  isSubmitting.value = true;
 
   submitError.value = null;
   isCommentSubmittedOk.value = false;
@@ -53,6 +58,7 @@ const submitComment = async () => {
     body: commentCreate.value,
   }).catch(error => {
     submitError.value = error.data;
+    isSubmitting.value = false;
   });
 
   // Clear the form and reload the page.
@@ -61,6 +67,7 @@ const submitComment = async () => {
     commentCreate.value = {} as CommentCreate;
     emit("comment-submit", { id: props.ask.id });
   }
+  isSubmitting.value = false;
 }
 
 </script>

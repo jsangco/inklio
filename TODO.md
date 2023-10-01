@@ -3,9 +3,9 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* Fix double posting bug.
 * Implement post deletion by administrators.
 * Implement post flagging.
+* User and Account page
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
 
@@ -29,5 +29,4 @@ Any task or thing that needs to get done can be added here.
 * Rewards for challenges
 * Add front page "Hot" query that ensures deliveries have priority.
 * Tag based search
-* User and Account page
 * Email user when upvotes, comments or deliveries are posted.

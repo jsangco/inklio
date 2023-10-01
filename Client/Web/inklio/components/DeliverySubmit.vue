@@ -31,6 +31,7 @@ const props = defineProps<{
 }>();
 const account = useAccountStore();
 const isDeliverySubmittedOk = ref(false);
+const isSubmitting = ref(false);
 const deliveryCreate = ref<DeliveryCreate>({} as DeliveryCreate);
 const elForm = ref(<any | null>null);
 const elBody = ref(<any | null>null);
@@ -49,6 +50,10 @@ const submitDelivery = async () => {
     navigateTo("/login-register");
     return;
   }
+  if (isSubmitting.value) {
+    return;
+  }
+  isSubmitting.value = true;
 
   const form = new FormData();
   form.append("delivery", JSON.stringify(deliveryCreate.value));
@@ -65,6 +70,7 @@ const submitDelivery = async () => {
     method: "POST",
     body: form,
   }).catch(error => {
+    isSubmitting.value = false;
     if (error.status == 413) {
       submitError.value = { detail: "Submission size is too large" };
     }
@@ -80,6 +86,7 @@ const submitDelivery = async () => {
     deliveryCreate.value = {} as DeliveryCreate;
     emit("delivery-submit", { id: props.ask.id });
   }
+  isSubmitting.value = false;
 }
 
 </script>
