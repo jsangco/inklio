@@ -23,6 +23,8 @@
 
 <script setup lang="ts">
 import { AskCreate } from "@/misc/types"
+import { useAccountStore } from "~/stores/account";
+const account = useAccountStore();
 const emit = defineEmits(["ask-submit"]);
 const isAskSubmittedOk = ref(false);
 const askCreate = ref<AskCreate>({} as AskCreate);
@@ -39,6 +41,11 @@ const autoResize = () => {
 };
 
 const submitAsk = async () => {
+  if (account.isLoggedIn == false) {
+    navigateTo("/login-register");
+    return;
+  }
+
   const form = new FormData();
   form.append("ask", JSON.stringify(askCreate.value));
   const files = elImages.value.files;

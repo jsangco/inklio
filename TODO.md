@@ -3,7 +3,6 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* Fix it so 300 errors properly redirect to login-register page.
 * Upgrade to .net 7.0
 * re-log is required after every deployment fix: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-3.1&tabs=visual-studio#entity-framework-core
 * Implement post deletion by administrators.

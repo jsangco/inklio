@@ -24,10 +24,12 @@
 <script setup lang="ts">
 import { AskCard, DeliverySubmit } from "#build/components";
 import { Ask, Delivery, DeliveryCreate } from "@/misc/types"
+import { useAccountStore } from "~/stores/account";
 const emit = defineEmits(["delivery-submit"]);
 const props = defineProps<{
   ask: Ask
 }>();
+const account = useAccountStore();
 const isDeliverySubmittedOk = ref(false);
 const deliveryCreate = ref<DeliveryCreate>({} as DeliveryCreate);
 const elForm = ref(<any | null>null);
@@ -43,6 +45,11 @@ const autoResize = () => {
 };
 
 const submitDelivery = async () => {
+  if (account.isLoggedIn == false) {
+    navigateTo("/login-register");
+    return;
+  }
+
   const form = new FormData();
   form.append("delivery", JSON.stringify(deliveryCreate.value));
   const files = elImages.value.files;

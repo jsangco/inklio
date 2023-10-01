@@ -19,11 +19,13 @@
 
 <script setup lang="ts">
 import { Ask, Delivery, Comment, CommentCreate } from "@/misc/types"
+import { useAccountStore } from "~/stores/account";
 const emit = defineEmits(["comment-submit"]);
 const props = defineProps<{
   ask: Ask,
   delivery: Delivery|null
-}>();
+}>()
+const account = useAccountStore();
 const isCommentSubmittedOk = ref(false);
 const commentCreate = ref<CommentCreate>({} as CommentCreate);
 const elBody = ref(<any | null>null);
@@ -36,6 +38,11 @@ const autoResize = () => {
 };
 
 const submitComment = async () => {
+  if (account.isLoggedIn == false) {
+    navigateTo("/login-register");
+    return;
+  }
+
   submitError.value = null;
   isCommentSubmittedOk.value = false;
   var url = props.delivery == null ? // If there's no delivery post the comment to the ask.
