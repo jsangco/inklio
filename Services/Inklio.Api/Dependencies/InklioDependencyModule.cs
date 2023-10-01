@@ -3,6 +3,7 @@ using Azure.Storage.Blobs;
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.Infrastructure.Repositories;
 using MediatR.Extensions.Autofac.DependencyInjection;
+using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 
 namespace Inklio.Api.Dependencies;
 
@@ -20,10 +21,10 @@ public class InklioDependencyModule : Autofac.Module
     /// <inheritdoc/>
     protected override void Load(ContainerBuilder builder)
     {
-        WebConfiguration webConfiguration = this.configuration.GetSection("Web").Get<WebConfiguration>();
+        WebConfiguration webConfiguration = this.configuration.GetSection("Web").Get<WebConfiguration>() ?? throw new ArgumentNullException("Cannot load WebConfiguration");
         builder.Register<WebConfiguration>(ctx => webConfiguration);
 
-        string sqlConnectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
+        string? sqlConnectionString = this.configuration.GetConnectionString("InklioSqlConnectionString");
         if (this.hostEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(sqlConnectionString))
         {
             builder.Register<DbContextOptions<InklioContext>>((context) =>
@@ -56,14 +57,18 @@ public class InklioDependencyModule : Autofac.Module
             }).SingleInstance();
         }
 
-        string storageConnectionString = this.configuration.GetConnectionString("InklioStorageConnectionString");
+        string? storageConnectionString = this.configuration.GetConnectionString("InklioStorageConnectionString");
         builder.Register<BlobServiceClient>(ctx => new BlobServiceClient(storageConnectionString)).SingleInstance();
         builder.RegisterType<InklioContext>().InstancePerLifetimeScope();
         builder.RegisterType<AskRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<BlobRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<TagRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
-        builder.RegisterMediatR(typeof(Program).Assembly);
+        builder.RegisterMediatR(
+            MediatRConfigurationBuilder
+                .Create(typeof(Program).Assembly)
+                .WithAllOpenGenericHandlerTypesRegistered()
+                .Build());
         builder.RegisterModule(new MediatorDependencyModule());
         builder.Register<IMapper>(ctx =>
         {

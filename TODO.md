@@ -3,12 +3,13 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* Upgrade to .net 7.0
 * re-log is required after every deployment fix: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-3.1&tabs=visual-studio#entity-framework-core
+* Fix double posting bug.
 * Implement post deletion by administrators.
 * Implement post flagging.
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
+* submit buttons should work with 'enter' key.
 
 ## Tech Backlog
 

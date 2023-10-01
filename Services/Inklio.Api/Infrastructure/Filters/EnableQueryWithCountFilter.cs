@@ -18,7 +18,7 @@ namespace Inklio.Api.Infrastructure.Filters
             long? count = context.Request.ODataFeature().TotalCount;
             if (count.HasValue)
             {
-                context.Response.Headers.Add("X-Total-Count", count.Value.ToString());
+                context.Response.Headers.Append("X-Total-Count", count.Value.ToString());
             }
         }
     }

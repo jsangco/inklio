@@ -7,7 +7,7 @@ The Inklio API service contains all the APIs and domain logic used to power Inkl
 
 * [VSCode](https://code.visualstudio.com/) - IDE
   * [SQL Server (mssql) Extension](https://github.com/microsoft/vscode-mssql)
-* [.Net 6+ SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) - For building C# projects
+* [.Net 7+ SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) - For building C# projects.
 * [Docker](https://docs.docker.com/get-docker/) - For building and running containers
 
 ### 2. SQL Database connection

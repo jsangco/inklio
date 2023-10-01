@@ -27,8 +27,8 @@ public class AccountPasswordResetCommandHandler : IRequestHandler<AccountPasswor
 
     public async Task<bool> Handle(AccountPasswordResetCommand accountResetPassword, CancellationToken cancellationToken)
     {
-        InklioIdentityUser user = await userManager.FindByEmailAsync(accountResetPassword.Email);
-        if (user == null)
+        InklioIdentityUser? user = await userManager.FindByEmailAsync(accountResetPassword.Email);
+        if (user is null)
         {
             return true;
         }

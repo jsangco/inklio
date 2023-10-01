@@ -9,7 +9,7 @@ All services can be run together using docker compose. The configuration steps a
 
 ### Required
 
-* [.Net 6+ SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) - For building C# projects.
+* [.Net 7+ SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) - For building C# projects.
 * [Docker](https://docs.docker.com/get-docker/) - For building and running containers.
 * [Node.js](https://nodejs.org/en) - Front-end development. Inklio uses 18 LTS.
 

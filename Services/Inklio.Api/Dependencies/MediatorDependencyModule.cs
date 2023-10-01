@@ -14,33 +14,15 @@ public class MediatorDependencyModule : Autofac.Module
         builder.RegisterAssemblyTypes(typeof(AskCreateCommand).GetTypeInfo().Assembly)
             .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
-        // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
-        // Commented out until we add a notification handler
-        // builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
-        //     .AsClosedTypesOf(typeof(INotificationHandler<>));
-
         // Register the Command's Validators (Validators based on FluentValidation library)
         builder
             .RegisterAssemblyTypes(typeof(AskCreateCommandValidator).GetTypeInfo().Assembly)
             .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
             .AsImplementedInterfaces();
 
-
-        builder.Register<ServiceFactory>(context =>
-        {
-#pragma warning disable CS8600
-#pragma warning disable CS8603
-            var componentContext = context.Resolve<IComponentContext>();
-            return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
-#pragma warning restore CS8600
-#pragma warning restore CS8603
-        });
+        var services = new ServiceCollection();
+        builder.Populate(services);
 
         builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-
-        // Maybe need these in the future:
-        // builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-        // builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
-
     }
 }

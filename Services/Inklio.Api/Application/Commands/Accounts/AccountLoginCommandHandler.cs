@@ -44,7 +44,7 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, A
 
         IEnumerable<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Name, user.UserName!),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         }.Concat(roles);
 
@@ -53,7 +53,7 @@ public class AccountLoginCommandHandler : IRequestHandler<AccountLoginCommand, A
         var account = new Account()
         {
             Id = user.Id.ToString(),
-            Username = user.UserName,
+            Username = user.UserName!,
             Roles = userRoles,
             IsEmailVerified = user.EmailConfirmed,
         };

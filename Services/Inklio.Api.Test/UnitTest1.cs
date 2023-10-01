@@ -14,7 +14,13 @@ public class UnitTest1
     [Fact]
     public void Test1()
     {
-        var configuration = new ConfigurationBuilder().Build();
+        Environment.SetEnvironmentVariable("Web__BaseUrl", "http://localhost/");
+        Environment.SetEnvironmentVariable("Web__ApiUrl", "http://localhost/api/");
+        Environment.SetEnvironmentVariable("Web__ImageUrl", "http://localhost/images/");
+
+        var configuration = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .Build();
         ContainerBuilder builder = new ContainerBuilder();
         builder.RegisterModule(new InklioDependencyModule(configuration, new TestHost()));
         IContainer container = builder.Build();

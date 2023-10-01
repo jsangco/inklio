@@ -83,7 +83,7 @@ public class AccountCreateCommandHandler : IRequestHandler<AccountCreateCommand,
             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUri.ToString())}'>clicking here</a>.");
 
         // Add User to Inklio DB
-        await this.inklioUserRepository.AddUserAsync(user.Id, user.UserName, cancellationToken);
+        await this.inklioUserRepository.AddUserAsync(user.Id, user.UserName!, cancellationToken);
         await this.inklioUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return true;

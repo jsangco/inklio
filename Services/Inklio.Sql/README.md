@@ -19,7 +19,7 @@ The dev machines IP address must be [granted access](https://learn.microsoft.com
 
 ### Prerequisites
 
- 1. [.Net 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+ 1. [.Net 7+ SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
  2. `dotnet tool install -g microsoft.sqlpackage`
 
 ### Steps

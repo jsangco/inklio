@@ -27,6 +27,8 @@ appBuilder.Host
         builder.RegisterModule(new InklioDependencyModule(hostContext.Configuration, hostContext.HostingEnvironment));
     });
 
+// Configure Services
+
 appBuilder.Services.PostConfigure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory.Instance;
@@ -53,7 +55,8 @@ appBuilder.Services.AddSwaggerGen( c =>
 appBuilder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("Database");
 
-string identitySqlConnectionString = appBuilder.Configuration.GetConnectionString("InklioSqlConnectionString");
+string identitySqlConnectionString = appBuilder.Configuration.GetConnectionString("InklioSqlConnectionString")
+    ?? throw new ArgumentNullException("InklioSqlConnectionString");
 appBuilder.Services.AddInklioIdentity(appBuilder.Environment, identitySqlConnectionString);
 
 var app = appBuilder.Build();
@@ -72,7 +75,7 @@ app.UseODataExceptionHandler(appBuilder.Environment);
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseRequestBaseUrlRewriter(appBuilder.Configuration.GetSection("Web").Get<WebConfiguration>());
+app.UseRequestBaseUrlRewriter(appBuilder.Configuration.GetSection("Web").Get<WebConfiguration>() ?? throw new ArgumentNullException("Cannot load WebConfiguration"));
 app.MapControllers();
 app.MapHealthChecks("/", new HealthCheckOptions
 {
