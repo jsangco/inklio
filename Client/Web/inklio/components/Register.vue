@@ -33,7 +33,7 @@
           {{ errorConfirmPassword }}
         </span>
       </div>
-      <button type="submit">Register</button>
+      <input type="submit" value="Register"/>
     </form>
   </div>
 </template>

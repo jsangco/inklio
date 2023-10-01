@@ -13,7 +13,7 @@
         <label for="password">Password</label>
         <input v-model="password" type="password" id="loginPassword" />
       </div>
-      <button type="submit">Login</button>
+      <input type="submit" value="Login"/>
     </form>
     <div style="font-size: small;padding: 10px;">
       Forget your <NuxtLink to="/password-forget">password</NuxtLink>?

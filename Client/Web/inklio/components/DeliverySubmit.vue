@@ -12,11 +12,11 @@
         <input type="text" ref="elTitle" name="title" v-model="deliveryCreate.title"
           placeholder="(Optional) Your delivery's title..." />
         <textarea ref="elBody" name="body" v-model="deliveryCreate.body" @input="autoResize" @mouseup="autoResize"
-          @focus="autoResize" placeholder="(Optional) Describe your delivery..."></textarea>
+          @focus="autoResize" @keydown.ctrl.enter="submitDelivery" placeholder="(Optional) Describe your delivery..."></textarea>
       </div>
       <label>Images: </label>
       <input type="file" ref="elImages" name="images" accept="image/jpeg,image/png" multiple="true" />
-      <button type="submit">Submit</button>
+      <input type="submit" value="Submit"/>
     </form>
   </div>
 </template>

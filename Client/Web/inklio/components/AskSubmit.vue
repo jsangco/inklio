@@ -12,11 +12,11 @@
         <input type="text" ref="elTitle" name="title" v-model="askCreate.title"
           placeholder="Your ask's title..." />
         <textarea ref="elBody" name="body" v-model="askCreate.body" @input="autoResize" @mouseup="autoResize"
-          @focus="autoResize" placeholder="Describe your ask..."></textarea>
+          @focus="autoResize" @keydown.ctrl.enter="submitAsk" placeholder="Describe your ask..."></textarea>
       </div>
       <label>Images: </label>
       <input type="file" ref="elImages" name="images" accept="image/jpeg,image/png" multiple="true" />
-      <button type="submit">Submit</button>
+      <input type="submit" value="Submit"/>
     </form>
   </div>
 </template>

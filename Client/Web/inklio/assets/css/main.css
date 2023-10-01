@@ -113,6 +113,17 @@ textarea {
   margin-right:15px;
 }
 
+input[type=submit] {
+  display: block;
+  background-color: var(--button-background-color);
+  color: var(--button-font-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin:2%;
+}
+
 input {
   background-color: var(--textarea-background-color);
   color: var(--textarea-font-color);

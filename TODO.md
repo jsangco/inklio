@@ -8,7 +8,6 @@ Any task or thing that needs to get done can be added here.
 * Implement post flagging.
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
-* submit buttons should work with 'enter' key.
 
 ## Tech Backlog
 

@@ -10,9 +10,9 @@
       </div>
       <div class="comment-submit-text" ref="elCommentSubmit">
         <textarea ref="elBody" name="body" v-model="commentCreate.body" @input="autoResize" @mouseup="autoResize"
-          @focus="autoResize" placeholder="What are your thoughts?"></textarea>
+          @focus="autoResize" @keydown.ctrl.enter="submitComment" placeholder="What are your thoughts?"></textarea>
       </div>
-      <button type="submit">Add comment</button>
+      <input type="submit" value="Submit"/>
     </form>
   </div>
 </template>
