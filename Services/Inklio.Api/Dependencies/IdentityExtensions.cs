@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Inklio.Api.Infrastructure.EFCore;
+using Microsoft.AspNetCore.DataProtection;
 
 public static class IdentityExtensions
 {
@@ -75,6 +76,9 @@ public static class IdentityExtensions
                 }
             };
         });
+
+        services.AddDataProtection()
+            .PersistKeysToDbContext<IdentityContext>();
 
         return services;
     }

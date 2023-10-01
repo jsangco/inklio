@@ -30,6 +30,7 @@ do
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetRoleClaims.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetUserLogins.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/AspNetUserTokens.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Tables/DataProtectionKeys.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Scripts/Script.PostDeploymentScript.sql
         echo "auth schemas created"
 

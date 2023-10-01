@@ -3,7 +3,6 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* re-log is required after every deployment fix: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-3.1&tabs=visual-studio#entity-framework-core
 * Fix double posting bug.
 * Implement post deletion by administrators.
 * Implement post flagging.
@@ -21,7 +20,8 @@ Any task or thing that needs to get done can be added here.
 * Setup email server
 * Add domain event handling when a user registers
 * Add ability to delete Asks, Deliveries, Comments, Tags, Images
-* API is using forms, so add CSRF protecting
+* API is using forms, so add CSRF protection
+* Run perf and load test to understand limitations service.
 * Make nginx r. proxy work with azure storage redirect. It seems to fail because it can't handle http -> https redirects.
 
 ## Feature Backlog
