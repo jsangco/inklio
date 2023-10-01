@@ -3,11 +3,11 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* Production is showing developer messages
+* Fix it so 300 errors properly redirect to login-register page.
+* Upgrade to .net 7.0
+* re-log is required after every deployment fix: https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-3.1&tabs=visual-studio#entity-framework-core
 * Implement post deletion by administrators.
 * Implement post flagging.
-* Fix it so 300 errors properly redirect to login-register page.
-* Understand why re-log is required after every deployment
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
 

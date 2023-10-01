@@ -37,7 +37,7 @@
   --askpage-createdby-font-color: #52525288;
 
   /* upvote */
-  --upvote-off-fill: black;
+  --upvote-off-stroke: white;
   --upvote-on-fill: green;
 }
 

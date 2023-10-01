@@ -123,6 +123,9 @@ public static class ODataExtensions
             .HasKey(e => e.Id);
         builder.EntityType<Tag>()
             .HasKey(e => e.Id);
+        builder.EntityType<Ask>().Action("upvote");
+        builder.EntityType<Delivery>().Action("upvote");
+        builder.EntityType<Comment>().Action("upvote");
 
         return builder.GetEdmModel();
     }
