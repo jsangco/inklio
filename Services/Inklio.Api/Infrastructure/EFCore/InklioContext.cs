@@ -61,6 +61,7 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         builder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new AskImageEntityTypeConfiguration());
         builder.ApplyConfiguration(new CommentEntityTypeConfiguration());
+        builder.ApplyConfiguration(new DeletionEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryImageEntityTypeConfiguration());

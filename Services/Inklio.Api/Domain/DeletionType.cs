@@ -1,6 +1,6 @@
 namespace Inklio.Api.Domain;
 
-public enum FlagType
+public enum DeletionType
 {
     Other = 0,
     Harassment = 1,

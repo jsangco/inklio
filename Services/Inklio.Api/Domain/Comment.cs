@@ -1,4 +1,5 @@
 using Inklio.Api.SeedWork;
+using Microsoft.OData.ModelBuilder;
 
 namespace Inklio.Api.Domain;
 
@@ -33,9 +34,14 @@ public class Comment : Entity, IAggregateRoot
     public User CreatedBy { get; private set; }
 
     /// <summary>
-    /// Gets or sets the username of the user that created the ask.
+    /// Gets the username of the user that created the ask.
     /// </summary>
     public string CreatedByUsername => this.CreatedBy.Username;
+
+    /// <summary>
+    /// Gets the deletion associated with the comment if it was deleted.
+    /// </summary>
+    public CommentDeletion? Deletion { get; private set; }
 
     /// <summary>
     /// Gets or sets the UTC time the comment was last edited.
@@ -138,12 +144,6 @@ public class Comment : Entity, IAggregateRoot
         this.ThreadId = ask.Id;
     }
 
-    public static Comment Create(Ask ask, string body, User createdBy)
-    {
-        // TODO - Verify user can create a comment
-        return new Comment(ask, body, createdBy);
-    }
-
     /// <summary>
     /// Flags the <see cref="Comment"/>.
     /// </summary>
@@ -180,6 +180,31 @@ public class Comment : Entity, IAggregateRoot
         }
 
         return this.upvotes[existingUpvoteIndex];
+    }
+
+    /// <summary>
+    /// Marks the comment as deleted. It does not actually delete the comment.
+    /// </summary>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the comment.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void Delete(
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        if (this.IsDeleted)
+        {
+            return;
+        }
+
+        this.IsDeleted = true;
+        this.EditedAtUtc = DateTime.UtcNow;
+        this.EditedById = editor.Id;
+
+        this.Deletion = new CommentDeletion(this, deletionType, editor, internalComment, userMessage);
     }
 
     /// <summary>

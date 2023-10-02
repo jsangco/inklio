@@ -49,7 +49,7 @@ public class UpvoteDeleteCommandHandler : IRequestHandler<UpvoteDeleteCommand, b
         {
             if (request.CommentId.HasValue)
             {
-                ask.DeleteCommentUpvote(request.CommentId.Value, user);
+                ask.DeleteAskCommentUpvote(request.CommentId.Value, user);
             }
             else
             {

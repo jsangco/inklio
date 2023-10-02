@@ -12,18 +12,28 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
     {
         builder.ToTable("ask", InklioContext.DbSchema);
 
+        // Indexes
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();
 
+        // Gloabal query filters
+        builder.HasQueryFilter(e => e.IsDeleted == false);
+
+        // Ignored properties
         builder.Ignore(b => b.DomainEvents);
         builder.Ignore(b => b.IsUpvoted);
 
+        // Relationships
         builder.HasOne(e => e.CreatedBy);
         builder.Navigation(e => e.CreatedBy).AutoInclude();
 
         builder
             .HasMany(e => e.Comments)
-            .WithOne();
+            .WithOne(e => e.Ask);
+
+        builder
+            .HasOne(e => e.Deletion)
+            .WithOne(e => e.Ask);
 
         builder
             .HasMany(e => e.Deliveries)

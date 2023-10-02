@@ -12,12 +12,18 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
     {
         builder.ToTable("delivery", InklioContext.DbSchema);
 
+        // Indexes
         builder.HasKey(e => e.Id).IsClustered();
         builder.HasIndex(e => e.Id).IsUnique();
 
+        // Gloabal query filters
+        builder.HasQueryFilter(e => e.IsDeleted == false);
+
+        // Ignored properties
         builder.Ignore(b => b.DomainEvents);
         builder.Ignore(b => b.IsUpvoted);
 
+        // Relationships
         builder.HasOne(e => e.CreatedBy);
         builder.Navigation(e => e.CreatedBy).AutoInclude();
 
@@ -28,6 +34,10 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         builder
             .HasMany(e => e.Comments)
             .WithOne();
+
+        builder
+            .HasOne(e => e.Deletion)
+            .WithOne(e => e.Delivery);
 
         builder
             .HasMany(e => e.Images)
@@ -57,6 +67,5 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
                     e.HasKey(dt => new { dt.DeliveryId, dt.TagId });
                     e.HasIndex(dt => new { dt.DeliveryId, dt.TagId }).IsUnique();
                 });
-        
     }
 }

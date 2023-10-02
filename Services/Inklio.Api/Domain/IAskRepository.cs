@@ -23,12 +23,29 @@ public interface IAskRepository : IRepository<Ask>
     IQueryable<AskQueryObject> GetAsks(UserId? userId);
 
     /// <summary>
+    /// Gets all <see cref="Ask"/> objects from the repository and includes deleted
+    /// enteries.
+    /// </summary>
+    /// <param name="userId">An optional user Id associated with the query.</param>
+    /// <returns>All ask obojects</returns>
+    IQueryable<AskQueryObject> GetAllAsks(UserId? userId);
+
+    /// <summary>
     /// Gets an <see cref="Ask"/> from the repository.
     /// </summary>
     /// <param name="askId">The id of the ask to get.</param>
     /// <param name="cancellationToken">A cancellation token</param>
     /// <returns>The ask.</returns>
     Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets an <see cref="Ask"/> from the repository and may include deleted
+    /// enteries.
+    /// </summary>
+    /// <param name="askId">The id of the ask to get.</param>
+    /// <param name="cancellationToken">A cancellation token</param>
+    /// <returns>The ask.</returns>
+    Task<Ask> GetAnyAskByIdAsync(int askId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets an <see cref="Ask"/> from the repository. And includes information

@@ -8,6 +8,7 @@ Any task or thing that needs to get done can be added here.
 * User and Account page
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
+* front page query should put asks with new deliveries at the top
 
 ## Tech Backlog
 

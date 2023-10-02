@@ -93,9 +93,14 @@ public class Ask : Entity, IAggregateRoot
     public int CreatedById { get; private set; }
 
     /// <summary>
-    /// Gets or sets the username of the user that created the ask.
+    /// Gets the username of the user that created the ask.
     /// </summary>
     public string CreatedByUsername => this.CreatedBy.Username;
+
+    /// <summary>
+    /// Gets the deletion information for the ask if it was deleted.
+    /// </summary>
+    public AskDeletion? Deletion { get; set; }
 
     /// <summary>
     /// The deliveries for the ask.
@@ -540,20 +545,56 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Marks an Ask as deleted. NOTE: It does not actually delete the Ask.
+    /// Marks an Ask as deleted. It does not actually delete the Ask.
     /// </summary>
-    /// <param name="editor">The user deleting the Ask.</param>
-    public void Delete(User editor)
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the ask.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void Delete(
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
     {
+        if (this.IsDeleted)
+        {
+            return;
+        }
+
         this.IsDeleted = true;
         this.EditedAtUtc = DateTime.UtcNow;
         this.EditedById = editor.Id;
+
+        this.Deletion = new AskDeletion(this, deletionType, editor, internalComment, userMessage);
+    }
+
+    /// <summary>
+    /// Marks a comment on an Ask as deleted. It does not actually delete the comment.
+    /// </summary>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the comment.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void DeleteAskComment(
+        int commentId,
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        var comment = this.comments.FirstOrDefault(d => d.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot delete comment from ask. The comment is not part of the Ask.");
+        }
+        comment.Delete(deletionType, editor, internalComment, userMessage);
     }
 
     /// <summary>
     /// Removes an upvote from a comment.
     /// </summary>
-    internal void DeleteCommentUpvote(int commentId, User user)
+    internal void DeleteAskCommentUpvote(int commentId, User user)
     {
         var comment = this.comments.FirstOrDefault(d => d.Id == commentId);
         if (comment is null)
@@ -575,6 +616,54 @@ public class Ask : Entity, IAggregateRoot
             this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
         }
+    }
+
+    /// <summary>
+    /// Marks a delivery of an Ask as deleted. It does not actually delete the delivery.
+    /// </summary>
+    /// <param name="commentId">The id of the comment to delete</param>
+    /// <param name="deliveryId">The id of the delivery containing the comment to delete.</param>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the ask.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void DeleteDeliveryComment(
+        int commentId,
+        int deliveryId,
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from delivery. The delivery is not part of the Ask.");
+        }
+        delivery.DeleteComment(commentId, deletionType, editor, internalComment, userMessage);
+    }
+
+
+    /// <summary>
+    /// Marks a comment on an Ask as deleted. It does not actually delete the comment.
+    /// </summary>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the ask.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void DeleteDelivery(
+        int deliveryId,
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
+        if (delivery is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from delivery. The delivery is not part of the Ask.");
+        }
+        delivery.Delete(deletionType, editor, internalComment, userMessage);
     }
 
     /// <summary>

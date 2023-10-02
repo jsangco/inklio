@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Inklio.Api.Application.Commands;
 
 /// <summary>
@@ -9,16 +11,22 @@ public class UpvoteCreateCommand : IRequest<bool>
     /// <summary>
     /// Gets or sets the ID of the ask.
     /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
     public int AskId { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the delivery.
     /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
     public int? DeliveryId { get; set; }
 
     /// <summary>
     /// Gets or sets the ID of the comment.
     /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
     public int? CommentId { get; set; }
 
     /// <summary>

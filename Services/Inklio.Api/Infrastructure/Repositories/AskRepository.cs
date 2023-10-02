@@ -30,9 +30,22 @@ public class AskRepository : IAskRepository
     }
 
     /// <inheritdoc/>
-    public void Update(Ask ask)
+    public IQueryable<AskQueryObject> GetAllAsks(UserId? userId)
     {
-        this.context.Entry(ask).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        if (userId is null)
+        {
+            return this.context.Asks
+                .IgnoreQueryFilters()
+                .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = false });
+        }
+        else
+        {
+            var upvoteUserId = this.context.Users.First(u => u.UserId == userId).Id;
+            return this.context.Asks
+                .IgnoreQueryFilters()
+                .Include(a => a.Upvotes)
+                .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = a.Upvotes.Any(u => u.CreatedById == upvoteUserId) });
+        }
     }
 
     /// <inheritdoc/>
@@ -41,24 +54,48 @@ public class AskRepository : IAskRepository
         if (userId is null)
         {
             return this.context.Asks
-                .Where(a => a.IsDeleted == false)
                 .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = false });
         }
         else
         {
             var upvoteUserId = this.context.Users.First(u => u.UserId == userId).Id;
             return this.context.Asks
-                .Where(a => a.IsDeleted == false)
                 .Include(a => a.Upvotes)
                 .Select(a => new AskQueryObject() { Ask = a, IsUpvoted = a.Upvotes.Any(u => u.CreatedById == upvoteUserId) });
         }
     }
 
     /// <inheritdoc/>
+    public async Task<Ask> GetAnyAskByIdAsync(int askId, CancellationToken cancellationToken)
+    {
+        Ask? ask = await this.context.Asks
+            .IgnoreAutoIncludes()
+            .Include(a => a.Comments).IgnoreQueryFilters()
+            .Include(a => a.Comments).ThenInclude(e => e.Upvotes)
+            .Include(a => a.Images)
+            .Include(a => a.Tags)
+            .Include(a => a.Upvotes)
+            .Include(a => a.Deliveries).IgnoreQueryFilters()
+            .Include(a => a.Deliveries).ThenInclude(d => d.Comments)
+            .Include(a => a.Deliveries).ThenInclude(d => d.Comments).ThenInclude(c => c.Upvotes)
+            .Include(a => a.Deliveries).ThenInclude(d => d.Images)
+            .Include(a => a.Deliveries).ThenInclude(e => e.Tags)
+            .Include(a => a.Deliveries).ThenInclude(e => e.Upvotes)
+            .FirstOrDefaultAsync(a => a.Id == askId, cancellationToken);
+
+        if (ask is not null)
+        {
+            return ask;
+        }
+
+        throw new InklioDomainException(404, $"The specified Ask {askId} was not found");
+    }
+
+
+    /// <inheritdoc/>
     public async Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken)
     {
         Ask? ask = await this.context.Asks
-            .Where(a => a.IsDeleted == false)
             .Include(a => a.Comments)
             .Include(a => a.Comments).ThenInclude(e => e.Upvotes)
             .Include(a => a.Images)

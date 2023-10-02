@@ -17,9 +17,6 @@ class ImageEntityTypeConfiguration : IEntityTypeConfiguration<Image>
 
         builder.Ignore(b => b.DomainEvents);
 
-        // builder.Property(o => o.Id);
-            // .UseHiLo("order_sequence", InklioContext.DefaultDbSchema);
-
         builder.HasOne(e => e.Thread);
         builder.Property<int>(e => e.ThreadId).IsRequired();
 

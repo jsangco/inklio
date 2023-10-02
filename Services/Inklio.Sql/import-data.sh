@@ -19,6 +19,7 @@ do
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/upvote.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/ask_tag.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/delivery_tag.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/deletion.sql
         echo "inklio schemas created"
 
         echo "Creating auth Schemas"

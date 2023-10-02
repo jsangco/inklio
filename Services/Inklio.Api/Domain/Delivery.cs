@@ -93,6 +93,11 @@ public class Delivery : Entity, IAggregateRoot
     public int CreatedById { get; private set; }
 
     /// <summary>
+    /// Gets the deletion associated with the delivery if it was deleted.
+    /// </summary>
+    public DeliveryDeletion? Deletion { get; private set; }
+
+    /// <summary>
     /// The tags associated with the <see cref="Delivery"/>.
     /// </summary>
     private List<DeliveryTag> deliveryTags = new List<DeliveryTag>();
@@ -366,6 +371,53 @@ public class Delivery : Entity, IAggregateRoot
         }
 
         return this.upvotes[existingUpvoteIndex];
+    }
+
+    /// <summary>
+    /// Marks an Delivery as deleted. It does not actually delete the Delivery.
+    /// </summary>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the Delivery.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void Delete(
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        if (this.IsDeleted)
+        {
+            return;
+        }
+
+        this.IsDeleted = true;
+        this.EditedAtUtc = DateTime.UtcNow;
+        this.EditedById = editor.Id;
+
+        this.Deletion = new DeliveryDeletion(this, deletionType, editor, internalComment, userMessage);
+    }
+
+    /// <summary>
+    /// Marks a comment on a delivery as deleted. It does not actually delete the comment.
+    /// </summary>
+    /// <param name="deletionType">The type of the deletion.</param>
+    /// <param name="editor">The user deleting the comment.</param>
+    /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
+    public void DeleteComment(
+        int commentId,
+        DeletionType deletionType,
+        User editor,
+        string internalComment,
+        string userMessage)
+    {
+        var comment = this.comments.FirstOrDefault(d => d.Id == commentId);
+        if (comment is null)
+        {
+            throw new InklioDomainException(400, "Cannot remove upvote from comment. The comment is not part of the Ask.");
+        }
+        comment.Delete(deletionType, editor, internalComment, userMessage);
     }
 
     /// <summary>

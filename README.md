@@ -147,6 +147,9 @@ Invoke-WebRequest -WebSession $session -Method POST -Body (@{"body"="myDeliveryC
 # Add a Tag to an Ask and all its child objects (i.e. Deliveries, Comments)
 Invoke-WebRequest -WebSession $session -Method POST -Body (@{"tag"=@{"value"="konosuba"}} | ConvertTo-Json)  -ContentType "application/json" http://localhost/api/v1/asks/1/tags
 
+# Delete an Ask
+Invoke-WebRequest -WebSession $session -Method DELETE -Body (@{"deletionType"=0; "internalComment"="my internal comment"; "userMessage"="my user message";} | ConvertTo-Json) -ContentType "application/json" http://localhost/api/v1/asks/2
+
 # Upvote an ask
 Invoke-WebRequest -WebSession $session -Method POST -ContentType "application/json" http://localhost/api/v1/asks/1/upvote
 
