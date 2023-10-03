@@ -35,8 +35,9 @@ public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateComman
     {
         var user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         var ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
+        var hottestRank = await this.askRepository.GetAskHottestAsync(cancellationToken);
 
-        DomainDelivery delivery = ask.AddDelivery(request.Body, request.ContentRating, user, request.IsAi, request.IsSpoiler, request.Title);
+        DomainDelivery delivery = ask.AddDelivery(request.Body, request.ContentRating, user, hottestRank, request.IsAi, request.IsSpoiler, request.Title);
 
         // The creator automatically upvotes their post.
         delivery.AddUpvote((int)UpvoteType.Basic, user);

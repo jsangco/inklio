@@ -8,6 +8,7 @@ Any task or thing that needs to get done can be added here.
 * delivery and ask submit pages are copy-pasted and should be refactored.
 * Investigate race conditions seen when generating content with simultaneous calls.
 * front page query should put asks with new deliveries at the top
+* Add front page "Hot" query that ensures deliveries have priority.
 
 ## Tech Backlog
 
@@ -27,6 +28,5 @@ Any task or thing that needs to get done can be added here.
 
 * Add Daily, Weekly, Monthly challenges
 * Rewards for challenges
-* Add front page "Hot" query that ensures deliveries have priority.
 * Tag based search
 * Email user when upvotes, comments or deliveries are posted.

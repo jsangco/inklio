@@ -42,12 +42,13 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     {
         // Get the user creating the tag
         User user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
+        int askHottest = await this.askRepository.GetAskHottestAsync(cancellationToken);
 
         user.AdjustAskReputation(1);
         user.SetAskCount(user.AskCount + 1);
 
         // Create the ask
-        DomainAsk ask = DomainAsk.Create(request.Body, request.ContentRating, user, request.IsSpoiler, request.Title);
+        DomainAsk ask = DomainAsk.Create(request.Body, request.ContentRating, user, request.IsSpoiler, askHottest + 1, request.Title);
 
         // The creator automatically upvotes their post.
         ask.AddUpvote((int)UpvoteType.Basic, user);

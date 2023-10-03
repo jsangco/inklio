@@ -1,4 +1,5 @@
 using AutoMapper;
+using Azure;
 using Inklio.Api.Domain;
 using Inklio.Api.Infrastructure.EFCore;
 using Inklio.Api.SeedWork;
@@ -163,6 +164,14 @@ public class AskRepository : IAskRepository
 
         return ask;
     }
+
+    /// <inheritdoc/>
+    public async Task<int> GetAskHottestAsync(CancellationToken cancellationToken)
+    {
+        var ask = await this.context.Asks.OrderByDescending(a => a.RankHot).FirstOrDefaultAsync(cancellationToken);
+        return ask?.RankHot ?? 0;
+    }
+
 
     /// <inheritdoc/>
     public bool TryGetTagByName(string type, string value, out Tag? tag)

@@ -187,6 +187,13 @@ public class Ask
     public DateTime? LockedAtUtc { get; set; }
 
     /// <summary>
+    /// Gets or sets the hot rank for the ask.
+    /// </summary>
+    [DataMember(Name = "rankHot")]
+    [JsonPropertyName("rankHot")]
+    public int RankHot { get; set; }
+
+    /// <summary>
     /// Gets or sets the number of times the ask was saved.
     /// </summary>
     [DataMember(Name = "saveCount")]

@@ -59,6 +59,12 @@ public interface IAskRepository : IRepository<Ask>
     Task<Ask> GetAskByIdAsync(int askId, UserId? userId, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Gets the highest hot ranking from all asks.
+    /// </summary>
+    /// <returns></returns>
+    Task<int> GetAskHottestAsync(CancellationToken cancellationToken);
+
+    /// <summary>
     /// Attempts to fetcha a <see cref="Tag"/> from the tag repository.
     /// </summary>
     /// <param name="type">The type of the tag</param>

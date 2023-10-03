@@ -1,6 +1,14 @@
 <template>
   <div>
-    <AskSubmit @ask-submit="frontPageStore.initialize"/>
+
+    <!--
+      TODO: The upvote count on newly added asks is set incorrectly when the page is reloaded.
+            This means we cannot reload the page along with the users new ask. This may
+            be a NUXT framework bug or an oddity with how props are set.
+      <AskSubmit @ask-submit="frontPageStore.initialize"/>
+    -->
+    <AskSubmit/>
+
     <div ref="scrollComponent">
       <template v-if="!frontPageStore.error" v-for="a in frontPageStore.getAsks">
         <AskCard v-bind:ask="a"/>

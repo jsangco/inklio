@@ -24,6 +24,8 @@ CREATE TABLE [inklio].[ask]
   [is_locked] BIT NOT NULL DEFAULT 0,
   [is_spoiler] BIT NOT NULL DEFAULT 0,
   [locked_at_utc] DATETIME2 NULL,
+  [rank_hot] int NOT NULL DEFAULT 0,
+    INDEX ix_rank_hot NONCLUSTERED (rank_hot),
   [save_count] INT NOT NULL DEFAULT 0,
   [title] NVARCHAR(256) NOT NULL,
   [upvote_count] INT NOT NULL DEFAULT 0,
