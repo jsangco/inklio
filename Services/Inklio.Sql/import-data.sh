@@ -35,6 +35,10 @@ do
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/auth/Scripts/Script.PostDeploymentScript.sql
         echo "auth schemas created"
 
+        echo "Running post setup scripts"
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/Scripts/add_admin_user.sql
+        echo "post setup scripts completed"
+
         sleep infinity
         break
     else

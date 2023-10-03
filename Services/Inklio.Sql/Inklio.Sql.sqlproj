@@ -12,7 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <Build Remove="dbsetup.sql" />
-    <Build Remove="drop_all_tables.sql" />
+    <Build Remove="Scripts\drop_all_tables.sql" />
+    <Build Remove="Scripts\add_admin_user.sql" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
