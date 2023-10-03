@@ -188,16 +188,23 @@ public class Comment : Entity, IAggregateRoot
     /// <param name="deletionType">The type of the deletion.</param>
     /// <param name="editor">The user deleting the comment.</param>
     /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="isModeratorDeletion">A flag indicating that this request was initiated by a moderator.</param>
     /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
     public void Delete(
         DeletionType deletionType,
         User editor,
         string internalComment,
+        bool isModeratorDeletion,
         string userMessage)
     {
         if (this.IsDeleted)
         {
             return;
+        }
+
+        if (isModeratorDeletion == false && editor.Id != this.CreatedBy.Id)
+        {
+            throw new InklioDomainException(400, "User does not have permissions to delete this post.");
         }
 
         this.IsDeleted = true;

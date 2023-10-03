@@ -50,6 +50,13 @@ public class DeletionCommand : IRequest<bool>
     public string InternalComment { get; set; } = "";
 
     /// <summary>
+    /// Gets or sets a flag indicating the post deletion was initiated by a moderator
+    /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public bool IsModeratorDeletion { get; set; }
+
+    /// <summary>
     /// Gets or sets the message given to the user when the post is deleted.
     /// </summary>
     [StringLength(3000, MinimumLength = 0, ErrorMessage = "User message is not within the required length")]

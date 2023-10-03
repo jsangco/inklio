@@ -550,16 +550,23 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="deletionType">The type of the deletion.</param>
     /// <param name="editor">The user deleting the ask.</param>
     /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="isModeratorDeletion">A flag indicating that this request was initiated by a moderator.</param>
     /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
     public void Delete(
         DeletionType deletionType,
         User editor,
         string internalComment,
+        bool isModeratorDeletion,
         string userMessage)
     {
         if (this.IsDeleted)
         {
             return;
+        }
+
+        if (isModeratorDeletion == false && editor.Id != this.CreatedBy.Id)
+        {
+            throw new InklioDomainException(400, "User does not have permissions to delete this post.");
         }
 
         this.IsDeleted = true;
@@ -575,12 +582,14 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="deletionType">The type of the deletion.</param>
     /// <param name="editor">The user deleting the comment.</param>
     /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="isModeratorDeletion">A flag indicating that this request was initiated by a moderator.</param>
     /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
     public void DeleteAskComment(
         int commentId,
         DeletionType deletionType,
         User editor,
         string internalComment,
+        bool isModeratorDeletion,
         string userMessage)
     {
         var comment = this.comments.FirstOrDefault(d => d.Id == commentId);
@@ -588,7 +597,7 @@ public class Ask : Entity, IAggregateRoot
         {
             throw new InklioDomainException(400, "Cannot delete comment from ask. The comment is not part of the Ask.");
         }
-        comment.Delete(deletionType, editor, internalComment, userMessage);
+        comment.Delete(deletionType, editor, internalComment, isModeratorDeletion, userMessage);
     }
 
     /// <summary>
@@ -626,6 +635,7 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="deletionType">The type of the deletion.</param>
     /// <param name="editor">The user deleting the ask.</param>
     /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="isModeratorDeletion">A flag indicating that this request was initiated by a moderator.</param>
     /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
     public void DeleteDeliveryComment(
         int commentId,
@@ -633,6 +643,7 @@ public class Ask : Entity, IAggregateRoot
         DeletionType deletionType,
         User editor,
         string internalComment,
+        bool isModeratorDeletion,
         string userMessage)
     {
         var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
@@ -640,7 +651,7 @@ public class Ask : Entity, IAggregateRoot
         {
             throw new InklioDomainException(400, "Cannot remove upvote from delivery. The delivery is not part of the Ask.");
         }
-        delivery.DeleteComment(commentId, deletionType, editor, internalComment, userMessage);
+        delivery.DeleteComment(commentId, deletionType, editor, internalComment, isModeratorDeletion, userMessage);
     }
 
 
@@ -650,12 +661,14 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="deletionType">The type of the deletion.</param>
     /// <param name="editor">The user deleting the ask.</param>
     /// <param name="internalComment">The internal comment on the deletion.</param>
+    /// <param name="isModeratorDeletion">A flag indicating that this request was initiated by a moderator.</param>
     /// <param name="userMessage">The messeage shown to the user about the deletion.</param>
     public void DeleteDelivery(
         int deliveryId,
         DeletionType deletionType,
         User editor,
         string internalComment,
+        bool isModeratorDeletion,
         string userMessage)
     {
         var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
@@ -663,7 +676,7 @@ public class Ask : Entity, IAggregateRoot
         {
             throw new InklioDomainException(400, "Cannot remove upvote from delivery. The delivery is not part of the Ask.");
         }
-        delivery.Delete(deletionType, editor, internalComment, userMessage);
+        delivery.Delete(deletionType, editor, internalComment, isModeratorDeletion, userMessage);
     }
 
     /// <summary>

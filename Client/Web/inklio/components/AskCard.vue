@@ -11,7 +11,7 @@
       <div>
         <Upvote :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount" :askId="ask.id" :deliveryId="null" :commentId="null"/>
         <span>{{ ask.commentCount + ask.deliveryCount }} replies</span>
-        <ModActions :askId="ask.id" :comment-id="null" :delivery-id="null" />
+        <ModActions :askId="ask.id" :comment-id="null" :delivery-id="null" :creator="ask.createdBy"/>
       </div>
     </div>
   </div>

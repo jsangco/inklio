@@ -12,4 +12,5 @@ public enum DeletionType
     Spam = 7,
     Terrorism = 8,
     IllegalContent = 9,
+    CreatorDeleted = 10,
 }

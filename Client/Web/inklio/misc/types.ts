@@ -64,6 +64,7 @@ export enum DeletionType {
   spam = 7,
   terrorism = 8,
   illegalContent = 9,
+  creatorDeleted = 10,
 }
 
 export type Delivery = {

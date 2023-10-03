@@ -272,12 +272,17 @@ public class AsksController : ODataController
         await this.mediator.Send(upvoteCreateCommand, cancellationToken);
     }
 
-    [Authorize(Roles = "Moderator, Administrator")]
+    [Authorize]
     [HttpDelete("{askId:int}")]
     public async Task DeleteAsk(int askId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
-        deletionCommand.EditedById = this.User.UserId();
         deletionCommand.AskId = askId;
+        deletionCommand.EditedById = this.User.UserId();
+        deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
+        deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
+        deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+
         this.logger.LogInformation("----- Sending command: ask {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
     }
@@ -291,13 +296,17 @@ public class AsksController : ODataController
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 
-    [Authorize(Roles = "Moderator, Administrator")]
+    [Authorize]
     [HttpDelete("{askId:int}/comments/{commentId:int}")]
     public async Task DeleteAskCommentAsync(int askId, int commentId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
         deletionCommand.EditedById = this.User.UserId();
         deletionCommand.AskId = askId;
         deletionCommand.CommentId = commentId;
+        deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
+        deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
+        deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
+
         this.logger.LogInformation("----- Sending command: ask comment {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
     }
@@ -311,13 +320,18 @@ public class AsksController : ODataController
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 
-    [Authorize(Roles = "Moderator, Administrator")]
+    [Authorize]
     [HttpDelete("{askId:int}/deliveries/{deliveryId:int}")]
     public async Task DeleteDeliveryeryAsync(int askId, int deliveryId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
         deletionCommand.EditedById = this.User.UserId();
         deletionCommand.AskId = askId;
         deletionCommand.DeliveryId = deliveryId;
+        deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
+        deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
+        deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+
         this.logger.LogInformation("----- Sending command: delivery {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
     }
@@ -331,7 +345,7 @@ public class AsksController : ODataController
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
     }
 
-    [Authorize(Roles = "Moderator, Administrator")]
+    [Authorize]
     [HttpDelete("{askId:int}/deliveries/{deliveryId:int}/comments/{commentId:int}")]
     public async Task DeleteDeliveryCommentAsync(int askId, int deliveryId, int commentId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
@@ -339,6 +353,11 @@ public class AsksController : ODataController
         deletionCommand.AskId = askId;
         deletionCommand.DeliveryId = deliveryId;
         deletionCommand.CommentId = commentId;
+        deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
+        deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
+        deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+
         this.logger.LogInformation("----- Sending command: delivery comment {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
     }

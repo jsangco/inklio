@@ -17,7 +17,7 @@ const props = defineProps<{
 
 </script>
 
-<style>
+<style scoped>
 .askcarddelivery-overlay {
   position: absolute;
   top: 0;
@@ -35,6 +35,7 @@ const props = defineProps<{
 
 .askcarddelivery h1{
   text-align: left;
+  font-size: large;
 }
 
 .askcarddelivery p{

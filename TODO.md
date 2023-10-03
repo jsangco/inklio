@@ -3,7 +3,6 @@
 Any task or thing that needs to get done can be added here.
 
 ## TODO Queue
-* Add post deletion to UI when logged as administrator
 * Implement post flagging.
 * User and Account page
 * delivery and ask submit pages are copy-pasted and should be refactored.

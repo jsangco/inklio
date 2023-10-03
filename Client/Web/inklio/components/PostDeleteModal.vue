@@ -31,8 +31,9 @@ import { Deletion } from '~/misc/types';
 
 const props = defineProps<{
   askId: number,
-  deliveryId: number | null,
   commentId: number | null,
+  creator: string,
+  deliveryId: number | null,
 }>();
 
 const deletionCreate = ref<Deletion>({
@@ -60,6 +61,7 @@ const submit = async () => {
     method: 'DELETE',
   }).catch(error => {
     isSubmitting.value = false;
+    submitError.value = error.data;
   });
 
   if (fetchResult?.status.value == "success") {

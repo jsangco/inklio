@@ -51,6 +51,7 @@ public class DeletionCommandHandler : IRequestHandler<DeletionCommand, bool>
                     request.DeletionType,
                     editor,
                     request.InternalComment,
+                    request.IsModeratorDeletion,
                     request.UserMessage);
             }
             else
@@ -60,6 +61,7 @@ public class DeletionCommandHandler : IRequestHandler<DeletionCommand, bool>
                     request.DeletionType,
                     editor,
                     request.InternalComment,
+                    request.IsModeratorDeletion,
                     request.UserMessage);
             }
         }
@@ -72,6 +74,7 @@ public class DeletionCommandHandler : IRequestHandler<DeletionCommand, bool>
                     request.DeletionType,
                     editor,
                     request.InternalComment,
+                    request.IsModeratorDeletion,
                     request.UserMessage);
             }
             else
@@ -80,6 +83,7 @@ public class DeletionCommandHandler : IRequestHandler<DeletionCommand, bool>
                     request.DeletionType,
                     editor,
                     request.InternalComment,
+                    request.IsModeratorDeletion,
                     request.UserMessage);
             }
         }

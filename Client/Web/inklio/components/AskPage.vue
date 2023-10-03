@@ -10,7 +10,7 @@
         <img :src="ai.url" />
       </template>
       <p>{{ ask.body }}</p>
-      <ModActions :askId="ask.id" :comment-id="null" :delivery-id="null" />
+      <ModActions :askId="ask.id" :comment-id="null" :delivery-id="null" :creator="ask.createdBy"/>
     </div>
     <DeliverySubmit :ask="ask" @delivery-submit="reload" />
     <div class="askpage-comment-wrapper">
@@ -24,7 +24,8 @@
           <div class="askpage-modactionbar">
             <Upvote :isUpvoted="ac.isUpvoted" :upvoteCount="ac.upvoteCount" :askId="ask.id" :deliveryId="null"
               :commentId="ac.id" />
-            <ModActions :askId="ask.id" :comment-id="ac.id" :delivery-id="null" @post-deleted="reload" />
+            <ModActions :askId="ask.id" :comment-id="ac.id" :delivery-id="null"
+              @post-deleted="reload" :creator="ac.createdBy"/>
           </div>
           <div class="createdby">
             <img src="~/assets/img/user.png" /> <i>{{ ac.createdBy }}</i>
@@ -40,7 +41,8 @@
           <div class="askpage-modactionbar">
             <Upvote :isUpvoted="d.isUpvoted" :upvoteCount="d.upvoteCount" :askId="ask.id" :deliveryId="d.id"
               :commentId="null" />
-            <ModActions :askId="ask.id" :comment-id="null" :delivery-id="d.id" @post-deleted="reload"/>
+            <ModActions :askId="ask.id" :comment-id="null" :delivery-id="d.id"
+              @post-deleted="reload" :creator="d.createdBy"/>
           </div>
           <div class="createdby">
             <img src="~/assets/img/user.png" /> <i>{{ d.createdBy }}</i>
@@ -63,7 +65,7 @@
                 <div class="askpage-modactionbar">
                   <Upvote :isUpvoted="dc.isUpvoted" :upvoteCount="dc.upvoteCount" :askId="ask.id" :deliveryId="d.id"
                     :commentId="dc.id" />
-                  <ModActions :askId="ask.id" :comment-id="dc.id" :delivery-id="d.id" @post-deleted="reload"/>
+                  <ModActions :askId="ask.id" :comment-id="dc.id" :delivery-id="d.id" @post-deleted="reload" :creator="dc.createdBy"/>
                 </div>
                 <div class="createdby">
                   <img src="~/assets/img/user.png" /> <i>{{ dc.createdBy }}</i>
