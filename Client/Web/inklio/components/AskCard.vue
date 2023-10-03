@@ -11,6 +11,7 @@
       <div>
         <Upvote :isUpvoted="ask.isUpvoted" :upvoteCount="ask.upvoteCount" :askId="ask.id" :deliveryId="null" :commentId="null"/>
         <span>{{ ask.commentCount + ask.deliveryCount }} replies</span>
+        <ModActions :askId="ask.id" :comment-id="null" :delivery-id="null" />
       </div>
     </div>
   </div>
@@ -24,7 +25,7 @@ const props = defineProps<{
 }>();
 </script>
 
-<style>
+<style scoped>
 .askcard h1 {
   font-size: large;
   margin: 4px;
@@ -73,6 +74,7 @@ const props = defineProps<{
   justify-content:space-evenly;
   align-items: center;
 }
+
 .askcard:hover {
   background-color: var(--askcard-hover-background-color);
 }

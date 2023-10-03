@@ -39,6 +39,9 @@
   /* upvote */
   --upvote-off-stroke: white;
   --upvote-on-fill: green;
+
+  /* negative action */
+  --negativeaction-color: darkred;
 }
 
 /* Body and background */

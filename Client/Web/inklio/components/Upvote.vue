@@ -1,6 +1,6 @@
 <template>
   <span class="upvote" @click="toggleUpvote">
-    <svg viewBox="0 0 512 512" height="1.5em" :class="getUpvoted()"><polygon points="256.5,64.5 64.5,256.5 176.5,256.5 176.5,448.5 336.5,448.5 336.5,256.5 448.5,256.5 "/></svg>
+    <svg viewBox="0 0 512 512" height="1.8em" :class="getUpvoted()"><polygon points="256.5,64.5 64.5,256.5 176.5,256.5 176.5,448.5 336.5,448.5 336.5,256.5 448.5,256.5 "/></svg>
     <span class="upvote-count">{{ upvoteCount }}</span>
   </span>
 </template>
@@ -59,10 +59,14 @@ const toggleUpvote = async () => {
   align-self: center;
   transform: translateY(2px);
 }
+
 .upvote-off {
   fill: none;
   stroke: var(--upvote-off-stroke);
   stroke-width: 5%;
+}
+.upvote-off:hover {
+  stroke: var(--upvote-on-fill);
 }
 
 .upvote-on {

@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',],
+    '@pinia-plugin-persistedstate/nuxt',
+    'nuxt-icon'],
   runtimeConfig: {
     public: {
       baseUrl: process.env.BASE_URL || 'http://localhost',

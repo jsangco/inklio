@@ -47,6 +47,24 @@ export type AskCreate = {
   tags: Tag[];
 }
 
+export type Deletion = {
+  deletionType: number;
+  userMessage: string;
+  internalComment: string;
+}
+
+export enum DeletionType {
+  other = 0,
+  harassment = 1,
+  threateningViolence = 2,
+  hate = 3,
+  sharingPersonalInformation = 4,
+  selfHarmOrSuicide = 5,
+  sexualContent = 6,
+  spam = 7,
+  terrorism = 8,
+  illegalContent = 9,
+}
 
 export type Delivery = {
   id: number;

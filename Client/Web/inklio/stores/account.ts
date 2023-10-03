@@ -74,6 +74,9 @@ const loginOrRegister = async (state: any, url: string, body: any): Promise<Json
 export const useAccountStore = defineStore({
   id: 'accountStore',
   state: () => emptyAccountState,
+  getters: {
+    isModerator: (state) => state.roles.some(s => s.toUpperCase() === "MODERATOR" || s.toUpperCase() === "ADMINISTRATOR"),
+  },
   actions: {
     async login(username: string, password: string, isRememberMe: boolean): Promise<JsonResponse> {
       return await loginOrRegister(
