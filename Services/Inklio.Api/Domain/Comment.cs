@@ -176,6 +176,7 @@ public class Comment : Entity, IAggregateRoot
             var upvote = new CommentUpvote(this, typeId, user);
             this.upvotes.Add(upvote);
             this.UpvoteCount += 1;
+            this.CreatedBy.AdjustCommentReputation(1);
             return upvote;
         }
 
@@ -225,6 +226,7 @@ public class Comment : Entity, IAggregateRoot
         {
             this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
+            this.CreatedBy.AdjustCommentReputation(-1);
         }
     }
 

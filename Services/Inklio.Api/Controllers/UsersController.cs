@@ -1,34 +1,53 @@
+using AutoMapper;
 using Inklio.Api.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class UsersController : ControllerBase
+[Route("v1/users")]
+public class UsersController : ODataController
 {
-    private readonly UserManager<User> userManager;
-    private readonly SignInManager<User> signInManager;
-    private readonly ILogger<UsersController> logger;
+    private readonly IUserRepository userRepository;
+    private readonly IMapper mapper;
     private readonly IMediator mediator;
 
     public UsersController(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        ILogger<UsersController> logger,
+        IUserRepository userRepository,
+        IMapper mapper,
         IMediator mediator)
     {
-        this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        this.signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.userRepository = userRepository;
+        this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
+    [EnableQuery]
     [HttpGet]
-    public int Get()
+    public IQueryable<Inklio.Api.Application.Commands.User> GetUsers()
     {
-        return 0;
+        var users = this.mapper.ProjectTo<Inklio.Api.Application.Commands.User>(this.userRepository.GetUsers());
+        return users;
+    }
+
+    [EnableQuery]
+    [HttpGet("{username}")]
+    public async Task<Inklio.Api.Application.Commands.User> GetUser(string username, CancellationToken cancellationToken)
+    {
+        var getUser = async () =>
+        {
+            if (Guid.TryParse(username, out UserId userId))
+            {
+                return await this.userRepository.GetByUserIdAsync(userId, cancellationToken);
+            }
+            return await this.userRepository.GetByUsernameAsync(username, cancellationToken);
+        };
+        var user = await getUser();
+        var userDto = this.mapper.Map<Inklio.Api.Application.Commands.User>(user);
+        return userDto ?? throw new InvalidOperationException("Could not map User DTO");
     }
 }

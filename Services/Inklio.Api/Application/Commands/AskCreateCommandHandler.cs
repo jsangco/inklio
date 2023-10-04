@@ -41,10 +41,9 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     public async Task<bool> Handle(AskCreateCommand request, CancellationToken cancellationToken)
     {
         // Get the user creating the tag
-        User user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
+        DomainUser user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         int askHottest = await this.askRepository.GetAskHottestAsync(cancellationToken);
 
-        user.AdjustAskReputation(1);
         user.SetAskCount(user.AskCount + 1);
 
         // Create the ask
@@ -99,7 +98,7 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     /// <param name="tags">The tags to get.</param>
     /// <param name="user">The user creating getting or creating the tags</param>
     /// <returns>A collection of all relevant Tags that were retrieved from the repository.</returns>
-    private IEnumerable<DomainTag> GetOrCreateTags(IEnumerable<CommandTag> tags, User user)
+    private IEnumerable<DomainTag> GetOrCreateTags(IEnumerable<CommandTag> tags, DomainUser user)
     {
         // Get all existing tags
         var existingTags = new List<DomainTag>();
@@ -136,7 +135,7 @@ public class AskCreateCommandHandler : IRequestHandler<AskCreateCommand, bool>
     /// <param name="user">The user uploading the image</param>
     /// <param name="cancellationToken">A cancelation token</param>
     /// <returns>The AskImage if it was created. Null if no AskImage was created.</returns>
-    private async Task<IEnumerable<DomainAskImage>> CreateImageAsync(DomainAsk ask, IEnumerable<IFormFile> forms, User user, CancellationToken cancellationToken)
+    private async Task<IEnumerable<DomainAskImage>> CreateImageAsync(DomainAsk ask, IEnumerable<IFormFile> forms, DomainUser user, CancellationToken cancellationToken)
     {
         ask.ValidateCanAddImages(forms.Count(), user); // Validate we can add the images before we start uploading forms.
 

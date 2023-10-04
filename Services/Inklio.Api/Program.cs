@@ -1,16 +1,8 @@
 using Inklio.Api.HealthCheck;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Inklio.Api.Startup;
 using Inklio.Api.Dependencies;
 using Inklio.Api.Infrastructure.Filters;
-using Inklio.Api.Domain;
-using Microsoft.AspNetCore.OData.Formatter;
-using Microsoft.AspNetCore.Http.Features;
 
 Console.WriteLine("Starting Inklio Api");
 var appBuilder = WebApplication.CreateBuilder(args);

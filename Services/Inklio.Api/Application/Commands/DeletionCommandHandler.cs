@@ -38,7 +38,7 @@ public class DeletionCommandHandler : IRequestHandler<DeletionCommand, bool>
     /// <returns>A flag indicating whether the Deletion creation was a success.</returns>
     public async Task<bool> Handle(DeletionCommand request, CancellationToken cancellationToken)
     {
-        User editor = await this.userRepository.GetByUserIdAsync(request.EditedById, cancellationToken);
+        DomainUser editor = await this.userRepository.GetByUserIdAsync(request.EditedById, cancellationToken);
         DomainAsk ask = await this.askRepository.GetAnyAskByIdAsync(request.AskId, cancellationToken);
 
         if (request.DeliveryId.HasValue)

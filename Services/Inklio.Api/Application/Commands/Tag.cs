@@ -11,7 +11,7 @@ namespace Inklio.Api.Application.Commands;
 public class Tag
 {
     /// <summary>
-    /// Gets or sets the ID of the image.
+    /// Gets or sets the ID of the tag.
     /// </summary>
     [IgnoreDataMember]
     [JsonIgnore]

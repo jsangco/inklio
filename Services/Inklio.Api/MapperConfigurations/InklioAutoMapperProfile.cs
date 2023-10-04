@@ -37,6 +37,11 @@ public class InklioAutoMapperProfile : Profile
         // Images
         this.CreateMap<Inklio.Api.Domain.Image, Inklio.Api.Application.Commands.Image>()
             .ForMember(e => e.Url, e => e.MapFrom(e => imageUrl + e.UrlRelative));
+
+        // Tags
         this.CreateMap<Inklio.Api.Domain.Tag, Inklio.Api.Application.Commands.Tag>();
+
+        // User
+        this.CreateMap<Inklio.Api.Domain.User, Inklio.Api.Application.Commands.User>();
     }
 }

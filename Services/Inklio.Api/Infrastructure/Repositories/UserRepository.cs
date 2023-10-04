@@ -22,7 +22,11 @@ public class UserRepository : IUserRepository
     /// <inheritdoc/>
     public async Task<User> GetByUserIdAsync(UserId userId, CancellationToken cancellationToken)
     {
-        User? user = await this.context.Users.FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);
+        User? user = await this.context.Users
+            .Include(e => e.Asks)
+            .Include(e => e.Deliveries)
+            .Include(e => e.Comments)
+            .FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);
 
         if (user is not null)
         {
@@ -33,6 +37,28 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc/>
+    public async Task<User> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+    {
+        User? user = await this.context.Users
+            .Include(e => e.Asks)
+            .Include(e => e.Deliveries)
+            .Include(e => e.Comments)
+            .FirstOrDefaultAsync(a => a.Username == username, cancellationToken);
+
+        if (user is not null)
+        {
+            return user;
+        }
+
+        throw new InklioDomainException(404, $"The specified User {username} was not found");
+    }
+
+    /// <inheritdoc/>
+    public IQueryable<User> GetUsers()
+    {
+        return this.context.Users;
+    }
+
     public async Task AddUserAsync(UserId userId, string username, CancellationToken cancellationToken)
     {
         User? userById = await this.context.Users.FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);

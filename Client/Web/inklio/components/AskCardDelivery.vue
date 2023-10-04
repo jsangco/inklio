@@ -2,7 +2,7 @@
   <div class="askcarddelivery">
     <img v-if="delivery.images.length > 0" :src="delivery.images[0].url"/>
     <div class="askcarddelivery-overlay">
-      <h1 v-if="delivery.title">{{ delivery.upvoteCount }} {{ delivery.title }}</h1>
+      <h1 v-if="delivery.title">{{ delivery.title }}</h1>
       <p v-if="delivery.body">{{ delivery.body }}</p>
     </div>
   </div>

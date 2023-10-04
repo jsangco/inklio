@@ -85,7 +85,7 @@ public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateComman
     /// <param name="tags">The tags to get.</param>
     /// <param name="user">The user creating getting or creating the tags</param>
     /// <returns>A collection of all relevant Tags that were retrieved from the repository.</returns>
-    private IEnumerable<DomainTag> GetOrCreateTags(IEnumerable<CommandTag> tags, User user)
+    private IEnumerable<DomainTag> GetOrCreateTags(IEnumerable<CommandTag> tags, DomainUser user)
     {
         // Get all existing tags
         var existingTags = new List<DomainTag>();
@@ -122,7 +122,7 @@ public class DeliveryCreateCommandHandler : IRequestHandler<DeliveryCreateComman
     /// <param name="user">The user uploading the image</param>
     /// <param name="cancellationToken">A cancelation token</param>
     /// <returns>The DeliveryImage if it was created. Null if no DeliveryImage was created.</returns>
-    private async Task<IEnumerable<DomainDeliveryImage>> CreateImageAsync(DomainDelivery delivery, IEnumerable<IFormFile> forms, User user, CancellationToken cancellationToken)
+    private async Task<IEnumerable<DomainDeliveryImage>> CreateImageAsync(DomainDelivery delivery, IEnumerable<IFormFile> forms, DomainUser user, CancellationToken cancellationToken)
     {
         delivery.ValidateCanAddImages(forms.Count(), user); // Validate we can add the images before we start uploading forms.
 

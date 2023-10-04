@@ -53,7 +53,7 @@ public class DeliveryTagCreateCommandHandler : IRequestHandler<DeliveryTagCreate
     /// <param name="tag">The tag to get.</param>
     /// <param name="user">The user creating getting or creating the tags</param>
     /// <returns>A collection of all relevant Tags that were retrieved from the repository.</returns>
-    private DomainTag GetOrCreateTag(CommandTag tag, User user)
+    private DomainTag GetOrCreateTag(CommandTag tag, DomainUser user)
     {
         this.askRepository.TryGetTagByName(tag.Type, tag.Value, out DomainTag? existingTag);
         if (existingTag is null)

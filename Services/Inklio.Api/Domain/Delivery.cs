@@ -368,6 +368,7 @@ public class Delivery : Entity, IAggregateRoot
             var upvote = new DeliveryUpvote(this, typeId, user);
             this.upvotes.Add(upvote);
             this.UpvoteCount += 1;
+            this.CreatedBy.AdjustDeliveryReputation(1);
             return true;
         }
 
@@ -442,6 +443,7 @@ public class Delivery : Entity, IAggregateRoot
         {
             this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
+            this.CreatedBy.AdjustDeliveryReputation(-1);
             return true;
         }
 

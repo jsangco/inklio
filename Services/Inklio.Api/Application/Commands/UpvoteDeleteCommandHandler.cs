@@ -31,7 +31,7 @@ public class UpvoteDeleteCommandHandler : IRequestHandler<UpvoteDeleteCommand, b
     /// <returns>A flag indicating whether the upvote deletion was a success.</returns>
     public async Task<bool> Handle(UpvoteDeleteCommand request, CancellationToken cancellationToken)
     {
-        User user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
+        DomainUser user = await this.userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         DomainAsk ask = await this.askRepository.GetAskByIdAsync(request.AskId, cancellationToken);
 
         if (request.DeliveryId.HasValue)

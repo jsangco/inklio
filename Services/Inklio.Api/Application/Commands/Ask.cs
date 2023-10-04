@@ -60,19 +60,19 @@ public class Ask
     public bool CanTag { get; set; } = true;
 
     /// <summary>
+    /// Gets the content rating of the ask.
+    /// </summary>
+    [DataMember(Name = "contentRating")]
+    [JsonPropertyName("contentRating")]
+    public byte ContentRating { get; set; }
+
+    /// <summary>
     /// Gets or sets the number of comments on an ask--includes the number
     /// of comments on child deliveries.
     /// </summary>
     [DataMember(Name = "commentCount")]
     [JsonPropertyName("commentCount")]
     public int CommentCount { get; set; }
-
-    /// <summary>
-    /// Gets the content rating of the ask.
-    /// </summary>
-    [DataMember(Name = "contentRating")]
-    [JsonPropertyName("contentRating")]
-    public byte ContentRating { get; set; }
 
     /// <summary>
     /// Gets or sets a collection of comments for the ask.

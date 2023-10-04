@@ -518,6 +518,7 @@ public class Ask : Entity, IAggregateRoot
             this.upvotes.Add(upvote);
             this.UpvoteCount += 1;
             this.RankHot += 1;
+            this.CreatedBy.AdjustAskReputation(1);
             return upvote;
         }
 
@@ -641,6 +642,7 @@ public class Ask : Entity, IAggregateRoot
             this.upvotes.RemoveAt(upvoteIndex);
             this.UpvoteCount -= 1;
             this.RankHot -= 1;
+            this.CreatedBy.AdjustAskReputation(-1);
         }
     }
 

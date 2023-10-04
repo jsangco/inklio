@@ -108,6 +108,8 @@ public static class ODataExtensions
         var builder = new ODataConventionModelBuilder();
         builder.ModelAliasingEnabled = true;
         builder.EnableLowerCamelCase();
+
+        // Entity Sets
         builder.EntitySet<Ask>("asks").EntityType
             .HasKey(e => e.Id)
             .Page(10, 10);
@@ -119,6 +121,11 @@ public static class ODataExtensions
         builder.EntitySet<Comment>("comments").EntityType
             .HasKey(e => e.Id)
             .Page(20, 20);
+        builder.EntitySet<User>("users").EntityType
+            .HasKey(e => e.Username)
+            .Page(20, 20);
+
+        // Entity Types
         builder.EntityType<Image>()
             .HasKey(e => e.Id);
         builder.EntityType<Tag>()

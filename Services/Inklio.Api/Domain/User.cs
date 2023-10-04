@@ -35,6 +35,11 @@ public class User : Entity, IAggregateRoot
     public IReadOnlyCollection<Comment> Comments { get; private set; } = new List<Comment>();
 
     /// <summary>
+    /// Gets the reputation earned by the user from comments.
+    /// </summary>
+    public int CommentReputation { get; set; }
+
+    /// <summary>
     /// Gets the comment Upvotes created by the user.
     /// </summary>
     public IReadOnlyCollection<CommentUpvote> CommentUpvotes { get; private set; } = new List<CommentUpvote>();
@@ -119,20 +124,30 @@ public class User : Entity, IAggregateRoot
     }
 
     /// <summary>
-    /// Adjust the user's ask reputation and total reputation by a specified amount.
+    /// Adjust the user's reputation by a specified amount.
     /// </summary>
     /// <param name="adjustmentValue">The value to adjust by</param>
-    public void AdjustDeliveryReputation(int adjustmentValue)
+    public void AdjustAskReputation(int adjustmentValue)
     {
-        this.AskReputation += adjustmentValue;
         this.Reputation += adjustmentValue;
+        this.AskReputation += adjustmentValue;
     }
 
     /// <summary>
     /// Adjust the user's reputation by a specified amount.
     /// </summary>
     /// <param name="adjustmentValue">The value to adjust by</param>
-    public void AdjustAskReputation(int adjustmentValue)
+    public void AdjustCommentReputation(int adjustmentValue)
+    {
+        this.Reputation += adjustmentValue;
+        this.CommentReputation += adjustmentValue;
+    }
+
+    /// <summary>
+    /// Adjust the user's ask reputation and total reputation by a specified amount.
+    /// </summary>
+    /// <param name="adjustmentValue">The value to adjust by</param>
+    public void AdjustDeliveryReputation(int adjustmentValue)
     {
         this.Reputation += adjustmentValue;
         this.DeliveryReputation += adjustmentValue;

@@ -34,3 +34,4 @@ global using DomainAskImage = Inklio.Api.Domain.AskImage;
 global using DomainDelivery = Inklio.Api.Domain.Delivery;
 global using DomainDeliveryImage = Inklio.Api.Domain.DeliveryImage;
 global using DomainTag = Inklio.Api.Domain.Tag;
+global using DomainUser = Inklio.Api.Domain.User;
