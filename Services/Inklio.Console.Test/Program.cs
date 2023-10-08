@@ -11,4 +11,5 @@ User.DefaultBaseUri = new Uri("http://localhost/api/");
 await Generator.GenerateAskDeliveryCommentUpvoteAsync(sampleFilePath);
 
 var contentGenerator = new ContentGenerator(ContentGenerator.Usernames);
-await contentGenerator.SeedContent(sampleFilePath);
+var moderator = new User("aoeu", "aoeuaoeuaoeu@mailinator.com", "aoeuaoeu1", User.DefaultBaseUri.ToString(), null);
+await contentGenerator.SeedContent(sampleFilePath, moderator);

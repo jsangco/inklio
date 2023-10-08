@@ -93,7 +93,7 @@ public class User : IDisposable
     /// <param name="password">The password of the user.</param>
     /// <param name="baseUrl">The URL of the user.</param>
     /// <param name="loggerFactory">A logger factory.</param>
-    public User(string username, string email, string password, string baseUrl, ILogger<User> logger)
+    public User(string username, string email, string password, string baseUrl, ILogger<User>? logger)
     {
         this.Username = username;
         this.Email = email;
@@ -104,7 +104,7 @@ public class User : IDisposable
         var httpClientHandler = new HttpClientHandler() { CookieContainer = cookieContainer, UseCookies = true };
         this.httpClient = new HttpClient(httpClientHandler);
         this.httpClient.BaseAddress = new Uri(baseUrl);
-        this.logger = logger;
+        this.logger = logger ?? ClientLogger.DefaultLoggerFactory.CreateLogger<User>();
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ public class User : IDisposable
     }
 
     /// <summary>
-    /// Adds a comment to a delivery
+    /// Adds a comment to a delivery.
     /// </summary>
     /// <param name="commentCreate">The comment to create</param>
     /// <param name="askId">The ID of the ask to add the delivery to.</param>
@@ -252,6 +252,29 @@ public class User : IDisposable
         {
             var error = await createResponse.Content.ReadAsStringAsync();
             throw new InklioClientException((int)createResponse.StatusCode, $"Unable to add comment to delivery {deliveryId} on ask {askId}\n{error}", e);
+        }
+    }
+
+    /// <summary>
+    /// Adds a challenge to an ask.
+    /// </summary>
+    /// <param name="challengeCreate">The challenge to create.</param>
+    /// <param name="askId">The id of the ask.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A task.</returns>
+    public async Task AddChallenge(ChallengeCreate challengeCreate, int askId, CancellationToken cancellationToken)
+    {
+        await CreateOrLoginAsync(cancellationToken);
+        this.logger.LogInformation("Adding challenge to ask. {Username} | {Url}", this.Username, this.httpClient?.BaseAddress?.ToString());
+        var createResponse = await this.httpClient!.PostAsync($"v1/asks/{askId}/challenge", challengeCreate.ToHttpContent());
+        try
+        {
+            createResponse.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException e)
+        {
+            var error = await createResponse.Content.ReadAsStringAsync();
+            throw new InklioClientException((int)createResponse.StatusCode, $"Unable to add create challenge on {askId}\n{error}", e);
         }
     }
 
@@ -344,6 +367,7 @@ public class User : IDisposable
     /// <summary>
     /// Gets the asks.
     /// </summary>
+    /// <param name="filter">Optional query parameters to use in the request. (e.g. "select=id&filter=id gt 2&count=true")</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>The asks.</returns>
     public async Task<ODataResponse<Ask>> GetAsksAsync(string? filter = null, CancellationToken cancellationToken = default)
@@ -351,7 +375,7 @@ public class User : IDisposable
         var query = filter?.Replace(httpClient.BaseAddress!.ToString() + "v1/asks?", "");
         string url = query == null ?  "v1/asks?expand=deliveries(expand=comments,images,tags),comments,images,tags"
             : string.IsNullOrWhiteSpace(query) ?"v1/asks/"
-            : $"v1/asks?{query}";
+            : $"v1/asks?{query.Trim('?')}";
         this.logger.LogInformation("Fetching asks. {Username} | {Url}", this.Username, this.httpClient!.BaseAddress?.ToString() + $"{url}");
         try
         {

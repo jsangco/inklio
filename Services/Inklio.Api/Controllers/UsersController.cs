@@ -1,5 +1,6 @@
 using AutoMapper;
 using Inklio.Api.Domain;
+using Inklio.Api.Infrastructure.EFCore;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +14,18 @@ namespace Api.Controllers;
 public class UsersController : ODataController
 {
     private readonly IUserRepository userRepository;
+    private readonly InklioContext inklioContext;
     private readonly IMapper mapper;
     private readonly IMediator mediator;
 
     public UsersController(
         IUserRepository userRepository,
+        InklioContext inklioContext,
         IMapper mapper,
         IMediator mediator)
     {
         this.userRepository = userRepository;
+        this.inklioContext = inklioContext;
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
@@ -49,5 +53,35 @@ public class UsersController : ODataController
         var user = await getUser();
         var userDto = this.mapper.Map<Inklio.Api.Application.Commands.User>(user);
         return userDto ?? throw new InvalidOperationException("Could not map User DTO");
+    }
+
+    [EnableQuery]
+    [HttpGet("{username}/asks")]
+    public async Task<IQueryable<CommandAsk>> GetUserAsks(string username, CancellationToken cancellationToken)
+    {
+        var user = await this.inklioContext.Users
+            .FirstOrDefaultAsync(a => a.Username == username, cancellationToken);
+        if (user is null)
+        {
+            throw new InklioDomainException(404, "Cannot find user");
+        }
+
+        var asks = this.inklioContext.Asks.Where(a => a.CreatedById == user.Id);
+        return this.mapper.ProjectTo<CommandAsk>(asks);
+    }
+
+    [EnableQuery]
+    [HttpGet("{username}/deliveries")]
+    public async Task<IQueryable<CommandDelivery>> GetUserDeliveries(string username, CancellationToken cancellationToken)
+    {
+        var user = await this.inklioContext.Users
+            .FirstOrDefaultAsync(a => a.Username == username, cancellationToken);
+        if (user is null)
+        {
+            throw new InklioDomainException(404, "Cannot find user");
+        }
+
+        var deliveries = this.inklioContext.Deliveries.Where(a => a.CreatedById == user.Id);
+        return this.mapper.ProjectTo<CommandDelivery>(deliveries);
     }
 }

@@ -30,11 +30,19 @@ public interface IUserRepository : IRepository<User>
     IQueryable<User> GetUsers();
 
     /// <summary>
+    /// Gets or adds a user to the repository.
+    /// </summary>
+    /// <param name="user">The user to get or add.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A user.</returns>
+    Task<User> GetOrAddUserAsync(User user, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Adds a user to the repository.
     /// </summary>
     /// <param name="userId">The <see cref="UserId"/> of the new user.</param>
     /// <param name="username">Th unique name of the user.</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A Task.</returns>
-    Task AddUserAsync(UserId userId, string username, CancellationToken cancellationToken);
+    Task<User> AddUserAsync(UserId userId, string username, CancellationToken cancellationToken);
 }

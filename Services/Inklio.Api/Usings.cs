@@ -28,6 +28,7 @@ global using System.Threading;
 global using System;
 global using UserId = System.Guid;
 global using CommandAsk = Inklio.Api.Application.Commands.Ask;
+global using CommandDelivery = Inklio.Api.Application.Commands.Delivery;
 global using CommandTag = Inklio.Api.Application.Commands.Tag;
 global using DomainAsk = Inklio.Api.Domain.Ask;
 global using DomainAskImage = Inklio.Api.Domain.AskImage;

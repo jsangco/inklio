@@ -26,27 +26,13 @@ class DeliveryEntityTypeConfiguration : IEntityTypeConfiguration<Delivery>
         // Relationships
         builder.HasOne(e => e.CreatedBy);
         builder.Navigation(e => e.CreatedBy).AutoInclude();
-
-        builder
-            .HasOne(e => e.Ask)
-            .WithMany(e => e.Deliveries);
-
-        builder
-            .HasMany(e => e.Comments)
-            .WithOne();
-
-        builder
-            .HasOne(e => e.Deletion)
-            .WithOne(e => e.Delivery);
-
-        builder
-            .HasMany(e => e.Images)
-            .WithOne();
-
-        builder
-            .HasMany(e => e.Upvotes)
-            .WithOne(e => e.Delivery)
-            .HasForeignKey(e => e.DeliveryId);
+        builder.HasOne(e => e.Ask).WithMany(e => e.Deliveries);
+        builder.HasOne(e => e.ChallengeDeliveryRank).WithOne(e => e.Delivery).IsRequired(false);
+        builder.Navigation(e => e.ChallengeDeliveryRank).AutoInclude().IsRequired(false);
+        builder.HasMany(e => e.Comments).WithOne();
+        builder.HasOne(e => e.Deletion).WithOne(e => e.Delivery);
+        builder.HasMany(e => e.Images).WithOne();
+        builder.HasMany(e => e.Upvotes).WithOne(e => e.Delivery).HasForeignKey(e => e.DeliveryId);
 
         builder
             .HasMany(e => e.Tags)

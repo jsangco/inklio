@@ -63,6 +63,11 @@ public class Delivery : Entity, IAggregateRoot
     public bool CanTag { get; private set; } = true;
 
     /// <summary>
+    /// Gets the challenge rank of the delivery.
+    /// </summary>
+    public ChallengeDeliveryRank? ChallengeDeliveryRank { get; private set; }
+
+    /// <summary>
     /// Gets or sets a collection of comments for the delivery.
     /// </summary>
     private List<DeliveryComment> comments = new List<DeliveryComment>();
@@ -472,6 +477,16 @@ public class Delivery : Entity, IAggregateRoot
     public void SetIsUpvoted(User user)
     {
         this.IsUpvoted = this.Upvotes.Any(u => u.CreatedById == user.Id);
+    }
+
+    /// <summary>
+    /// Sets the rank of the delivery for a challenge.
+    /// </summary>
+    /// <param name="challenge">The associated <see cref="Challenge"/>.</param>
+    /// <param name="rank">The rank of the delivery.</param>
+    internal void SetChallengeRank(Challenge challenge, int rank)
+    {
+        this.ChallengeDeliveryRank = new ChallengeDeliveryRank(this.Ask, challenge, this, rank);
     }
 
     /// <summary>

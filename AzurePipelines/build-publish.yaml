@@ -118,3 +118,34 @@ steps:
     tags: |
       $(Build.SourceVersion)
       latest
+
+# - task: ado-discord-webhook@2
+#   displayName: 'Discord Webhook'
+#   condition: failed()
+#   inputs:
+#     webhookId: '$(discord_webhookId)'
+#     webhookKey: '$(discord_webhookKey)'
+#     content: '<@&$(discord_mentionRoleId)>'
+#     embeds: |
+#       [
+#         {
+#           "type": "rich",
+#           "title": "$(Build.DefinitionName) ($(Build.BuildNumber))",
+#           "description": "Build failed!",
+#           "color": 0xff0000,
+#           "fields": [
+#             {
+#               "name": "Build.RequestedFor",
+#               "value": "$(Build.RequestedFor)",
+#               "inline": true
+#             },
+#             {
+#               "name": "Build.Reason",
+#               "value": "$(Build.Reason)",
+#               "inline": true
+#             }
+#           ],
+#           "url": "$(System.CollectionUri)/$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)&view=logs"
+#         }
+#       ]
+# # https://discord.com/api/webhooks/1160440993909325835/xUHyBbceBmqRLjlpZhALBp4dr0wSP4I8ofYr9Vqgqkp4fz7_5TZ7D14tZ2Hqhx6zFxq6

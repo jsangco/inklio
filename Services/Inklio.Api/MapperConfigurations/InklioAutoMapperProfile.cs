@@ -22,6 +22,10 @@ public class InklioAutoMapperProfile : Profile
             .IncludeMembers(e => e.Ask)
             .ForMember(e => e.IsUpvoted, e => e.MapFrom(e => e.IsUpvoted));
 
+        // Challenge
+        this.CreateMap<Inklio.Api.Domain.Challenge, Inklio.Api.Application.Commands.Challenge>();
+        this.CreateMap<Inklio.Api.Domain.ChallengeDeliveryRank, Inklio.Api.Application.Commands.ChallengeDeliveryRank>();
+
         // Comment
         this.CreateMap<Inklio.Api.Domain.Comment, Inklio.Api.Application.Commands.Comment>()
             .ForMember(e => e.CreatedBy, e => e.MapFrom(e => e.CreatedByUsername));

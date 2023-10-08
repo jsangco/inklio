@@ -12,6 +12,7 @@ do
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/user.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/tag.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/ask.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/challenge.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/delivery.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/comment.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/flag.sql
@@ -20,6 +21,8 @@ do
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/ask_tag.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/delivery_tag.sql
         /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/deletion.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/lock_info.sql
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperSecret-1 -d inklio -i /usr/src/app/inklio/Tables/challenge_delivery_rank.sql
         echo "inklio schemas created"
 
         echo "Creating auth Schemas"

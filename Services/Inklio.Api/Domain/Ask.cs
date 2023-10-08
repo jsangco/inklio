@@ -1,4 +1,5 @@
 using Inklio.Api.SeedWork;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace Inklio.Api.Domain;
 
@@ -56,6 +57,11 @@ public class Ask : Entity, IAggregateRoot
     /// Gets a flag indicating whether or not can tag the ask.
     /// </summary>
     public bool CanTag { get; private set; } = true;
+
+    /// <summary>
+    /// Gets the challenge associated with the ask.
+    /// </summary>
+    public Challenge? Challenge { get; private set; }
 
     /// <summary>
     /// Gets the number of comments on an ask.
@@ -195,6 +201,11 @@ public class Ask : Entity, IAggregateRoot
     public DateTime? LockedAtUtc { get; private set; }
 
     /// <summary>
+    /// Gets the <see cref="LockInfo"/> associated with the ask.
+    /// </summary>
+    public LockInfo? LockInfo { get; set; }
+
+    /// <summary>
     /// Gets the hot ranking of the ask which affects how the Ask is rendered on the front page.
     /// </summary>
     public int RankHot { get; private set; }
@@ -297,6 +308,8 @@ public class Ask : Entity, IAggregateRoot
     /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
     public void AcceptDelivery(int deliveryId)
     {
+        VerifyIsNotLockedOrDeleted();
+
         Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not accept delivery. Delivery id {deliveryId} was not found.");
         delivery.Accept();
         this.DeliveryAcceptedCount += 1;
@@ -310,10 +323,45 @@ public class Ask : Entity, IAggregateRoot
     /// <exception cref="AskDomainException">An exception thrown when the delivery ID is not a child of the parent ask.</exception>
     public void AcceptUndoDelivery(int deliveryId)
     {
+        VerifyIsNotLockedOrDeleted();
+
         Delivery delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId) ?? throw new InklioDomainException(404, $"Could not undo the delivery accept. Delivery id {deliveryId} was not found.");
         delivery.AcceptUndo();
         this.DeliveryAcceptedCount -= 1;
         this.IsDeliveryAccepted = this.DeliveryAcceptedCount > 0;
+    }
+
+    /// <summary>
+    /// Adds a <see cref="Challenge"/> to the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="challengeType">The type of the <see cref="Challenge"/>.</param>
+    /// <param name="createdAtUtc">The time the <see cref="Challenge"/> was created.</param>
+    /// <param name="createdBy">The user that created the <see cref="Challenge"/>.</param>
+    /// <param name="startAtUtc">The time the <see cref="Challenge"/> starts.</param>
+    /// <param name="endAtUtc">The time the <see cref="Challenge"/> ends.</param>
+    public Challenge AddChallenge(ChallengeType challengeType, DateTime createdAtUtc, User createdBy, DateTime startAtUtc, DateTime endAtUtc)
+    {
+        if (this.Challenge is null)
+        {
+            if (startAtUtc >= endAtUtc)
+            {
+                throw new InklioDomainException(400, "Cannot create challenge with a start time after the end time.");
+            }
+
+            this.Challenge = new Inklio.Api.Domain.Challenge(
+                this,
+                challengeType,
+                createdAtUtc,
+                createdBy,
+                startAtUtc,
+                endAtUtc);
+            this.Challenge.StartOrEndChallenge(createdBy, createdAtUtc);
+            return this.Challenge;
+        }
+        else
+        {
+            throw new InklioDomainException(400, "Ask already has an assigned challenge");
+        }
     }
 
     /// <summary>
@@ -324,6 +372,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public AskComment AddComment(string body, User createdBy)
     {
+        VerifyIsNotLockedOrDeleted();
+
         if (this.CanComment == false)
         {
             throw new InklioDomainException(400, "New comments cannot be added to this Ask.");
@@ -344,6 +394,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public Upvote AddCommentUpvote(int commentId, int typeId, User createdBy)
     {
+        VerifyIsNotLockedOrDeleted();
+
         var comment = this.Comments.FirstOrDefault(c => c.Id == commentId);
         if (comment is null)
         {
@@ -365,6 +417,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created <see cref="Delivery"/> object.</returns>
     public Delivery AddDelivery(string body, byte contentRating, User createdBy, int hottestRank, bool isAi, bool isSpoiler, string title)
     {
+        VerifyIsNotLockedOrDeleted();
+
         if (createdBy.Id == this.CreatedBy.Id)
         {
             throw new InklioDomainException(400, $"A delivery cannot be submitted by the original asker. User: '{createdBy.Username}'");
@@ -387,6 +441,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public DeliveryComment AddDeliveryComment(string body, int deliveryId, User createdBy)
     {
+        VerifyIsNotLockedOrDeleted();
+
         var delivery = this.Deliveries.FirstOrDefault(d => d.Id == deliveryId);
         if (delivery is null)
         {
@@ -404,6 +460,8 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public bool AddDeliveryUpvote(int deliveryId, int typeId, User user)
     {
+        VerifyIsNotLockedOrDeleted();
+
         var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
         if (delivery is null)
         {
@@ -428,6 +486,8 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public Upvote AddDeliveryCommentUpvote(int commentId, int deliveryId, int typeId, User user)
     {
+        VerifyIsNotLockedOrDeleted();
+
         var delivery = this.deliveries.FirstOrDefault(d => d.Id == deliveryId);
         if (delivery is null)
         {
@@ -465,6 +525,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The newly created comment</returns>
     public void AddImage(AskImage image, User createdBy)
     {
+        VerifyIsNotLockedOrDeleted();
+
         this.ValidateCanAddImages(1, createdBy);
         this.images.Add(image);
     }
@@ -478,6 +540,8 @@ public class Ask : Entity, IAggregateRoot
     /// <returns>The created tag</returns>
     public void AddTag(bool addToDeliveries, User createdBy, Tag tag)
     {
+        VerifyIsNotLockedOrDeleted();
+
         if (this.CanTag == false)
         {
             throw new InklioDomainException(400, "Tags cannot be added to this Ask.");
@@ -511,6 +575,11 @@ public class Ask : Entity, IAggregateRoot
     /// <param name="user">The upvoting user.</param>
     public Upvote AddUpvote(int typeId, User user)
     {
+        if (this.IsDeleted)
+        {
+            throw new InklioDomainException(400, "Cannot modify a deleted ask.");
+        }
+
         int existingUpvoteIndex = this.upvotes.FindIndex(u => u.CreatedById == user.Id);
         if ( existingUpvoteIndex < 0)
         {
@@ -673,7 +742,6 @@ public class Ask : Entity, IAggregateRoot
         delivery.DeleteComment(commentId, deletionType, editor, internalComment, isModeratorDeletion, userMessage);
     }
 
-
     /// <summary>
     /// Marks a comment on an Ask as deleted. It does not actually delete the comment.
     /// </summary>
@@ -736,6 +804,30 @@ public class Ask : Entity, IAggregateRoot
     }
 
     /// <summary>
+    /// Locks the Ask so that a <see cref="Comment"/>s or <see cref="Delivery"/> cannot be added.
+    /// </summary>
+    /// <param name="createdBy">The user locking the ask.</param>
+    /// <param name="internalComment">An internal comment</param>
+    /// <param name="lockType">The type of lock</param>
+    /// <param name="userMessage">A user message.</param>
+    public void Lock(
+        User createdBy,
+        LockType lockType,
+        string internalComment,
+        string userMessage)
+    {
+        if (this.IsLocked)
+        {
+            return;
+        }
+
+        this.IsLocked = true;
+        this.LockedAtUtc = DateTime.UtcNow;
+        this.LockInfo = new LockInfo(this, createdBy, lockType, internalComment, userMessage);
+        this.EditedById = createdBy.Id;
+    }
+
+    /// <summary>
     /// Removes a Tag from the ask.
     /// </summary>
     /// <param name="tag">The tag to remove</param>
@@ -756,5 +848,61 @@ public class Ask : Entity, IAggregateRoot
     public void SetIsUpvoted(User user)
     {
         this.IsUpvoted = this.Upvotes.Any(u => u.CreatedById == user.Id);
+    }
+
+    /// <summary>
+    /// Sets the challenge delivery rank for every delivery.
+    /// </summary>
+    public void SetChallengeDeliveryRanks()
+    {
+        if (this.Challenge is null)
+        {
+            throw new InvalidOperationException("The ask does not have an associated challenge");
+        }
+
+        var rankedDeliveries = this.Deliveries.OrderByDescending(d => d.UpvoteCount).ToArray();
+        int prevUpvoteCount = int.MinValue;
+        int curRank = 1;
+        for (int i = 0; i < this.Deliveries.Count; i++)
+        {
+            var delivery = rankedDeliveries[i];
+            curRank = delivery.UpvoteCount == prevUpvoteCount ? curRank : i + 1; // Handle ties.
+            delivery.SetChallengeRank(this.Challenge, curRank);
+
+            prevUpvoteCount = delivery.UpvoteCount;
+        }
+    }
+
+    /// <summary>
+    /// Unlocks the <see cref="Ask"/>.
+    /// </summary>
+    /// <param name="user">The user unlocking the ask.</param>
+    public void Unlock(User user)
+    {
+        if (this.IsLocked == false)
+        {
+            return;
+        }
+
+        this.IsLocked = false;
+        this.LockInfo = null;
+        this.LockedAtUtc = null;
+        this.EditedById = user.Id;
+    }
+
+    /// <summary>
+    /// Throws an exception if the ask is locked or deleted.
+    /// </summary>
+    private void VerifyIsNotLockedOrDeleted()
+    {
+        if (this.IsDeleted)
+        {
+            throw new InklioDomainException(400, "Cannot modify a deleted ask.");
+        }
+
+        if (this.IsLocked)
+        {
+            throw new InklioDomainException(400, "Cannot modify a locked ask.");
+        }
     }
 }

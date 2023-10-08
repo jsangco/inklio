@@ -95,10 +95,11 @@ public class ContentGenerator
         this.users = usernames.Select(u => new User(u)).ToList();
     }
 
-    public async Task SeedContent(string sampleImagePath, CancellationToken cancellationToken = default)
+    public async Task SeedContent(string sampleImagePath, User moderator, CancellationToken cancellationToken = default)
     {
         await this.LoginAllUsersAsync();
         await this.CreateAsksAsync();
+        await this.CreateChallenges(moderator);
         await this.CreateDeliveriesAsync(sampleImagePath);
         await this.CreateAskComments();
         await this.CreateDeliveryComments();
@@ -113,6 +114,14 @@ public class ContentGenerator
 
     private async Task CreateAsksAsync(CancellationToken cancellationToken = default)
     {
+        var odataResponse = await this.users.First().GetAsksAsync("count=true");
+
+        if (odataResponse.Count > 10)
+        {
+            Console.WriteLine("Skipping Ask creation.");
+           return;
+        }
+
         var askCreates = this.users
             .Zip(SampleAsks.AskCreates, (u, a) => (u, a))
             .Select(ua => ua.u.AddAskAsync(ua.a, cancellationToken));
@@ -139,6 +148,11 @@ public class ContentGenerator
         {
             delivery.Images = new byte[][] { imageBytes };
             var ask = asks[rand.Next(asks.Count)];
+            if (ask.IsLocked)
+            {
+                return Task.CompletedTask;
+            }
+
             var user = this.users[rand.Next(this.users.Count)];
             if (string.Equals(ask.CreatedBy, user.Username, StringComparison.OrdinalIgnoreCase))
             {
@@ -168,6 +182,11 @@ public class ContentGenerator
         var createComments = SampleComments.AskCommentCreate.Select(comment =>
         {
             var ask = asks[rand.Next(asks.Count)];
+            if (ask.IsLocked)
+            {
+                return Task.CompletedTask;
+            }
+
             var user = this.users[rand.Next(this.users.Count)];
             return user.AddCommentAsync(comment, ask.Id, cancellationToken);
         });
@@ -204,7 +223,6 @@ public class ContentGenerator
         {
             await task;
         }
-
     }
 
     private async Task CreateUpvotes(CancellationToken cancellationToken = default)
@@ -234,6 +252,40 @@ public class ContentGenerator
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Randomly makes existing asks into challenges.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="moderator">A user with moderator privledges</param>
+    /// <returns>A task.</returns>
+    private async Task CreateChallenges(User moderator, CancellationToken cancellationToken = default)
+    {
+        var rand = new Random(2);
+        var askRequest = await moderator.GetAsksAsync(null, cancellationToken);
+        List<Ask> asks = new List<Ask>(100);
+        while (askRequest.NextLink != null)
+        {
+            asks.AddRange(askRequest.Value);
+            askRequest = await moderator.GetAsksAsync(askRequest.NextLink.ToString(), cancellationToken);
+        }
+        var startTimeHourly = DateTime.UtcNow + TimeSpan.FromMinutes(-2);
+        var startTimeDaily = DateTime.UtcNow + TimeSpan.FromMinutes(2);
+        for (int i = 0; i < 3; i++)
+        {
+            var askHourly = asks[rand.Next(Math.Min(asks.Count, 50))];
+            var endTimeHourly = startTimeHourly + TimeSpan.FromHours(1);
+            var challengeCreateHourly = new ChallengeCreate() { ChallengeType = ChallengeType.Hourly, StartAtUtc = startTimeHourly, EndAtUtc = endTimeHourly };
+            await moderator.AddChallenge(challengeCreateHourly, askHourly.Id, cancellationToken);
+            startTimeHourly += TimeSpan.FromHours(1);
+
+            var askDaily = asks[rand.Next(asks.Count)];
+            var endTimeDaily = startTimeDaily + TimeSpan.FromDays(2);
+            var challengeCreateDaily = new ChallengeCreate() { ChallengeType = ChallengeType.Daily, StartAtUtc = startTimeDaily, EndAtUtc = endTimeDaily };
+            await moderator.AddChallenge(challengeCreateDaily, askDaily.Id, cancellationToken);
+            startTimeDaily += TimeSpan.FromDays(2);
         }
     }
 }

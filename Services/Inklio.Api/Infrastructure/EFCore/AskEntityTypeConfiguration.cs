@@ -27,26 +27,13 @@ class AskEntityTypeConfiguration : IEntityTypeConfiguration<Ask>
         builder.HasOne(e => e.CreatedBy);
         builder.Navigation(e => e.CreatedBy).AutoInclude();
 
-        builder
-            .HasMany(e => e.Comments)
-            .WithOne(e => e.Ask);
-
-        builder
-            .HasOne(e => e.Deletion)
-            .WithOne(e => e.Ask);
-
-        builder
-            .HasMany(e => e.Deliveries)
-            .WithOne();
-
-        builder
-            .HasMany(e => e.Images)
-            .WithOne();
-
-        builder
-            .HasMany(e => e.Upvotes)
-            .WithOne(e => e.Ask)
-            .HasForeignKey(e => e.AskId);
+        builder.HasOne(e => e.Challenge).WithOne(e => e.Ask).IsRequired(false);
+        builder.HasMany(e => e.Comments).WithOne(e => e.Ask);
+        builder.HasOne(e => e.Deletion).WithOne(e => e.Ask);
+        builder.HasMany(e => e.Deliveries).WithOne();
+        builder.HasMany(e => e.Images).WithOne();
+        builder.HasOne(e => e.LockInfo).WithOne(e => e.Ask).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(e => e.Upvotes).WithOne(e => e.Ask).HasForeignKey(e => e.AskId);
 
         builder
             .HasMany(e => e.Tags)

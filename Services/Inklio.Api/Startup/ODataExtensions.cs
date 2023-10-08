@@ -121,6 +121,8 @@ public static class ODataExtensions
         builder.EntitySet<Comment>("comments").EntityType
             .HasKey(e => e.Id)
             .Page(20, 20);
+        builder.EntitySet<Challenge>("challenges").EntityType
+            .HasKey(e => e.Id);
         builder.EntitySet<User>("users").EntityType
             .HasKey(e => e.Username)
             .Page(20, 20);
@@ -130,7 +132,10 @@ public static class ODataExtensions
             .HasKey(e => e.Id);
         builder.EntityType<Tag>()
             .HasKey(e => e.Id);
-        builder.EntityType<Ask>().Action("upvote");
+        var askType = builder.EntityType<Ask>();
+        askType.Action("upvote");
+        askType.Action("lock");
+        askType.Action("unlock");
         builder.EntityType<Delivery>().Action("upvote");
         builder.EntityType<Comment>().Action("upvote");
 

@@ -59,7 +59,24 @@ public class UserRepository : IUserRepository
         return this.context.Users;
     }
 
-    public async Task AddUserAsync(UserId userId, string username, CancellationToken cancellationToken)
+    /// <inheritdoc/>
+    public async Task<User> GetOrAddUserAsync(User user, CancellationToken cancellationToken)
+    {
+        if (user.UserId == Guid.Empty || string.IsNullOrWhiteSpace(user.Username))
+        {
+            throw new InvalidOperationException("Cannot add user");
+        }
+
+        var existingUser = this.context.Users.Where(u => u.UserId == user.UserId).FirstOrDefault();
+        if (existingUser is null)
+        {
+            var newUser = await this.AddUserAsync(user.UserId, user.Username, cancellationToken);
+            return newUser;
+        }
+        return existingUser;
+    }
+
+    public async Task<User> AddUserAsync(UserId userId, string username, CancellationToken cancellationToken)
     {
         User? userById = await this.context.Users.FirstOrDefaultAsync(a => a.UserId == userId, cancellationToken);
         if (userById is not null)
@@ -75,5 +92,7 @@ public class UserRepository : IUserRepository
 
         var userToAdd = new User(userId, username);
         await this.context.Users.AddAsync(userToAdd, cancellationToken);
+
+        return userToAdd;
     }
 }

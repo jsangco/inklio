@@ -64,6 +64,7 @@ public class InklioDependencyModule : Autofac.Module
         builder.RegisterType<BlobRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<TagRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         builder.RegisterType<UserRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
+        builder.RegisterType<ChallengeUpdater>().AsSelf().InstancePerLifetimeScope();
         builder.RegisterMediatR(
             MediatRConfigurationBuilder
                 .Create(typeof(Program).Assembly)

@@ -20,7 +20,7 @@ appBuilder.Host
     });
 
 // Configure Services
-
+appBuilder.Services.AddHostedService<ChallengeHostedService>();
 appBuilder.Services.PostConfigure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory.Instance;
@@ -31,10 +31,12 @@ appBuilder.Services.AddControllers(options =>
     options.Filters.Add<HttpGlobalExceptionFilter>();
 })
 .AddApiOData()
+.AddControllersAsServices() // Ask autofac to manage lifetimescope of controllers.
 .AddJsonOptions(jsonOptions =>
 {
     jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     jsonOptions.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+    jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 appBuilder.Services.AddEndpointsApiExplorer();
 appBuilder.Services.AddSwaggerGen( c =>

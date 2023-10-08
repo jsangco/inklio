@@ -153,6 +153,11 @@ Invoke-WebRequest -WebSession $session -Method DELETE -Body (@{"deletionType"=0;
 # Upvote an ask
 Invoke-WebRequest -WebSession $session -Method POST -ContentType "application/json" http://localhost/api/v1/asks/1/upvote
 
+# Add a challenge to an ask THIS DOESN'T WORK FIX
+$utcNow = (Get-Date -AsUtc).AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ss.000Z");
+$inOneHour = (Get-Date -AsUtc).AddHours(1).ToString("yyyy-MM-ddTHH:mm:ss.000Z");
+Invoke-Webrequest -WebSession $session -Method POST -Body (@{"startAtUtc"=$utNow; "endAtUtc"=$inOneHour; "challengeType"=1}) -ContentType "application/json" http://localhost/api/v1/asks/1/challenge
+
 # Get all Asks
 curl http://localhost:80/api/v1/asks
 

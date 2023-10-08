@@ -14,6 +14,7 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     public DbSet<Ask> Asks  => Set<Ask>();
     public DbSet<AskComment> AskComments  => Set<AskComment>();
     public DbSet<AskUpvote> AskUpvotes  => Set<AskUpvote>();
+    public DbSet<Challenge> Challenges  => Set<Challenge>();
     public DbSet<Comment> Comments  => Set<Comment>();
     public DbSet<CommentUpvote> CommentUpvotes  => Set<CommentUpvote>();
     public DbSet<Delivery> Deliveries => Set<Delivery>();
@@ -23,6 +24,11 @@ public sealed class InklioContext : DbContext, IUnitOfWork
     public DbSet<Tag> Tags  => Set<Tag>();
     public DbSet<Upvote> Upvotes  => Set<Upvote>();
 
+    /// <summary>
+    /// Initializes a new instance of a <see cref="InklioContext"/> object.
+    /// </summary>
+    /// <param name="options">The db configuration for the context.</param>
+    /// <param name="mediator">The mediator for handling domain events.</param>
     public InklioContext(DbContextOptions<InklioContext> options, IMediator mediator) : base(options)
     {
         this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -60,12 +66,15 @@ public sealed class InklioContext : DbContext, IUnitOfWork
         builder.ApplyConfiguration(new AskEntityTypeConfiguration());
         builder.ApplyConfiguration(new AskCommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new AskImageEntityTypeConfiguration());
+        builder.ApplyConfiguration(new ChallengeEntityTypeConfiguration());
+        builder.ApplyConfiguration(new ChallengeDeliveryRankEntityTypeConfiguration());
         builder.ApplyConfiguration(new CommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeletionEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryCommentEntityTypeConfiguration());
         builder.ApplyConfiguration(new DeliveryImageEntityTypeConfiguration());
         builder.ApplyConfiguration(new ImageEntityTypeConfiguration());
+        builder.ApplyConfiguration(new LockInfoEntityTypeConfiguration());
         builder.ApplyConfiguration(new TagEntityTypeConfiguration());
         builder.ApplyConfiguration(new UpvoteEntityTypeConfiguration());
         builder.ApplyConfiguration(new UserEntityTypeConfiguration());

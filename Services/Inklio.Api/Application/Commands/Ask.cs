@@ -152,13 +152,6 @@ public class Ask
     public bool IsDelivered { get; set; }
 
     /// <summary>
-    /// Gets or sets a flag indicating whether or not the ask has an accepted delivery.
-    /// </summary>
-    [DataMember(Name = "isDeliveryAccepted")]
-    [JsonPropertyName("isDeliveryAccepted")]
-    public bool IsDeliveryAccepted { get; set; }
-
-    /// <summary>
     /// Gets or sets a flag indicating whether or not the ask has been locked.
     /// </summary>
     [DataMember(Name = "isLocked")]

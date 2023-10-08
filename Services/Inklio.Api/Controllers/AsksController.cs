@@ -36,44 +36,55 @@ public class AsksController : ODataController
 
     [EnableQuery()]
     [HttpGet]
-    public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks()
+    public IQueryable<Inklio.Api.Application.Commands.Ask> GetAsks([FromQuery]bool ignoreQueryFilters)
     {
         var userId = this.User.UserIdOrDefault();
-        var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(userId));
-        return asks;
-    }
-
-    [Authorize(Roles = "Moderator, Administrator")]
-    [EnableQuery()]
-    [HttpGet("all")]
-    public IQueryable<Inklio.Api.Application.Commands.Ask> GetAllAsks()
-    {
-        var userId = this.User.UserIdOrDefault();
-        var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAllAsks(userId));
-        return asks.Take(1);
-    }
-
-    [Authorize(Roles = "Moderator, Administrator")]
-    [HttpGet("all/{askId:int}")]
-    public async Task<Inklio.Api.Application.Commands.Ask> GetAnyAskById(
-        int askId,
-        CancellationToken cancellationToken)
-    {
-        var ask = await this.askRepository.GetAnyAskByIdAsync(askId, cancellationToken);
-        var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
-        return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
+        if (this.User.IsModerator())
+        {
+            var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(userId, ignoreQueryFilters));
+            return asks;
+        }
+        else
+        {
+            var asks = this.mapper.ProjectTo<Inklio.Api.Application.Commands.Ask>(this.askRepository.GetAsks(userId, false));
+            return asks;
+        }
     }
 
     [EnableQuery()]
     [HttpGet("{askId:int}")]
     public async Task<Inklio.Api.Application.Commands.Ask> GetAskById(
         int askId,
+        [FromQuery]bool ignoreQueryFilters,
         CancellationToken cancellationToken)
     {
-        var userId = this.User.UserIdOrDefault();
-        var ask = await this.askRepository.GetAskByIdAsync(askId, userId, cancellationToken);
-        var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
-        return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
+        if (ignoreQueryFilters && this.User.IsModerator())
+        {
+            var userId = this.User.UserIdOrDefault();
+            var ask = await this.askRepository.GetAskByIdAsync(askId, userId, ignoreQueryFilters, cancellationToken);
+            var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
+            return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
+        }
+        else
+        {
+            var userId = this.User.UserIdOrDefault();
+            var ask = await this.askRepository.GetAskByIdAsync(askId, userId, false, cancellationToken);
+            var askDto = this.mapper.Map<Inklio.Api.Application.Commands.Ask>(ask);
+            return askDto ?? throw new InvalidOperationException("Could not map Ask DTO");
+        }
+    }
+
+    [HttpGet("{askId:int}/challenge")]
+    public async Task<Inklio.Api.Application.Commands.Challenge?> GetChallenge(int askId, CancellationToken cancellationToken)
+    {
+        var ask = await this.askRepository.GetAskByIdAsync(askId, cancellationToken);
+        if (ask.Challenge is null)
+        {
+            return null;
+        }
+
+        var challengeDto = this.mapper.Map<Application.Commands.Challenge>(ask.Challenge);
+        return challengeDto;
     }
 
     [EnableQuery()]
@@ -193,6 +204,17 @@ public class AsksController : ODataController
     }
 
     [Authorize]
+    [HttpPost("{askId:int}/challenge")]
+    public async Task CreateChallenge(int askId, [FromBody] ChallengeCreateCommand challengeCreate, CancellationToken cancellationToken)
+    {
+        challengeCreate.AskId = askId;
+        challengeCreate.UserId = this.User.UserId();
+
+        this.logger.LogInformation("----- Sending command: {CommandName}", challengeCreate.GetGenericTypeName());
+        await this.mediator.Send(challengeCreate, cancellationToken);
+    }
+
+    [Authorize]
     [HttpPost("{askId:int}/comments/{commentId:int}/upvote")]
     public async Task CreateAskCommentUpvote(int askId, int commentId, CancellationToken cancellationToken)
     {
@@ -277,11 +299,11 @@ public class AsksController : ODataController
     public async Task DeleteAsk(int askId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
         deletionCommand.AskId = askId;
-        deletionCommand.EditedById = this.User.UserId();
+        deletionCommand.EditedByUserId = this.User.UserId();
         deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
         deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
         deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
-        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator(); // Moderators can delete any post, users can delete only their own posts
 
         this.logger.LogInformation("----- Sending command: ask {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
@@ -300,12 +322,13 @@ public class AsksController : ODataController
     [HttpDelete("{askId:int}/comments/{commentId:int}")]
     public async Task DeleteAskCommentAsync(int askId, int commentId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
-        deletionCommand.EditedById = this.User.UserId();
+        deletionCommand.EditedByUserId = this.User.UserId();
         deletionCommand.AskId = askId;
         deletionCommand.CommentId = commentId;
         deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
         deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
         deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator(); // Moderators can delete any post, users can delete only their own posts
 
         this.logger.LogInformation("----- Sending command: ask comment {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
@@ -324,13 +347,13 @@ public class AsksController : ODataController
     [HttpDelete("{askId:int}/deliveries/{deliveryId:int}")]
     public async Task DeleteDeliveryeryAsync(int askId, int deliveryId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
-        deletionCommand.EditedById = this.User.UserId();
+        deletionCommand.EditedByUserId = this.User.UserId();
         deletionCommand.AskId = askId;
         deletionCommand.DeliveryId = deliveryId;
         deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
         deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
         deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
-        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator(); // Moderators can delete any post, users can delete only their own posts
 
         this.logger.LogInformation("----- Sending command: delivery {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
@@ -349,14 +372,14 @@ public class AsksController : ODataController
     [HttpDelete("{askId:int}/deliveries/{deliveryId:int}/comments/{commentId:int}")]
     public async Task DeleteDeliveryCommentAsync(int askId, int deliveryId, int commentId, [FromBody] DeletionCommand deletionCommand, CancellationToken cancellationToken)
     {
-        deletionCommand.EditedById = this.User.UserId();
+        deletionCommand.EditedByUserId = this.User.UserId();
         deletionCommand.AskId = askId;
         deletionCommand.DeliveryId = deliveryId;
         deletionCommand.CommentId = commentId;
         deletionCommand.DeletionType = this.User.IsModerator() ? deletionCommand.DeletionType : DeletionType.CreatorDeleted;
         deletionCommand.UserMessage = this.User.IsModerator() ? deletionCommand.UserMessage : ""; // Ignored for self-deletion
         deletionCommand.InternalComment = this.User.IsModerator() ? deletionCommand.InternalComment : ""; // Ignored for self-deletion
-        deletionCommand.IsModeratorDeletion = this.User.IsModerator();
+        deletionCommand.IsModeratorDeletion = this.User.IsModerator(); // Moderators can delete any post, users can delete only their own posts
 
         this.logger.LogInformation("----- Sending command: delivery comment {CommandName}", deletionCommand.GetGenericTypeName());
         await this.mediator.Send(deletionCommand, cancellationToken);
@@ -369,6 +392,26 @@ public class AsksController : ODataController
         var upvoteDeleteCommand = new UpvoteDeleteCommand(askId, commentId, deliveryId, this.User.UserId());
         this.logger.LogInformation("----- Sending command: delivery comment {CommandName}", upvoteDeleteCommand.GetGenericTypeName());
         await this.mediator.Send(upvoteDeleteCommand, cancellationToken);
+    }
+
+    [Authorize(Roles ="Moderator, Administrator")]
+    [HttpPost("{askId:int}/lock")]
+    public async Task LockAsk(int askId, [FromBody] LockCommand lockCommand, CancellationToken cancellationToken)
+    {
+        lockCommand.EditedByUserId = this.User.UserId();
+        lockCommand.AskId = askId;
+        this.logger.LogInformation("----- Sending command: {CommandName}", lockCommand.GetGenericTypeName());
+        await this.mediator.Send(lockCommand, cancellationToken);
+    }
+
+    [Authorize(Roles ="Moderator, Administrator")]
+    [HttpPost("{askId:int}/lock")]
+    public async Task UnlockAsk(int askId, [FromBody] UnlockCommand unlockCommand, CancellationToken cancellationToken)
+    {
+        unlockCommand.EditedByUserId = this.User.UserId();
+        unlockCommand.AskId = askId;
+        this.logger.LogInformation("----- Sending command: {CommandName}", unlockCommand.GetGenericTypeName());
+        await this.mediator.Send(unlockCommand, cancellationToken);
     }
 
     /// <summary>

@@ -19,16 +19,9 @@ public interface IAskRepository : IRepository<Ask>
     /// Gets all <see cref="Ask"/> objects from the repository.
     /// </summary>
     /// <param name="userId">An optional user Id associated with the query.</param>
-    /// <returns>All ask obojects</returns>
-    IQueryable<AskQueryObject> GetAsks(UserId? userId);
-
-    /// <summary>
-    /// Gets all <see cref="Ask"/> objects from the repository and includes deleted
-    /// enteries.
-    /// </summary>
-    /// <param name="userId">An optional user Id associated with the query.</param>
-    /// <returns>All ask obojects</returns>
-    IQueryable<AskQueryObject> GetAllAsks(UserId? userId);
+    /// <param name="ignoreQueryFilters">A flag indicating whether to ignore the default query filters, such as the IsDeleted check.</param>
+    /// <returns>All ask objects</returns>
+    IQueryable<AskQueryObject> GetAsks(UserId? userId, bool ignoreQueryFilters = false);
 
     /// <summary>
     /// Gets an <see cref="Ask"/> from the repository.
@@ -39,30 +32,28 @@ public interface IAskRepository : IRepository<Ask>
     Task<Ask> GetAskByIdAsync(int askId, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Gets an <see cref="Ask"/> from the repository and may include deleted
-    /// enteries.
-    /// </summary>
-    /// <param name="askId">The id of the ask to get.</param>
-    /// <param name="cancellationToken">A cancellation token</param>
-    /// <returns>The ask.</returns>
-    Task<Ask> GetAnyAskByIdAsync(int askId, CancellationToken cancellationToken);
-
-    /// <summary>
     /// Gets an <see cref="Ask"/> from the repository. And includes information
     /// specific to the user making the query such as whether it has been
     /// upvoted by the user.
     /// </summary>
     /// <param name="askId">The id of the ask to get.</param>
     /// <param name="userId">The userId that is fetching the ask.</param>
+    /// <param name="ignoreQueryFilters">A flag indicating whether to ignore the default query filters, such as the IsDeleted check.</param>
     /// <param name="cancellationToken">A cancellation token</param>
     /// <returns>The ask.</returns>
-    Task<Ask> GetAskByIdAsync(int askId, UserId? userId, CancellationToken cancellationToken);
+    Task<Ask> GetAskByIdAsync(int askId, UserId? userId, bool ignoreQueryFilters, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets the highest hot ranking from all asks.
     /// </summary>
     /// <returns></returns>
     Task<int> GetAskHottestAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets a collection of challenges
+    /// </summary>
+    /// <returns></returns>
+    IQueryable<Challenge> GetChallenges();
 
     /// <summary>
     /// Attempts to fetcha a <see cref="Tag"/> from the tag repository.

@@ -55,6 +55,13 @@ public class Delivery
     public bool CanTag { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the rank the delivery received at the end of a challenge.
+    /// </summary>
+    [DataMember(Name = "challengeDeliveryRank")]
+    [JsonPropertyName("challengeDeliveryRank")]
+    public ChallengeDeliveryRank? ChallengeDeliveryRank { get; set; }
+
+    /// <summary>
     /// Gets or sets the comments for the delivery.
     /// </summary>
     [DataMember(Name = "comments")]

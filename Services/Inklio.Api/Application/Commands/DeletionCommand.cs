@@ -5,7 +5,7 @@ using Inklio.Api.Domain;
 namespace Inklio.Api.Application.Commands;
 
 /// <summary>
-/// An request body to create a new comment
+/// An command to  delete a post
 /// </summary>
 [DataContract]
 public class DeletionCommand : IRequest<bool>
@@ -41,7 +41,7 @@ public class DeletionCommand : IRequest<bool>
     /// </summary>
     [IgnoreDataMember]
     [JsonIgnore]
-    public UserId EditedById { get; set; }
+    public UserId EditedByUserId { get; set; }
 
     /// <summary>
     /// Gets or sets internal comments about the post deletion

@@ -58,7 +58,7 @@ public class Ask
     [DataMember(Name = "canTag")]
     [JsonPropertyName("canTag")]
     public bool CanTag { get; set; } = true;
-
+    
     /// <summary>
     /// Gets or sets the number of comments on an ask
     /// </summary>
