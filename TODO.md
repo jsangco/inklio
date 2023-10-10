@@ -3,12 +3,9 @@
 Any task or thing that needs to get done can be added here.
 
 ## Priority
-- [ ] Create repro for OData bug and post it
-- [ ] Add discord build hook.
 - [ ] Fix Odata warnings
 - [ ] Design badges system
 - [ ] Add captcha to user account creation.
-- [ ] Test lock/unlock api
 - [ ] Implement post flagging.
 - [ ] (I think the lifetimescope changes fixed this; retest is needed) Investigate race conditions seen when generating content with simultaneous calls.
 - [ ] Add UI for tags and tagging

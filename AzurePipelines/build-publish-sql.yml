@@ -35,3 +35,33 @@ steps:
     cd ./Services/Inklio.Sql
     sqlpackage /Action:Publish /SourceFile:"./bin/Release/Inklio.Sql.dacpac" /TargetConnectionString:"$(sqlConnectionString)"
   displayName: "sqlpackage publish"
+
+- task: ado-discord-webhook@2
+  displayName: 'Discord Webhook Failed'
+  condition: failed()
+  inputs:
+    webhookId: '$(discordWebhookId)'
+    webhookKey: '$(discordWebhookKey)'
+    content: '<@&1161435316922634240> Build Failed!'
+    embeds: |
+      [
+        {
+          "type": "rich",
+          "title": "$(Build.DefinitionName) ($(Build.BuildNumber))",
+          "description": "Build failed!",
+          "color": 0xff0000,
+          "fields": [
+            {
+              "name": "Build.RequestedFor",
+              "value": "$(Build.RequestedFor)",
+              "inline": true
+            },
+            {
+              "name": "Build.Reason",
+              "value": "$(Build.Reason)",
+              "inline": true
+            }
+          ],
+          "url": "$(System.CollectionUri)/$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)&view=logs"
+        }
+      ]
