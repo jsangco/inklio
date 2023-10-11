@@ -3,7 +3,6 @@
 Any task or thing that needs to get done can be added here.
 
 ## Priority
-- [ ] Fix Odata warnings
 - [ ] Design badges system
 - [ ] Add captcha to user account creation.
 - [ ] Implement post flagging.

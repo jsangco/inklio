@@ -112,6 +112,7 @@ public static class ODataExtensions
         // Entity Sets
         builder.EntitySet<Ask>("asks").EntityType
             .HasKey(e => e.Id)
+            .Expand(2, SelectExpandType.Disabled, "challenge") // The AskQueryObject causes expansion of the Challenge object to fail.
             .Page(10, 10);
         builder.EntitySet<Delivery>("deliveries").EntityType
             .HasKey(e => e.Id)
@@ -122,7 +123,9 @@ public static class ODataExtensions
             .HasKey(e => e.Id)
             .Page(20, 20);
         builder.EntitySet<Challenge>("challenges").EntityType
-            .HasKey(e => e.Id);
+            .HasKey(e => e.Id)
+            .Expand(2, SelectExpandType.Automatic, "ask")
+            .Page(20,20);
         builder.EntitySet<User>("users").EntityType
             .HasKey(e => e.Username)
             .Page(20, 20);

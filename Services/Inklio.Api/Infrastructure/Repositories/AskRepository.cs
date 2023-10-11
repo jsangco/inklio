@@ -58,6 +58,7 @@ public class AskRepository : IAskRepository
     {
         var askQuery = ignoreQueryFilters ? this.context.Asks.IgnoreQueryFilters() : this.context.Asks;
         Ask? ask = await askQuery
+            .Include(a => a.Challenge)
             .Include(a => a.Comments)
             .Include(a => a.Comments).ThenInclude(e => e.Upvotes)
             .Include(a => a.Images)

@@ -19,7 +19,7 @@ public class Challenge
     /// </summary>
     [DataMember(Name = "ask")]
     [JsonPropertyName("ask")]
-    public Ask Ask { get; private set; } = new Ask();
+    public Ask Ask { get; set; } = new Ask();
 
     /// <summary>
     /// Gets the type of the <see cref="Challenge"/>.
@@ -33,21 +33,21 @@ public class Challenge
     /// </summary>
     [DataMember(Name = "createAtUtc")]
     [JsonPropertyName("createAtUtc")]
-    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
     /// Gets the UTC time the <see cref="Challenge"/> was ended.
     /// </summary>
     [DataMember(Name = "endAtUtc")]
     [JsonPropertyName("endAtUtc")]
-    public DateTime EndAtUtc { get; private set; }
+    public DateTime EndAtUtc { get; set; }
 
     /// <summary>
     /// Gets the UTC time the <see cref="Challenge"/> was started.
     /// </summary>
     [DataMember(Name = "startAtUtc")]
     [JsonPropertyName("startAtUtc")]
-    public DateTime StartAtUtc { get; private set; }
+    public DateTime StartAtUtc { get; set; }
 
     /// <summary>
     /// Gets a enum indicating the current state of the challenge

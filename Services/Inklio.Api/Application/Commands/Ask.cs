@@ -60,6 +60,17 @@ public class Ask
     public bool CanTag { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the challenge associated with the ask.
+    /// </summary>
+    /// <remarks>
+    /// This property cannot be view via OData expand because the use of <see cref="AskQueryObject"/>
+    /// causes a DB query timeout. It can still be view via /ask/{id}/challenge or by the challenge API.
+    /// </remarks>
+    [DataMember(Name = "challenge")]
+    [JsonPropertyName("challenge")]
+    public Challenge? Challenge { get; set; }
+
+    /// <summary>
     /// Gets the content rating of the ask.
     /// </summary>
     [DataMember(Name = "contentRating")]
